@@ -1,0 +1,51 @@
+-- Production v2 security and role-based administration
+ALTER TYPE "Role" ADD VALUE IF NOT EXISTS 'SUPER_ADMIN';
+ALTER TYPE "MessageStatus" ADD VALUE IF NOT EXISTS 'IMPORTANT';
+
+ALTER TABLE "User"
+  ADD COLUMN IF NOT EXISTS "isActive" BOOLEAN NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS "failedLoginAttempts" INTEGER NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS "lockedUntil" TIMESTAMP(3),
+  ADD COLUMN IF NOT EXISTS "lastLoginAt" TIMESTAMP(3),
+  ADD COLUMN IF NOT EXISTS "lastLoginIp" TEXT;
+
+ALTER TABLE "BlogPost"
+  ADD COLUMN IF NOT EXISTS "seoTitle" TEXT,
+  ADD COLUMN IF NOT EXISTS "metaDescription" TEXT;
+
+ALTER TABLE "SiteSetting"
+  ADD COLUMN IF NOT EXISTS "faviconUrl" TEXT,
+  ADD COLUMN IF NOT EXISTS "phone" TEXT,
+  ADD COLUMN IF NOT EXISTS "whatsapp" TEXT,
+  ADD COLUMN IF NOT EXISTS "address" TEXT,
+  ADD COLUMN IF NOT EXISTS "businessHours" TEXT,
+  ADD COLUMN IF NOT EXISTS "facebookUrl" TEXT,
+  ADD COLUMN IF NOT EXISTS "linkedinUrl" TEXT,
+  ADD COLUMN IF NOT EXISTS "instagramUrl" TEXT,
+  ADD COLUMN IF NOT EXISTS "xUrl" TEXT,
+  ADD COLUMN IF NOT EXISTS "tiktokUrl" TEXT,
+  ADD COLUMN IF NOT EXISTS "youtubeUrl" TEXT,
+  ADD COLUMN IF NOT EXISTS "defaultSeoTitle" TEXT,
+  ADD COLUMN IF NOT EXISTS "defaultSeoDescription" TEXT,
+  ADD COLUMN IF NOT EXISTS "copyrightText" TEXT;
+
+CREATE TABLE IF NOT EXISTS "AuditLog" (
+  "id" TEXT NOT NULL,
+  "action" TEXT NOT NULL,
+  "entity" TEXT NOT NULL,
+  "entityId" TEXT,
+  "details" TEXT,
+  "ipAddress" TEXT,
+  "userId" TEXT,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT "AuditLog_pkey" PRIMARY KEY ("id")
+);
+
+CREATE INDEX IF NOT EXISTS "AuditLog_createdAt_idx" ON "AuditLog"("createdAt");
+CREATE INDEX IF NOT EXISTS "AuditLog_userId_idx" ON "AuditLog"("userId");
+
+DO $$ BEGIN
+  ALTER TABLE "AuditLog" ADD CONSTRAINT "AuditLog_userId_fkey"
+  FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;

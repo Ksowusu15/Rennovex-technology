@@ -1,0 +1,326 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum MessageStatus {
+  UNREAD
+  READ
+  IMPORTANT
+  ARCHIVED
+}
+
+model User {
+  id                  String     @id @default(cuid())
+  name                String
+  email               String     @unique
+  password            String
+  role                Role       @default(EDITOR)
+  isActive            Boolean    @default(true)
+  failedLoginAttempts Int        @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  lastLoginIp         String?
+  resetTokenHash      String?
+  resetTokenExpires   DateTime?
+  emailNewDeviceAlerts Boolean   @default(true)
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  auditLogs           AuditLog[]
+  authSessions        AuthSession[]
+  loginHistory        LoginHistory[]
+  archivedAuditLogs   ArchivedAuditLog[] @relation("ArchivedBy")
+}
+
+model AuthSession {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deviceName   String
+  deviceType   String
+  browser      String
+  os           String
+  ipAddress    String?
+  userAgent    String?
+  rememberMe   Boolean  @default(false)
+  expiresAt    DateTime
+  lastActiveAt DateTime @default(now())
+  revokedAt    DateTime?
+  createdAt    DateTime @default(now())
+
+  @@index([userId, revokedAt, expiresAt])
+  @@index([lastActiveAt])
+}
+
+model LoginHistory {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email      String
+  success    Boolean
+  reason     String?
+  deviceName String
+  deviceType String
+  browser    String
+  os         String
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([email, createdAt])
+  @@index([success, createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model ArchivedAuditLog {
+  id            String   @id @default(cuid())
+  originalId    String?
+  action        String
+  entity        String
+  entityId      String?
+  details       String?
+  ipAddress     String?
+  originalUserId String?
+  originalUserEmail String?
+  originalCreatedAt DateTime
+  archivedAt    DateTime @default(now())
+  archivedById  String?
+  archivedBy    User?    @relation("ArchivedBy", fields: [archivedById], references: [id], onDelete: SetNull)
+
+  @@index([archivedAt])
+  @@index([originalCreatedAt])
+  @@index([archivedById])
+}
+
+model Project {
+  id           String        @id @default(cuid())
+  title        String
+  slug         String        @unique
+  description  String
+  technologies String[]
+  image        String?
+  demoUrl      String?
+  githubUrl    String?
+  featured     Boolean       @default(false)
+  status       ContentStatus @default(PUBLISHED)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model CaseStudy {
+  id           String        @id @default(cuid())
+  title        String
+  slug         String        @unique
+  overview     String
+  challenge    String
+  solution     String
+  process      String
+  technologies String[]
+  results      String
+  images       String[]
+  projectUrl   String?
+  featured     Boolean       @default(false)
+  status       ContentStatus @default(PUBLISHED)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Category {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  posts     BlogPost[]
+  createdAt DateTime   @default(now())
+}
+
+model BlogPost {
+  id              String        @id @default(cuid())
+  title           String
+  slug            String        @unique
+  excerpt         String
+  content         String
+  image           String?
+  seoTitle        String?
+  metaDescription String?
+  status          ContentStatus @default(DRAFT)
+  publishedAt     DateTime?
+  categoryId      String?
+  category        Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Service {
+  id           String        @id @default(cuid())
+  title        String
+  slug         String        @unique
+  summary      String
+  description  String
+  benefits     String[]
+  technologies String[]
+  icon         String
+  order        Int           @default(0)
+  status       ContentStatus @default(PUBLISHED)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Message {
+  id          String        @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  projectType String?
+  message     String
+  status      MessageStatus @default(UNREAD)
+  createdAt   DateTime      @default(now())
+}
+
+model SiteSetting {
+  id                 String   @id @default("main")
+  companyName        String   @default("Rennovex Technology")
+  logoUrl             String?
+  faviconUrl          String?
+  contactEmail        String?
+  phone               String?
+  whatsapp            String?
+  address             String?
+  businessHours       String?
+  googleMapsEmbedUrl  String?
+  facebookUrl         String?
+  linkedinUrl         String?
+  instagramUrl        String?
+  xUrl                String?
+  tiktokUrl           String?
+  youtubeUrl          String?
+  defaultSeoTitle     String?
+  defaultSeoDescription String?
+  copyrightText       String?
+  updatedAt            DateTime @updatedAt
+}
+
+enum ChatSessionStatus {
+  OPEN
+  NEEDS_REPLY
+  RESOLVED
+  ARCHIVED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  WON
+  LOST
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model ChatSession {
+  id          String            @id @default(cuid())
+  visitorName String?
+  email       String?
+  phone       String?
+  topic       String?
+  status      ChatSessionStatus @default(OPEN)
+  messages    ChatMessage[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([status, updatedAt])
+  @@index([email])
+}
+
+model ChatMessage {
+  id        String      @id @default(cuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sender    String
+  content   String
+  createdAt DateTime    @default(now())
+
+  @@index([sessionId, createdAt])
+}
+
+model QuoteRequest {
+  id          String     @id @default(cuid())
+  reference   String     @unique
+  name        String
+  email       String
+  phone       String?
+  company     String?
+  service     String
+  budget      String?
+  timeline    String?
+  requirements String
+  status      LeadStatus @default(NEW)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
+}
+
+model ConsultationBooking {
+  id        String        @id @default(cuid())
+  reference String        @unique
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  service   String?
+  preferredDate DateTime
+  notes     String?
+  status    BookingStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([status, preferredDate])
+  @@index([email])
+}
+
+model NewsletterSubscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  isSubscribed Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
