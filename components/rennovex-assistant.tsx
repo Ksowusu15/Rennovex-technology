@@ -378,11 +378,29 @@ export function RennovexAssistant() {
                 mass: 0.78,
               }}
               className={`
-  fixed bottom-3 left-3 right-3 z-[80] flex max-h-[calc(100dvh-1.5rem)]
-  flex-col overflow-hidden rounded-[1.65rem] border border-slate-200/90
-  bg-white shadow-[0_30px_90px_rgba(15,23,42,0.28)] sm:bottom-6 sm:left-6
-  sm:right-auto sm:max-h-[min(720px,calc(100dvh-3rem))] sm:w-[400px]
-  lg:bottom-7 lg:left-7 lg:w-[420px]
+  fixed left-3 right-3 z-[80] flex
+  flex-col overflow-hidden rounded-[1.65rem]
+  border border-slate-200/90 bg-white
+  shadow-[0_30px_90px_rgba(15,23,42,0.28)]
+  sm:left-6 sm:right-auto sm:w-[400px]
+  lg:left-7 lg:w-[420px]
+  ${
+    mode === "chat"
+      ? `
+          bottom-3 max-h-[calc(100dvh-1.5rem)]
+          sm:bottom-6
+          sm:max-h-[min(720px,calc(100dvh-3rem))]
+          lg:bottom-7
+        `
+      : `
+          bottom-3 top-[5.5rem]
+          max-h-[calc(100dvh-6.25rem)]
+          sm:bottom-6 sm:top-[6rem]
+          sm:max-h-[calc(100dvh-7.5rem)]
+          lg:bottom-7 lg:top-[6.5rem]
+          lg:max-h-[calc(100dvh-8.25rem)]
+        `
+  }
 `}
             >
               <header
@@ -688,7 +706,8 @@ function LeadForm({
       onSubmit={onSubmit}
       className="
         min-h-0 flex-1
-        space-y-3 overflow-y-auto p-4
+        space-y-3 overflow-y-auto
+        overscroll-contain p-4
       "
     >
       <div className="rounded-2xl bg-blue-50 p-4">
