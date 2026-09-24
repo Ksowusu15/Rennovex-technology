@@ -16,6 +16,7 @@ const links = [
   [BriefcaseBusiness,"Case Studies","/admin/case-studies",["SUPER_ADMIN","ADMIN","EDITOR"]],
   [BookOpenText,"Blog","/admin/blog",["SUPER_ADMIN","ADMIN","EDITOR"]],
   [Layers3,"Services","/admin/services",["SUPER_ADMIN","ADMIN","EDITOR"]],
+  [MessageCircleMore,"Client Testimonials","/admin/testimonials",["SUPER_ADMIN","ADMIN","EDITOR"]],
   [Mail,"Messages","/admin/messages",["SUPER_ADMIN","ADMIN"]],
   [MessageCircleMore,"Assistant","/admin/assistant",["SUPER_ADMIN","ADMIN"]],
   [ReceiptText,"Quote Requests","/admin/quotes",["SUPER_ADMIN","ADMIN"]],

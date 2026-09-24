@@ -36,7 +36,7 @@ export function ScrollControls({ alwaysVisible = false }: { alwaysVisible?: bool
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] left-4 z-[60] flex flex-col gap-2 sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:left-6">
+    <div className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col gap-2 sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:right-6">
       {(alwaysVisible || canGoUp) && (
         <button
           type="button"

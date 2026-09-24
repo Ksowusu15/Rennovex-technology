@@ -1,36 +1,34 @@
-import { LoaderCircle } from "lucide-react";
+import { SiteLogo } from "@/components/site-logo";
 
 export default function AdminLoading() {
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-950 text-white">
-              <LoaderCircle className="animate-spin" size={21} />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-slate-950">Admin Portal</p>
-              <p className="text-xs text-slate-500">Loading your workspace...</p>
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+      role="status"
+      aria-label="Loading Rennovex admin portal"
+    >
+      <div className="absolute inset-0 bg-slate-950/25 backdrop-blur-md" />
+
+      <div className="relative flex flex-col items-center px-6 text-center">
+        <div className="relative grid h-28 w-28 place-items-center sm:h-32 sm:w-32">
+          <div className="absolute inset-0 rounded-full border border-white/70 bg-white/90 shadow-[0_20px_60px_rgba(2,12,35,0.25)] backdrop-blur-xl" />
+
+          <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-transparent border-t-blue-600 border-r-cyan-400" />
+
+          <div className="relative grid h-[88px] w-[88px] place-items-center overflow-hidden rounded-full bg-white shadow-inner sm:h-[102px] sm:w-[102px]">
+            <div className="scale-[1.65]">
+              <SiteLogo compact />
             </div>
           </div>
-          <div className="h-10 w-10 animate-pulse rounded-xl bg-slate-100" />
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <div key={item} className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-              <div className="h-10 w-10 animate-pulse rounded-xl bg-slate-100" />
-              <div className="mt-5 h-3 w-20 animate-pulse rounded bg-slate-100" />
-              <div className="mt-3 h-8 w-14 animate-pulse rounded bg-slate-200" />
-            </div>
-          ))}
-        </div>
+        <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.24em] text-white">
+          Rennovex Technology
+        </p>
 
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1.35fr_.65fr]">
-          <div className="h-80 animate-pulse rounded-2xl border border-slate-200 bg-white shadow-sm" />
-          <div className="h-80 animate-pulse rounded-2xl border border-slate-200 bg-white shadow-sm" />
-        </div>
+        <p className="mt-2 text-sm font-medium text-white/85">
+          Loading admin workspace...
+        </p>
       </div>
     </div>
   );

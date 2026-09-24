@@ -58,3 +58,63 @@ export async function revokeUserSessions(formData: FormData) {
   await writeAudit("ADMIN_REVOKE_SESSIONS", "AUTH_SESSION", id, `${actor.email} ended ${result.count} session(s) for ${target.email}`);
   redirect(`/admin/users?success=${encodeURIComponent(`${result.count} active session(s) ended`)}`);
 }
+
+
+export async function deleteAdminUser(formData: FormData) {
+  const actor = await requireRole(["SUPER_ADMIN"]);
+  const id = String(formData.get("id") || "").trim();
+
+  if (!id) {
+    redirect("/admin/users?error=Invalid+account");
+  }
+
+  if (id === actor.userId) {
+    redirect("/admin/users?error=You+cannot+delete+your+own+account");
+  }
+
+  const target = await prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  });
+
+  if (!target) {
+    redirect("/admin/users?error=Account+not+found");
+  }
+
+  if (target.role === "SUPER_ADMIN") {
+    const superAdminCount = await prisma.user.count({
+      where: {
+        role: "SUPER_ADMIN",
+        isActive: true,
+      },
+    });
+
+    if (superAdminCount <= 1) {
+      redirect(
+        "/admin/users?error=The+last+active+Super+Admin+account+cannot+be+deleted",
+      );
+    }
+  }
+
+  await writeAudit(
+    "DELETE",
+    "USER",
+    target.id,
+    `${actor.email} deleted ${target.email} (${target.role})`,
+  );
+
+  await prisma.user.delete({
+    where: { id: target.id },
+  });
+
+  redirect(
+    `/admin/users?success=${encodeURIComponent(
+      `${target.name} was deleted successfully`,
+    )}`,
+  );
+}

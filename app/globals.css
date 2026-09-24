@@ -126,3 +126,95 @@ main, section, article, aside, header, footer, nav, div { min-width: 0; }
   .enterprise-btn-primary, .enterprise-btn-secondary, .btn-primary, .btn-secondary { width: 100%; }
   .admin-table th, .admin-table td { padding-left: .875rem; padding-right: .875rem; }
 }
+
+
+/* Rennovex public-site rebrand */
+.brand-section { @apply py-14 sm:py-16 lg:py-20; }
+.brand-kicker { @apply text-[11px] font-extrabold uppercase tracking-[0.24em] text-blue-600; }
+.brand-title { @apply text-3xl font-extrabold leading-[1.03] tracking-[-0.045em] text-[#071d49] sm:text-4xl lg:text-5xl; }
+.brand-title span { @apply text-blue-600; }
+.brand-btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2; }
+.brand-btn-secondary { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-blue-500 bg-white px-6 py-3 text-sm font-bold text-blue-700 transition hover:-translate-y-0.5 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2; }
+@media (max-width: 639px) { .brand-btn-primary, .brand-btn-secondary { width: 100%; } }
+
+
+/* Rennovex responsive pass v2 */
+@media (max-width: 1279px) {
+  .container-shell { width: min(100% - 2.5rem, 1180px); }
+}
+
+@media (max-width: 767px) {
+  .container-shell { width: min(100% - 2rem, 1180px); }
+  .brand-section { padding-top: 3rem; padding-bottom: 3rem; }
+  .brand-title { font-size: clamp(2rem, 9vw, 2.75rem); line-height: 1.04; }
+  .brand-kicker { letter-spacing: .18em; }
+
+  /* Public content should never create horizontal page scrolling. */
+  main img, main video, main iframe { max-width: 100%; }
+  main h1, main h2, main h3, main p { overflow-wrap: break-word; }
+}
+
+@media (max-width: 479px) {
+  .container-shell { width: min(100% - 1.5rem, 1180px); }
+  .brand-section { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+  .brand-btn-primary, .brand-btn-secondary {
+    min-height: 46px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container-shell { width: min(100% - 3rem, 1180px); }
+  .brand-section { padding-top: 4rem; padding-bottom: 4rem; }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .container-shell { width: min(100% - 4rem, 1180px); }
+}
+
+
+/* Modern trust + visual marquee */
+.trust-marquee,
+.visual-marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.trust-marquee-track,
+.visual-marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 0.875rem;
+  will-change: transform;
+}
+.trust-marquee-track { animation: rennovex-marquee 28s linear infinite; }
+.visual-marquee-track { animation: rennovex-marquee-reverse 34s linear infinite; }
+.trust-brand-card {
+  display: flex;
+  min-width: 176px;
+  align-items: center;
+  gap: .75rem;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 1rem;
+  background: rgba(255,255,255,.92);
+  padding: .75rem 1rem;
+  box-shadow: 0 8px 28px rgba(15,23,42,.05);
+}
+.trust-marquee:hover .trust-marquee-track,
+.visual-marquee:hover .visual-marquee-track { animation-play-state: paused; }
+
+@keyframes rennovex-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - .4375rem)); }
+}
+@keyframes rennovex-marquee-reverse {
+  from { transform: translateX(calc(-50% - .4375rem)); }
+  to { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trust-marquee-track,
+  .visual-marquee-track { animation: none !important; }
+}

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Suspense } from "react";
 import { SiteChrome } from "@/components/site-chrome";
+import { RouteLoadingOverlay } from "@/components/route-loading-overlay";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -62,6 +64,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c") }}
         />
+        <Suspense fallback={null}>
+        <RouteLoadingOverlay />
+        </Suspense>
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>

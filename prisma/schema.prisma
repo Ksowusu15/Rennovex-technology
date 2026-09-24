@@ -191,6 +191,7 @@ model Service {
   benefits     String[]
   technologies String[]
   icon         String
+  imageUrl     String?
   order        Int           @default(0)
   status       ContentStatus @default(PUBLISHED)
   createdAt    DateTime      @default(now())
@@ -323,4 +324,18 @@ model NewsletterSubscriber {
   isSubscribed Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+
+model Testimonial {
+  id        String        @id @default(cuid())
+  name      String
+  role      String
+  quote     String
+  imageUrl  String?
+  rating    Int           @default(5)
+  order     Int           @default(0)
+  status    ContentStatus @default(PUBLISHED)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }

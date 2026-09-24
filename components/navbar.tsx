@@ -10,11 +10,10 @@ import { SiteLogo } from "@/components/site-logo";
 
 const links = [
   ["Home", "/"],
+  ["About", "/about"],
   ["Services", "/services"],
-  ["Case Studies", "/case-studies"],
   ["Projects", "/projects"],
   ["Insights", "/blog"],
-  ["About", "/about"],
   ["Contact", "/contact"],
 ] as const;
 
@@ -80,7 +79,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeOut" }}
-              className="pointer-events-none fixed inset-x-0 bottom-0 top-[68px] z-[9997] bg-slate-950/10 backdrop-blur-[2px] sm:top-[72px] xl:hidden"
+              className="pointer-events-none fixed inset-x-0 bottom-0 top-[64px] z-[9997] bg-slate-950/10 backdrop-blur-[2px] sm:top-[72px] xl:hidden"
             />
 
             <motion.div
@@ -89,7 +88,7 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="fixed inset-x-3 top-[76px] z-[9999] max-h-[calc(100dvh-92px)] overflow-hidden rounded-2xl border border-slate-200/90 bg-white/98 shadow-[0_24px_60px_rgba(15,23,42,0.24)] ring-1 ring-slate-950/5 backdrop-blur-xl sm:left-auto sm:right-5 sm:top-[80px] sm:w-[420px] xl:hidden"
+              className="fixed inset-x-3 top-[70px] z-[9999] max-h-[calc(100dvh-92px)] overflow-hidden rounded-2xl border border-slate-200/90 bg-white/98 shadow-[0_24px_60px_rgba(15,23,42,0.24)] ring-1 ring-slate-950/5 backdrop-blur-xl sm:left-auto sm:right-5 sm:top-[80px] sm:w-[420px] xl:hidden"
             >
             <nav
               id="mobile-navigation"
@@ -145,18 +144,18 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-[1000] border-b border-white/35 bg-white/55 shadow-[0_8px_30px_rgba(15,23,42,0.08)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/45">
-        <div className="container-shell flex h-[68px] items-center justify-between gap-6 sm:h-[72px]">
+      <header className="sticky top-0 z-[1000] border-b border-slate-100 bg-white/95 shadow-sm backdrop-blur-xl">
+        <div className="container-shell flex h-16 items-center justify-between gap-3 sm:h-[72px] sm:gap-6">
           <Link
             href="/"
             aria-label="Rennovex Technology home"
-            className="shrink-0"
+            className="shrink-0 scale-[.9] origin-left sm:scale-100"
             onClick={() => setOpen(false)}
           >
             <SiteLogo />
           </Link>
 
-          <nav aria-label="Primary navigation" className="hidden items-center gap-1.5 rounded-xl border border-white/45 bg-white/35 p-1 shadow-sm ring-1 ring-slate-950/5 backdrop-blur-md xl:flex">
+          <nav aria-label="Primary navigation" className="hidden items-center gap-1 xl:flex">
             {links.map(([label, href]) => {
               const active = isActivePath(pathname, href);
 
@@ -165,10 +164,8 @@ export function Navbar() {
                   key={href}
                   href={href}
                   aria-current={active ? "page" : undefined}
-                  className={`relative rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
-                    active
-                      ? "bg-white text-blue-700 shadow-sm ring-1 ring-blue-100"
-                      : "bg-white/55 text-slate-900 shadow-[0_1px_1px_rgba(255,255,255,0.8)] hover:bg-white/90 hover:text-blue-700"
+                  className={`relative px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+                    active ? "text-blue-700" : "text-slate-700 hover:text-blue-700"
                   }`}
                 >
                   {label}

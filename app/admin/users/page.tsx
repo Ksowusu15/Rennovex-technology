@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 import { AdminToast } from "@/components/admin-toast";
+import { DeleteUserForm } from "@/components/delete-user-form";
 import { requireRole } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -353,6 +354,14 @@ export default async function UsersPage({
                           End sessions
                         </button>
                       </form>
+
+                      <div className="sm:col-span-2">
+                        <DeleteUserForm
+                          userId={user.id}
+                          userName={user.name}
+                          disabled={user.id === actor.userId}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

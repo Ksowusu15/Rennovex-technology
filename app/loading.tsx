@@ -1,21 +1,35 @@
-import { LoaderCircle } from "lucide-react";
+import { SiteLogo } from "@/components/site-logo";
 
 export default function Loading() {
   return (
-    <main className="relative min-h-[70vh] overflow-hidden bg-white">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.09),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(79,70,229,0.08),transparent_30%)]" />
-      <div className="container-shell relative flex min-h-[70vh] flex-col items-center justify-center px-4 py-20 text-center">
-        <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-950/10">
-          <div className="absolute inset-2 rounded-xl bg-blue-50" />
-          <LoaderCircle className="relative animate-spin text-blue-700" size={28} strokeWidth={2.2} />
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden"
+      role="status"
+      aria-label="Loading Rennovex Technology"
+    >
+      <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-md" />
+
+      <div className="relative flex flex-col items-center px-6 text-center">
+        <div className="relative grid h-28 w-28 place-items-center sm:h-32 sm:w-32">
+          <div className="absolute inset-0 rounded-full border border-white/70 bg-white/90 shadow-[0_20px_60px_rgba(2,12,35,0.22)] backdrop-blur-xl" />
+
+          <div className="absolute inset-0 animate-spin rounded-full border-[3px] border-transparent border-t-blue-600 border-r-cyan-400" />
+
+          <div className="relative grid h-[88px] w-[88px] place-items-center overflow-hidden rounded-full bg-white shadow-inner sm:h-[102px] sm:w-[102px]">
+            <div className="scale-[1.65]">
+              <SiteLogo compact />
+            </div>
+          </div>
         </div>
-        <p className="mt-6 text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Rennovex Technology</p>
-        <h2 className="mt-3 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">Preparing your experience</h2>
-        <p className="mt-2 max-w-md text-sm leading-6 text-slate-500">Loading the page and getting everything ready for you.</p>
-        <div className="mt-7 h-1.5 w-44 overflow-hidden rounded-full bg-slate-200">
-          <div className="professional-loading-bar h-full w-2/5 rounded-full bg-blue-700" />
-        </div>
+
+        <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.24em] text-[#071d49] drop-shadow-[0_1px_8px_rgba(255,255,255,0.85)]">
+          Rennovex Technology
+        </p>
+
+        <p className="mt-2 text-sm font-medium text-slate-700 drop-shadow-[0_1px_8px_rgba(255,255,255,0.9)]">
+          Preparing your experience...
+        </p>
       </div>
-    </main>
+    </div>
   );
 }
