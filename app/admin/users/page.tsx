@@ -52,7 +52,8 @@ export default async function UsersPage({
   const params = await searchParams;
 
   const users = await prisma.user.findMany({
-    orderBy: [{ role: "asc" }, { createdAt: "asc" }],
+    orderBy: [{ role: "asc" }, 
+      { createdAt: "asc" }],
     include: {
       _count: {
         select: {
@@ -74,8 +75,11 @@ export default async function UsersPage({
   return (
     <div className="space-y-6">
       <AdminToast
-        message={params.success || params.error}
-        type={params.error ? "error" : "success"}
+        message={params.success 
+          || params.error}
+        type={params.error 
+          ? "error" 
+          : "success"}
       />
 
       <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
@@ -102,7 +106,8 @@ export default async function UsersPage({
           </div>
 
           <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
-            {activeUsers} active accounts
+            {activeUsers} 
+            active accounts
           </div>
         </div>
 
@@ -144,7 +149,9 @@ export default async function UsersPage({
           className="h-fit rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
         >
           <div className="flex items-center gap-2">
-            <UserPlus className="text-blue-700" size={19} />
+            <UserPlus 
+              className="text-blue-700" 
+              size={19} />
             <h2 className="text-lg font-bold text-slate-950">
               Add team member
             </h2>
@@ -183,7 +190,10 @@ export default async function UsersPage({
             <label className="grid gap-2 text-sm font-semibold text-slate-800">
               Assigned role
 
-              <select name="role" className="field">
+              
+              <select 
+                name="role" 
+                className="field">
                 <option value="EDITOR">Editor</option>
                 <option value="ADMIN">Admin</option>
                 <option value="SUPER_ADMIN">Super Admin</option>
@@ -208,7 +218,8 @@ export default async function UsersPage({
             </div>
 
             <span className="shrink-0 text-sm font-semibold text-slate-500">
-              {users.length} total
+              {users.length} 
+              total
             </span>
           </div>
 
@@ -228,7 +239,8 @@ export default async function UsersPage({
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex min-w-0 items-start gap-3">
                       <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-slate-100 font-bold text-slate-700">
-                        {user.name.slice(0, 1).toUpperCase()}
+                        {user.name.slice(0, 
+                          1).toUpperCase()}
                       </div>
 
                       <div className="min-w-0">
@@ -275,16 +287,24 @@ export default async function UsersPage({
                               <CircleOff size={12} />
                             )}
 
-                            {user.isActive ? "Active" : "Disabled"}
+                            {user.isActive 
+                              ? "Active" 
+                              : "Disabled"}
                           </span>
                         </div>
 
                         <p className="mt-2 text-xs leading-5 text-slate-400">
                           {user.lastLoginAt
                             ? `Last login ${user.lastLoginAt.toLocaleString()}`
-                            : "No login yet"}{" "}
-                          · {user._count.authSessions} active device
-                          {user._count.authSessions === 1 ? "" : "s"}
+                            : "No login yet"}
+                          {" "}
+                          · 
+                          {user._count.authSessions} 
+                          active device
+                          
+                          {user._count.authSessions === 1 
+                            ? "" 
+                            : "s"}
                         </p>
                       </div>
                     </div>
@@ -312,7 +332,10 @@ export default async function UsersPage({
                           </option>
                         </select>
 
-                        <button className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700">
+                        <button className={`
+  rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold
+  transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700
+`}>
                           Save
                         </button>
                       </form>
@@ -332,7 +355,9 @@ export default async function UsersPage({
                               : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
                           }`}
                         >
-                          {user.isActive ? "Disable" : "Enable"}
+                          {user.isActive 
+                            ? "Disable" 
+                            : "Enable"}
                         </button>
                       </form>
 
@@ -349,7 +374,11 @@ export default async function UsersPage({
                             (user.id === actor.userId &&
                               user._count.authSessions === 1)
                           }
-                          className="w-full whitespace-nowrap rounded-xl bg-amber-50 px-3 py-2 text-sm font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-40"
+                          className={`
+  w-full whitespace-nowrap rounded-xl bg-amber-50 px-3 py-2 text-sm
+  font-semibold text-amber-800 transition hover:bg-amber-100
+  disabled:cursor-not-allowed disabled:opacity-40
+`}
                         >
                           End sessions
                         </button>

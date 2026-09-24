@@ -1,6 +1,8 @@
 "use client";
 
-import { Archive, Loader2, Trash2 } from "lucide-react";
+import { Archive, 
+  Loader2, 
+  Trash2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
 type Props = {

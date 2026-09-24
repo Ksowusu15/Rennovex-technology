@@ -1,2 +1,150 @@
-import Image from "next/image"; import Link from "next/link"; import { Pencil,Trash2,Plus } from "lucide-react"; import { prisma } from "@/lib/prisma"; import { saveProject,deleteProject } from "./actions"; import { FormActions } from "@/components/admin-form";
-export default async function Page({searchParams}:{searchParams:Promise<{edit?:string;new?:string}>}){const q=await searchParams;const items=await prisma.project.findMany({orderBy:{createdAt:"desc"}});const edit=q.edit?await prisma.project.findUnique({where:{id:q.edit}}):null;const show=!!q.new||!!edit;return <><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="eyebrow">Manage</p><h1 className="mt-3 text-3xl font-bold text-slate-950">Projects</h1></div><Link href="?new=1" className="btn-primary"><Plus size={16}/>Add Project</Link></div>{show&&<form action={saveProject} className="admin-card mt-7 grid gap-5"><input type="hidden" name="id" value={edit?.id||""}/><div className="grid gap-5 md:grid-cols-2"><label className="label">Title<input className="field" name="title" required defaultValue={edit?.title}/></label><label className="label">Slug<input className="field" name="slug" defaultValue={edit?.slug}/></label></div><label className="label">Description<textarea className="field min-h-28" name="description" required defaultValue={edit?.description}/></label><div className="grid gap-5 md:grid-cols-2"><label className="label">Technologies (comma separated)<input className="field" name="technologies" defaultValue={edit?.technologies.join(", ")}/></label><label className="label">Project image<input className="field" name="image" type="file" accept="image/*"/></label><label className="label">Live demo URL<input className="field" name="demoUrl" type="url" defaultValue={edit?.demoUrl||""}/></label><label className="label">GitHub URL<input className="field" name="githubUrl" type="url" defaultValue={edit?.githubUrl||""}/></label><label className="label">Status<select className="field" name="status" defaultValue={edit?.status||"PUBLISHED"}><option>DRAFT</option><option>PUBLISHED</option><option>ARCHIVED</option></select></label><label className="flex items-center gap-3 pt-8 text-sm font-semibold text-slate-700"><input name="featured" type="checkbox" defaultChecked={edit?.featured}/>Featured project</label></div><FormActions editing={!!edit}/></form>}<div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{items.map(i=><article key={i.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">{i.image?<div className="relative aspect-[16/9]"><Image src={i.image} alt={i.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover"/></div>:<div className="grid aspect-[16/9] place-items-center bg-slate-100 text-slate-400">No image</div>}<div className="p-5"><div className="flex items-start justify-between gap-3"><h2 className="font-bold text-slate-950">{i.title}</h2><span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-600">{i.status}</span></div><p className="mt-2 line-clamp-2 text-sm text-slate-600">{i.description}</p><div className="mt-5 flex gap-2"><Link href={`?edit=${i.id}`} className="btn-secondary !rounded-lg !px-4 !py-2"><Pencil size={15}/>Edit</Link><form action={deleteProject}><input type="hidden" name="id" value={i.id}/><button className="btn-danger" type="submit"><Trash2 size={15}/>Delete</button></form></div></div></article>)}</div></>}
+import Image from "next/image"; 
+import Link from "next/link"; 
+import { Pencil,
+  Trash2,
+  Plus } from "lucide-react"; 
+import { prisma } from "@/lib/prisma"; 
+import { saveProject,
+  deleteProject } from "./actions"; 
+import { FormActions } from "@/components/admin-form";
+export default async function Page({searchParams}:{searchParams:Promise<{edit?:string;new?:string}>}){const q=await searchParams;
+  const items=await prisma.project.findMany({orderBy:{createdAt:"desc"}});
+  const edit=q.edit
+    ?await prisma.project.findUnique({where:{id:q.edit}})
+    :null;
+  const show=!!q.new
+    ||!!edit;
+  return <><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+    <p className="eyebrow">Manage</p>
+  <h1 className="mt-3 text-3xl font-bold text-slate-950">Projects</h1>
+  </div>
+  <Link 
+  href="?new=1" 
+  className="btn-primary">
+    <Plus size={16}/>
+  Add Project</Link>
+  </div>{show&&<form 
+  action={saveProject} 
+  className="admin-card mt-7 grid gap-5">
+    <input 
+  type="hidden" 
+  name="id" 
+  value={edit?.id
+    ||""}/>
+  <div className="grid gap-5 md:grid-cols-2">
+    <label className="label">Title
+  <input 
+  className="field" 
+  name="title" 
+  required 
+  defaultValue={edit?.title}/>
+  </label>
+  <label className="label">Slug
+  <input 
+  className="field" 
+  name="slug" 
+  defaultValue={edit?.slug}/>
+  </label>
+  </div>
+  <label className="label">Description
+  <textarea 
+  className="field min-h-28" 
+  name="description" 
+  required 
+  defaultValue={edit?.description}/>
+  </label>
+  <div className="grid gap-5 md:grid-cols-2">
+    <label className="label">Technologies (comma separated)
+  <input 
+  className="field" 
+  name="technologies" 
+  defaultValue={edit?.technologies.join(", ")}/>
+  </label>
+  <label className="label">Project image
+  <input 
+  className="field" 
+  name="image" 
+  type="file" 
+  accept="image/*"/>
+  </label>
+  <label className="label">Live demo URL
+  <input 
+  className="field" 
+  name="demoUrl" 
+  type="url" 
+  defaultValue={edit?.demoUrl
+    ||""}/>
+  </label>
+  <label className="label">GitHub URL
+  <input 
+  className="field" 
+  name="githubUrl" 
+  type="url" 
+  defaultValue={edit?.githubUrl
+    ||""}/>
+  </label>
+  <label className="label">Status
+  <select 
+  className="field" 
+  name="status" 
+  defaultValue={edit?.status
+    ||"PUBLISHED"}>
+    <option>DRAFT</option>
+  <option>PUBLISHED</option>
+  <option>ARCHIVED</option>
+  </select>
+  </label>
+  <label className="flex items-center gap-3 pt-8 text-sm font-semibold text-slate-700">
+    <input 
+  name="featured" 
+  type="checkbox" 
+  defaultChecked={edit?.featured}/>
+  Featured project</label>
+  </div>
+  <FormActions editing={!!edit}/>
+  </form>}<div className="mt-7 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    {items.map(i=><article 
+  key={i.id} 
+  className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    {i.image?<div className="relative aspect-[16/9]">
+    <Image 
+  src={i.image} 
+  alt={i.title} 
+  fill 
+  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
+  className="object-cover"/>
+  </div>:<div className="grid aspect-[16/9] place-items-center bg-slate-100 text-slate-400">No image</div>}
+  <div className="p-5">
+    <div className="flex items-start justify-between gap-3">
+    <h2 className="font-bold text-slate-950">
+    {i.title}
+  </h2>
+  <span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-600">
+    {i.status}
+  </span>
+  </div>
+  <p className="mt-2 line-clamp-2 text-sm text-slate-600">
+    {i.description}
+  </p>
+  <div className="mt-5 flex gap-2">
+    <Link 
+  href={`?edit=${i.id}`} 
+  className="btn-secondary !rounded-lg !px-4 !py-2">
+    <Pencil size={15}/>
+  Edit</Link>
+  <form action={deleteProject}>
+    <input 
+  type="hidden" 
+  name="id" 
+  value={i.id}/>
+  <button 
+  className="btn-danger" 
+  type="submit">
+    <Trash2 size={15}/>
+  Delete</button>
+  </form>
+  </div>
+  </div>
+  </article>)}
+  </div></>}

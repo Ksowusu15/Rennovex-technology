@@ -1,4 +1,50 @@
 "use client";
-import { FormEvent, useState } from "react";
-import { CheckCircle2, Loader2, Mail } from "lucide-react";
-export function NewsletterForm(){const[loading,setLoading]=useState(false);const[message,setMessage]=useState("");async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();const form=e.currentTarget;setLoading(true);setMessage("");const email=String(new FormData(form).get("email")||"");const r=await fetch("/api/newsletter",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email})});const data=await r.json();setLoading(false);if(r.ok){form.reset();setMessage("You’re subscribed.")}else setMessage(data.error||"Please try again.")}return <form onSubmit={submit} className="mt-4"><div className="flex gap-2"><input className="min-w-0 flex-1 rounded-xl border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-slate-500 focus:border-blue-400" name="email" type="email" placeholder="Email for updates" required/><button className="grid h-11 w-11 place-items-center rounded-xl bg-blue-600 text-white" disabled={loading}>{loading?<Loader2 className="animate-spin" size={17}/>:<Mail size={17}/>}</button></div>{message&&<p className="mt-2 flex items-center gap-1.5 text-xs text-emerald-300"><CheckCircle2 size={13}/>{message}</p>}</form>}
+import { FormEvent, 
+  useState } from "react";
+import { CheckCircle2, 
+  Loader2, 
+  Mail } from "lucide-react";
+export function NewsletterForm(){const[loading,setLoading]=useState(false);
+  const[message,setMessage]=useState("");
+  async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();
+  const form=e.currentTarget;
+  setLoading(true);
+  setMessage("");
+  const email=String(new FormData(form).get("email")
+    ||"");
+  const r=await fetch("/api/newsletter",
+  {method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({email})});
+  const data=await r.json();
+  setLoading(false);
+  if(r.ok){form.reset();
+  setMessage("You’re subscribed.")}else setMessage(data.error
+    ||"Please try again.")}
+  return <form 
+  onSubmit={submit} 
+  className="mt-4">
+    <div className="flex gap-2">
+    <input 
+  className={`
+  min-w-0 flex-1 rounded-xl border border-slate-700 bg-slate-900 px-3
+  py-2.5 text-sm text-white outline-none placeholder:text-slate-500
+  focus:border-blue-400
+`} 
+  name="email" 
+  type="email" 
+  placeholder="Email for updates" 
+  required/>
+  <button 
+  className="grid h-11 w-11 place-items-center rounded-xl bg-blue-600 text-white" 
+  disabled={loading}>
+    {loading?<Loader2 
+  className="animate-spin" 
+  size={17}/>:<Mail size={17}/>}
+  </button>
+  </div>
+  {message&&<p className="mt-2 flex items-center gap-1.5 text-xs text-emerald-300">
+    <CheckCircle2 size={13}/>
+  {message}
+  </p>}
+  </form>}

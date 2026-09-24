@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, 
+  LogOut } from "lucide-react";
 
 type LogoutButtonProps = {
   compact?: boolean;
@@ -35,7 +36,8 @@ export function LogoutButton({ compact = false, onBeforeLogout }: LogoutButtonPr
       // protected data from remaining visible after the cookie is removed.
       window.location.replace("/admin/login?reason=signed-out");
     } catch (signOutError) {
-      console.error("Sign out failed:", signOutError);
+      console.error("Sign out failed:", 
+        signOutError);
       setError("Sign out failed. Please try again.");
       setLoading(false);
     }
@@ -53,10 +55,21 @@ export function LogoutButton({ compact = false, onBeforeLogout }: LogoutButtonPr
             : "flex w-full items-center gap-3 rounded-xl px-3.5 py-3.5 text-sm font-semibold text-slate-600 transition hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60"
         }
       >
-        {loading ? <Loader2 className="animate-spin" size={compact ? 17 : 18} /> : <LogOut size={compact ? 17 : 18} />}
-        {loading ? "Signing out..." : "Sign out"}
+        {loading ? <Loader2 
+          className="animate-spin" 
+          size={compact 
+            ? 17 
+            : 18} /> : <LogOut size={compact 
+            ? 17 
+            : 18} />}
+        {loading 
+          ? "Signing out..." 
+          : "Sign out"}
       </button>
-      {error && <p className="mt-2 px-3 text-xs font-medium text-red-700">{error}</p>}
+      {error 
+        && <p className="mt-2 px-3 text-xs font-medium text-red-700">
+        {error}
+      </p>}
     </div>
   );
 }

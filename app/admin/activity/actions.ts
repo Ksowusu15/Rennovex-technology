@@ -24,7 +24,8 @@ export async function archiveActivityLogs() {
         details: log.details,
         ipAddress: log.ipAddress,
         originalUserId: log.userId,
-        originalUserEmail: log.user?.email ?? null,
+        originalUserEmail: log.user?.email 
+          ?? null,
         originalCreatedAt: log.createdAt,
         archivedById: user.id,
       })),

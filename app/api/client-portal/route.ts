@@ -1,5 +1,30 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-const schema=z.object({reference:z.string().trim().min(5).max(80),email:z.string().email()});
-export async function POST(request:Request){try{const input=schema.parse(await request.json());const quote=await prisma.quoteRequest.findFirst({where:{reference:input.reference,email:{equals:input.email,mode:"insensitive"}},select:{reference:true,service:true,status:true,createdAt:true,updatedAt:true}});if(quote)return NextResponse.json({type:"Quote request",...quote});const booking=await prisma.consultationBooking.findFirst({where:{reference:input.reference,email:{equals:input.email,mode:"insensitive"}},select:{reference:true,service:true,status:true,preferredDate:true,createdAt:true,updatedAt:true}});if(booking)return NextResponse.json({type:"Consultation booking",...booking});return NextResponse.json({error:"No request matched that reference and email."},{status:404});}catch{return NextResponse.json({error:"Enter a valid reference and email."},{status:400});}}
+const schema=z.object({reference:z.string().trim().min(5).max(80),
+  email:z.string().email()});
+export async function POST(request:Request){try{const input=schema.parse(await request.json());
+  const quote=await prisma.quoteRequest.findFirst({where:{reference:input.reference,
+  email:{equals:input.email,
+  mode:"insensitive"}},
+  select:{reference:true,
+  service:true,
+  status:true,
+  createdAt:true,
+  updatedAt:true}});
+  if(quote)return NextResponse.json({type:"Quote request",
+  ...quote});
+  const booking=await prisma.consultationBooking.findFirst({where:{reference:input.reference,
+  email:{equals:input.email,
+  mode:"insensitive"}},
+  select:{reference:true,
+  service:true,
+  status:true,
+  preferredDate:true,
+  createdAt:true,
+  updatedAt:true}});
+  if(booking)return NextResponse.json({type:"Consultation booking",
+  ...booking});
+  return NextResponse.json({error:"No request matched that reference and email."},
+  {status:404});}catch{return NextResponse.json({error:"Enter a valid reference and email."},
+  {status:400});}}

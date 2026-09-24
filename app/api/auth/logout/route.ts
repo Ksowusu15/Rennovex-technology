@@ -5,10 +5,12 @@ export async function POST() {
   await destroySession();
 
   const response = NextResponse.json(
-    { success: true, redirectTo: "/admin/login?reason=signed-out" },
+    { success: true, 
+      redirectTo: "/admin/login?reason=signed-out" },
     { status: 200 },
   );
 
-  response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  response.headers.set("Cache-Control", 
+    "no-store, no-cache, must-revalidate");
   return response;
 }

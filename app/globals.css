@@ -218,3 +218,60 @@ main, section, article, aside, header, footer, nav, div { min-width: 0; }
   .trust-marquee-track,
   .visual-marquee-track { animation: none !important; }
 }
+
+
+/* Rennovex site-wide motion polish */
+@media (hover: hover) and (pointer: fine) {
+  .glass,
+  .card-hover {
+    transition:
+      transform 320ms cubic-bezier(.22, 1, .36, 1),
+      box-shadow 320ms cubic-bezier(.22, 1, .36, 1),
+      border-color 320ms ease;
+  }
+
+  .glass:hover,
+  .card-hover:hover {
+    transform: translateY(-5px);
+    border-color: rgb(191 219 254);
+    box-shadow: 0 22px 55px rgba(15, 23, 42, .11);
+  }
+
+  .brand-btn-primary,
+  .brand-btn-secondary,
+  .enterprise-btn-primary {
+    transition:
+      transform 260ms cubic-bezier(.22, 1, .36, 1),
+      box-shadow 260ms ease,
+      background-color 260ms ease,
+      color 260ms ease;
+  }
+
+  .brand-btn-primary:hover,
+  .brand-btn-secondary:hover,
+  .enterprise-btn-primary:hover {
+    transform: translateY(-2px);
+  }
+
+  img {
+    transition:
+      transform 650ms cubic-bezier(.22, 1, .36, 1),
+      filter 450ms ease;
+  }
+}
+
+::selection {
+  background: rgba(37, 99, 235, .16);
+  color: #071d49;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

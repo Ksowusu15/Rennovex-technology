@@ -35,7 +35,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const passwordHash = await bcrypt.hash(password, 12);
+    const passwordHash = await bcrypt.hash(password, 
+      12);
 
     await prisma.$transaction([
       prisma.user.update({
@@ -49,7 +50,8 @@ export async function POST(request: Request) {
         },
       }),
       prisma.authSession.updateMany({
-        where: { userId: user.id, revokedAt: null },
+        where: { userId: user.id, 
+          revokedAt: null },
         data: { revokedAt: new Date() },
       }),
       prisma.auditLog.create({
@@ -69,12 +71,14 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.issues[0]?.message || "Enter a valid password." },
+        { error: error.issues[0]?.message 
+          || "Enter a valid password." },
         { status: 400 },
       );
     }
 
-    console.error("Password reset failed:", error);
+    console.error("Password reset failed:", 
+      error);
     return NextResponse.json(
       { error: "Unable to reset the password right now. Please request a new link." },
       { status: 500 },

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import { AlertTriangle, 
+  RefreshCw } from "lucide-react";
 
 export default function AdminError({
   error,
@@ -11,7 +12,8 @@ export default function AdminError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Admin workspace error:", error);
+    console.error("Admin workspace error:", 
+      error);
   }, [error]);
 
   return (
@@ -28,7 +30,11 @@ export default function AdminError({
       <button
         type="button"
         onClick={reset}
-        className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-800"
+        className={`
+  mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl
+  bg-blue-700 px-5 py-3 text-sm font-bold text-white transition
+  hover:bg-blue-800
+`}
       >
         <RefreshCw size={16} />
         Try again

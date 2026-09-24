@@ -1,14 +1,17 @@
-import { deleteImage, uploadImage } from "@/lib/cloudinary";
+import { deleteImage, 
+  uploadImage } from "@/lib/cloudinary";
 
 export function list(value: FormDataEntryValue | null) {
-  return String(value ?? "")
+  return String(value 
+    ?? "")
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
 }
 
 export function bool(value: FormDataEntryValue | null) {
-  return value === "on" || value === "true";
+  return value === "on" 
+    || value === "true";
 }
 
 const ALLOWED_IMAGE_TYPES = new Set([
@@ -20,8 +23,10 @@ const ALLOWED_IMAGE_TYPES = new Set([
   "image/svg+xml",
 ]);
 
-export async function saveUpload(file: File | null, folder = "media") {
-  if (!file || file.size === 0) return null;
+export async function saveUpload(file: File | null, 
+  folder = "media") {
+  if (!file 
+    || file.size === 0) return null;
   if (!ALLOWED_IMAGE_TYPES.has(file.type)) {
     throw new Error("Upload a JPG, PNG, WebP, AVIF, GIF, or SVG image.");
   }
@@ -29,7 +34,8 @@ export async function saveUpload(file: File | null, folder = "media") {
     throw new Error("Image must be 5 MB or smaller.");
   }
 
-  const result = await uploadImage(file, folder);
+  const result = await uploadImage(file, 
+    folder);
   return result.secure_url;
 }
 
@@ -37,6 +43,7 @@ export async function removeUpload(url?: string | null) {
   try {
     await deleteImage(url);
   } catch (error) {
-    console.error("Unable to remove Cloudinary image:", error);
+    console.error("Unable to remove Cloudinary image:", 
+      error);
   }
 }

@@ -26,9 +26,12 @@ async function safeDashboardQuery<T>(
   fallback: T,
 ): Promise<T> {
   try {
-    return await withDatabaseRetry(operation, { retries: 1, delayMs: 450 });
+    return await withDatabaseRetry(operation, 
+      { retries: 1, 
+      delayMs: 450 });
   } catch (error) {
-    console.error(`[dashboard:${label}]`, error);
+    console.error(`[dashboard:${label}]`, 
+      error);
     return fallback;
   }
 }
@@ -92,14 +95,19 @@ export async function getLeadOverview(): Promise<LeadOverview> {
       prisma.consultationBooking.count({ where: { status: "PENDING" } }),
     ]);
 
-    return { messages, unread, assistantConversations, quoteRequests, bookings };
+    return { messages, 
+      unread, 
+      assistantConversations, 
+      quoteRequests, 
+      bookings };
   }, EMPTY_LEADS);
 }
 
 export async function getRecentMessages() {
   return safeDashboardQuery(
     "recent-messages",
-    () => prisma.message.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
+    () => prisma.message.findMany({ orderBy: { createdAt: "desc" }, 
+      take: 5 }),
     [],
   );
 }
@@ -119,10 +127,17 @@ export async function getRecentActivity() {
 export async function getEnquiryTrend(since: Date) {
   return safeDashboardQuery("enquiry-trend", async () => {
     const [messages, quotes, bookings] = await Promise.all([
-      prisma.message.findMany({ where: { createdAt: { gte: since } }, select: { createdAt: true } }),
-      prisma.quoteRequest.findMany({ where: { createdAt: { gte: since } }, select: { createdAt: true } }),
-      prisma.consultationBooking.findMany({ where: { createdAt: { gte: since } }, select: { createdAt: true } }),
+      prisma.message.findMany({ where: { createdAt: { gte: since } }, 
+        select: { createdAt: true } }),
+      prisma.quoteRequest.findMany({ where: { createdAt: { gte: since } }, 
+        select: { createdAt: true } }),
+      prisma.consultationBooking.findMany({ where: { createdAt: { gte: since } }, 
+        select: { createdAt: true } }),
     ]);
-    return { messages, quotes, bookings };
-  }, { messages: [], quotes: [], bookings: [] });
+    return { messages, 
+      quotes, 
+      bookings };
+  }, { messages: [], 
+    quotes: [], 
+    bookings: [] });
 }

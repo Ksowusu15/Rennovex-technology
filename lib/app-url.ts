@@ -1,7 +1,8 @@
 import type { NextRequest } from "next/server";
 
 function cleanUrl(value: string) {
-  return value.trim().replace(/\/+$/, "");
+  return value.trim().replace(/\/+$/, 
+    "");
 }
 
 export function getPublicAppUrl(request?: Request | NextRequest) {
@@ -15,10 +16,16 @@ export function getPublicAppUrl(request?: Request | NextRequest) {
   if (request) {
     const forwardedProto = request.headers.get("x-forwarded-proto");
     const forwardedHost = request.headers.get("x-forwarded-host");
-    const host = forwardedHost || request.headers.get("host");
+    const host = forwardedHost 
+      || request.headers.get("host");
 
     if (host) {
-      const protocol = forwardedProto || (host.includes("localhost") || host.startsWith("127.") || host.startsWith("192.168.") ? "http" : "https");
+      const protocol = forwardedProto 
+        || (host.includes("localhost") 
+        || host.startsWith("127.") 
+        || host.startsWith("192.168.") 
+        ? "http" 
+        : "https");
       return `${protocol}://${host}`;
     }
 

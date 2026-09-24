@@ -4,7 +4,8 @@ import { Suspense } from "react";
 import { SiteChrome } from "@/components/site-chrome";
 import { RouteLoadingOverlay } from "@/components/route-loading-overlay";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL 
+  ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -22,7 +23,8 @@ export const metadata: Metadata = {
     "Rennovex Technology",
   ],
   applicationName: "Rennovex Technology",
-  authors: [{ name: "Rennovex Technology", url: siteUrl }],
+  authors: [{ name: "Rennovex Technology", 
+    url: siteUrl }],
   creator: "Rennovex Technology",
   publisher: "Rennovex Technology",
   alternates: { canonical: "/" },
@@ -33,7 +35,10 @@ export const metadata: Metadata = {
     siteName: "Rennovex Technology",
     title: "Rennovex Technology | Digital Solutions That Drive Growth",
     description: "Websites, custom software, UI/UX, branding, and IT solutions for growing businesses.",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Rennovex Technology" }],
+    images: [{ url: "/opengraph-image", 
+      width: 1200, 
+      height: 630, 
+      alt: "Rennovex Technology" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -41,7 +46,8 @@ export const metadata: Metadata = {
     description: "Digital solutions that drive business growth.",
     images: ["/opengraph-image"],
   },
-  robots: { index: true, follow: true },
+  robots: { index: true, 
+    follow: true },
   category: "technology",
 };
 
@@ -52,22 +58,29 @@ const organizationJsonLd = {
   url: siteUrl,
   logo: `${siteUrl}/icon`,
   email: "hello@rennovex.com",
-  address: { "@type": "PostalAddress", addressLocality: "Accra", addressCountry: "GH" },
+  address: { "@type": "PostalAddress", 
+    addressLocality: "Accra", 
+    addressCountry: "GH" },
   sameAs: [],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html 
+      lang="en" 
+      data-scroll-behavior="smooth">
       <body>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c") }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replace(/</g, 
+            "\\u003c") }}
         />
         <Suspense fallback={null}>
         <RouteLoadingOverlay />
         </Suspense>
-        <SiteChrome>{children}</SiteChrome>
+        <SiteChrome>
+          {children}
+        </SiteChrome>
       </body>
     </html>
   );

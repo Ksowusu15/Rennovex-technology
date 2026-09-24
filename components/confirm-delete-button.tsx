@@ -16,13 +16,18 @@ export function ConfirmDeleteButton({
   return (
     <button
       type="submit"
-      className={`btn-danger ${compact ? "!px-3 !py-2" : ""}`}
+      className={`btn-danger ${compact 
+        ? "!px-3 !py-2" 
+        : ""}`}
       onClick={(event) => {
         if (!window.confirm(message)) event.preventDefault();
       }}
     >
-      <Trash2 size={compact ? 14 : 15} />
-      {!compact && label}
+      <Trash2 size={compact 
+        ? 14 
+        : 15} />
+      {!compact 
+        && label}
     </button>
   );
 }

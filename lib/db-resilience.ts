@@ -1,6 +1,10 @@
 import { Prisma } from "@prisma/client";
 
-const RETRYABLE_CODES = new Set(["P1001", "P1002", "P1017", "P2024", "P2028"]);
+const RETRYABLE_CODES = new Set(["P1001", 
+  "P1002", 
+  "P1017", 
+  "P2024", 
+  "P2028"]);
 
 function isRetryableDatabaseError(error: unknown) {
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -11,20 +15,25 @@ function isRetryableDatabaseError(error: unknown) {
     return true;
   }
 
-  const message = error instanceof Error ? error.message : String(error);
+  const message = error instanceof Error 
+    ? error.message 
+    : String(error);
   return /connection|closed|timeout|can't reach database|server has closed/i.test(message);
 }
 
 function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, 
+    ms));
 }
 
 export async function withDatabaseRetry<T>(
   operation: () => Promise<T>,
   options: { retries?: number; delayMs?: number } = {},
 ): Promise<T> {
-  const retries = options.retries ?? 1;
-  const delayMs = options.delayMs ?? 350;
+  const retries = options.retries 
+    ?? 1;
+  const delayMs = options.delayMs 
+    ?? 350;
 
   let lastError: unknown;
 
@@ -33,7 +42,8 @@ export async function withDatabaseRetry<T>(
       return await operation();
     } catch (error) {
       lastError = error;
-      if (!isRetryableDatabaseError(error) || attempt === retries) throw error;
+      if (!isRetryableDatabaseError(error) 
+        || attempt === retries) throw error;
       await delay(delayMs * (attempt + 1));
     }
   }
@@ -47,9 +57,12 @@ export async function safePublicQuery<T>(
   label: string,
 ): Promise<T> {
   try {
-    return await withDatabaseRetry(operation, { retries: 1, delayMs: 450 });
+    return await withDatabaseRetry(operation, 
+      { retries: 1, 
+      delayMs: 450 });
   } catch (error) {
-    console.error(`[database:${label}]`, error);
+    console.error(`[database:${label}]`, 
+      error);
     return fallback;
   }
 }

@@ -26,7 +26,8 @@ import {
 function sixMonthBuckets() {
   const now = new Date();
 
-  return Array.from({ length: 6 }, (_, index) => {
+  return Array.from({ length: 6 }, (_, 
+    index) => {
     const date = new Date(
       now.getFullYear(),
       now.getMonth() - (5 - index),
@@ -55,8 +56,12 @@ export default async function AdminDashboard() {
   const canReadLeads = session.role !== "EDITOR";
 
   const since = new Date();
-  since.setMonth(since.getMonth() - 5, 1);
-  since.setHours(0, 0, 0, 0);
+  since.setMonth(since.getMonth() - 5, 
+    1);
+  since.setHours(0, 
+    0, 
+    0, 
+    0);
 
   const content = await getContentOverview();
 
@@ -72,8 +77,10 @@ export default async function AdminDashboard() {
       ])
     : null;
 
-  const recentMessages = widgets?.[0] ?? [];
-  const recentActivity = widgets?.[1] ?? [];
+  const recentMessages = widgets?.[0] 
+    ?? [];
+  const recentActivity = widgets?.[1] 
+    ?? [];
 
   const trendData = widgets?.[2] ?? {
     messages: [],
@@ -102,29 +109,35 @@ export default async function AdminDashboard() {
     }
   };
 
-  add(trendData.messages, "messages");
-  add(trendData.quotes, "quotes");
-  add(trendData.bookings, "bookings");
+  add(trendData.messages, 
+    "messages");
+  add(trendData.quotes, 
+    "quotes");
+  add(trendData.bookings, 
+    "bookings");
 
   const primaryStats = [
     {
       icon: Mail,
       label: "Unread messages",
-      value: leads?.unread ?? 0,
+      value: leads?.unread 
+        ?? 0,
       href: "/admin/messages",
       show: canReadLeads,
     },
     {
       icon: ReceiptText,
       label: "New quote requests",
-      value: leads?.quoteRequests ?? 0,
+      value: leads?.quoteRequests 
+        ?? 0,
       href: "/admin/quotes",
       show: canReadLeads,
     },
     {
       icon: CalendarDays,
       label: "Pending bookings",
-      value: leads?.bookings ?? 0,
+      value: leads?.bookings 
+        ?? 0,
       href: "/admin/bookings",
       show: canReadLeads,
     },
@@ -178,7 +191,8 @@ export default async function AdminDashboard() {
           </p>
 
           <h1 className="mt-1 break-words text-2xl font-semibold tracking-[-0.035em] text-slate-950 sm:text-3xl lg:text-4xl">
-            Good day, {session.name.split(" ")[0]}
+            Good day, 
+            {session.name.split(" ")[0]}
           </h1>
 
           <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
@@ -190,16 +204,26 @@ export default async function AdminDashboard() {
         <div className="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto">
           <Link
             href="/admin/projects#project-form"
-            className="inline-flex min-w-0 items-center justify-center gap-2 rounded-lg bg-slate-950 px-3 py-2.5 text-center text-xs font-semibold text-white transition hover:bg-slate-800 sm:px-4 sm:text-sm"
+            className={`
+  inline-flex min-w-0 items-center justify-center gap-2 rounded-lg
+  bg-slate-950 px-3 py-2.5 text-center text-xs font-semibold text-white
+  transition hover:bg-slate-800 sm:px-4 sm:text-sm
+`}
           >
-            <Plus size={16} className="shrink-0" />
+            <Plus 
+              size={16} 
+              className="shrink-0" />
             <span className="truncate">New project</span>
           </Link>
 
           {canReadLeads && (
             <Link
               href="/admin/messages"
-              className="inline-flex min-w-0 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-center text-xs font-semibold text-slate-700 transition hover:bg-slate-50 sm:px-4 sm:text-sm"
+              className={`
+  inline-flex min-w-0 items-center justify-center gap-2 rounded-lg border
+  border-slate-300 bg-white px-3 py-2.5 text-center text-xs font-semibold
+  text-slate-700 transition hover:bg-slate-50 sm:px-4 sm:text-sm
+`}
             >
               <MessageSquareText
                 size={16}
@@ -223,7 +247,11 @@ export default async function AdminDashboard() {
             <Link
               key={label}
               href={href}
-              className="group min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md sm:p-5"
+              className={`
+  group min-w-0 rounded-xl border border-slate-200 bg-white p-3
+  shadow-[0_1px_2px_rgba(15,23,42,0.04)] transition-all duration-300
+  hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md sm:p-5
+`}
             >
               <div className="flex items-center justify-between gap-3">
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 text-slate-700 sm:h-10 sm:w-10">
@@ -353,7 +381,9 @@ export default async function AdminDashboard() {
                       </p>
 
                       <p className="mt-1 text-xs text-slate-500">
-                        {published} published of {total}
+                        {published} 
+                        published of 
+                        {total}
                       </p>
                     </div>
 
@@ -368,7 +398,8 @@ export default async function AdminDashboard() {
                       </div>
 
                       <p className="mt-1 text-right text-[10px] font-medium text-slate-400 sm:hidden">
-                        {percentage}%
+                        {percentage}
+                        %
                       </p>
                     </div>
                   </Link>
@@ -418,7 +449,10 @@ export default async function AdminDashboard() {
                   </p>
 
                   <p className="mt-1 break-words text-xs text-slate-500">
-                    {activity.user?.name ?? "System"} ·{" "}
+                    {activity.user?.name 
+                      ?? "System"} 
+                    ·
+                    {" "}
                     {activity.entity}
                   </p>
                 </div>

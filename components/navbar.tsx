@@ -1,24 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { Menu, 
+  X } from "lucide-react";
+import { AnimatePresence, 
+  motion } from "motion/react";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, 
+  useRef, 
+  useState } from "react";
 import { createPortal } from "react-dom";
 import { SiteLogo } from "@/components/site-logo";
 
 const links = [
-  ["Home", "/"],
-  ["About", "/about"],
-  ["Services", "/services"],
-  ["Projects", "/projects"],
-  ["Insights", "/blog"],
-  ["Contact", "/contact"],
+  ["Home", 
+    "/"],
+  ["About", 
+    "/about"],
+  ["Services", 
+    "/services"],
+  ["Projects", 
+    "/projects"],
+  ["Insights", 
+    "/blog"],
+  ["Contact", 
+    "/contact"],
 ] as const;
 
-function isActivePath(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+function isActivePath(pathname: string, 
+  href: string) {
+  return href === "/" 
+    ? pathname === "/" 
+    : pathname.startsWith(href);
 }
 
 export function Navbar() {
@@ -57,12 +70,16 @@ export function Navbar() {
       }
     }
 
-    window.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("keydown", 
+      handleKeyDown);
+    document.addEventListener("pointerdown", 
+      handlePointerDown);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("keydown", 
+        handleKeyDown);
+      document.removeEventListener("pointerdown", 
+        handlePointerDown);
     };
   }, [open]);
 
@@ -78,17 +95,34 @@ export function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
-              className="pointer-events-none fixed inset-x-0 bottom-0 top-[64px] z-[9997] bg-slate-950/10 backdrop-blur-[2px] sm:top-[72px] xl:hidden"
+              transition={{ duration: 0.18, 
+                ease: "easeOut" }}
+              className={`
+  pointer-events-none fixed inset-x-0 bottom-0 top-[64px] z-[9997]
+  bg-slate-950/10 backdrop-blur-[2px] sm:top-[72px] xl:hidden
+`}
             />
 
             <motion.div
               ref={menuRef}
-              initial={{ opacity: 0, y: -12, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.98 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="fixed inset-x-3 top-[70px] z-[9999] max-h-[calc(100dvh-92px)] overflow-hidden rounded-2xl border border-slate-200/90 bg-white/98 shadow-[0_24px_60px_rgba(15,23,42,0.24)] ring-1 ring-slate-950/5 backdrop-blur-xl sm:left-auto sm:right-5 sm:top-[80px] sm:w-[420px] xl:hidden"
+              initial={{ opacity: 0, 
+                y: -12, 
+                scale: 0.98 }}
+              animate={{ opacity: 1, 
+                y: 0, 
+                scale: 1 }}
+              exit={{ opacity: 0, 
+                y: -10, 
+                scale: 0.98 }}
+              transition={{ duration: 0.2, 
+                ease: "easeOut" }}
+              className={`
+  fixed inset-x-3 top-[70px] z-[9999] max-h-[calc(100dvh-92px)]
+  overflow-hidden rounded-2xl border border-slate-200/90 bg-white/98
+  shadow-[0_24px_60px_rgba(15,23,42,0.24)] ring-1 ring-slate-950/5
+  backdrop-blur-xl sm:left-auto sm:right-5 sm:top-[80px] sm:w-[420px]
+  xl:hidden
+`}
             >
             <nav
               id="mobile-navigation"
@@ -97,18 +131,21 @@ export function Navbar() {
             >
               <div className="grid gap-1">
                 {links.map(([label, href]) => {
-                  const active = isActivePath(pathname, href);
+                  const active = isActivePath(pathname, 
+                    href);
 
                   return (
                     <Link
                       key={href}
                       href={href}
                       onClick={() => setOpen(false)}
-                      aria-current={active ? "page" : undefined}
-                      className={`rounded-xl px-4 py-3 text-[15px] font-semibold transition-colors ${
+                      aria-current={active 
+                        ? "page" 
+                        : undefined}
+                      className={`rounded-xl px-4 py-3 text-[15px] font-semibold transition-all duration-300 ${
                         active
                           ? "bg-blue-50 text-blue-700"
-                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-950"
+                          : "text-slate-700 hover:translate-x-1 hover:bg-blue-50/70 hover:text-blue-700"
                       }`}
                     >
                       {label}
@@ -155,25 +192,46 @@ export function Navbar() {
             <SiteLogo />
           </Link>
 
-          <nav aria-label="Primary navigation" className="hidden items-center gap-1 xl:flex">
+          <nav 
+            aria-label="Primary navigation" 
+            className="hidden items-center gap-1 xl:flex">
             {links.map(([label, href]) => {
-              const active = isActivePath(pathname, href);
+              const active = isActivePath(pathname, 
+                href);
 
               return (
                 <Link
                   key={href}
                   href={href}
-                  aria-current={active ? "page" : undefined}
-                  className={`relative px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
-                    active ? "text-blue-700" : "text-slate-700 hover:text-blue-700"
+                  aria-current={active 
+                    ? "page" 
+                    : undefined}
+                  className={`group relative rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300 ease-out
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 ${
+                    active
+                      ? "bg-blue-50/70 text-blue-700"
+                      : "text-slate-700 hover:-translate-y-0.5 hover:bg-blue-50/60 hover:text-blue-700"
                   }`}
                 >
                   {label}
+
+                  {!active && (
+                    <span
+                      className={`
+  absolute inset-x-3 bottom-1 h-0.5 origin-center scale-x-0 rounded-full
+  bg-blue-600 transition-transform duration-300 ease-out
+  group-hover:scale-x-100
+`}
+                    />
+                  )}
+
                   {active && (
                     <motion.span
                       layoutId="primary-navigation-indicator"
                       className="absolute inset-x-3 -bottom-[19px] h-0.5 rounded-full bg-blue-600"
-                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      transition={{ type: "spring", 
+                        stiffness: 420, 
+                        damping: 34 }}
                     />
                   )}
                 </Link>
@@ -184,11 +242,21 @@ export function Navbar() {
           <div className="hidden shrink-0 items-center gap-3 xl:flex">
             <Link
               href="/client-portal"
-              className="rounded-lg border border-white/45 bg-white/55 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm backdrop-blur-sm transition hover:bg-white/90 hover:text-blue-700"
+              className={`
+  rounded-lg border border-white/45 bg-white/55 px-3 py-2 text-sm
+  font-semibold text-slate-900 shadow-sm backdrop-blur-sm transition-all
+  duration-300 hover:-translate-y-0.5 hover:border-blue-200 hover:bg-white
+  hover:text-blue-700 hover:shadow-md
+`}
             >
               Client portal
             </Link>
-            <Link href="/contact" className="enterprise-btn-primary !px-4 !py-2.5">
+            <Link 
+              href="/contact" 
+              className={`
+  enterprise-btn-primary !px-4 !py-2.5 transition-all duration-300
+  hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0
+`}>
               Start a project
             </Link>
           </div>
@@ -197,12 +265,25 @@ export function Navbar() {
             ref={menuButtonRef}
             type="button"
             onClick={() => setOpen((current) => !current)}
-            className="relative z-[1001] grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/60 bg-white/80 text-slate-900 shadow-sm backdrop-blur-md transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 xl:hidden"
-            aria-label={open ? "Close navigation" : "Open navigation"}
+            className={`
+  relative z-[1001] grid h-10 w-10 shrink-0 place-items-center rounded-lg
+  border border-white/60 bg-white/80 text-slate-900 shadow-sm
+  backdrop-blur-md transition-all duration-300 hover:scale-105
+  hover:border-blue-200 hover:bg-white hover:text-blue-700
+  focus-visible:outline-none focus-visible:ring-2
+  focus-visible:ring-blue-600 focus-visible:ring-offset-2 xl:hidden
+`}
+            aria-label={open 
+              ? "Close navigation" 
+              : "Open navigation"}
             aria-expanded={open}
             aria-controls="mobile-navigation"
           >
-            {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+            {open ? <X 
+              size={20} 
+              aria-hidden="true" /> : <Menu 
+              size={20} 
+              aria-hidden="true" />}
           </button>
         </div>
       </header>

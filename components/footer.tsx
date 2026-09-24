@@ -13,7 +13,9 @@ import {
   Twitter,
   Youtube,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, 
+  useMemo, 
+  useState } from "react";
 
 import { SiteLogo } from "@/components/site-logo";
 
@@ -30,6 +32,13 @@ type PublicSiteSettings = {
   tiktokUrl?: string | null;
   youtubeUrl?: string | null;
 };
+
+
+const footerLinkClass =
+  "group relative w-fit py-1 transition-all duration-300 ease-out hover:translate-x-1 hover:text-blue-700";
+
+const footerUnderlineClass =
+  "absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-blue-600 transition-transform duration-300 ease-out group-hover:scale-x-100";
 
 const FALLBACK_SETTINGS: PublicSiteSettings = {
   companyName: "Rennovex Technology",
@@ -142,12 +151,15 @@ export function Footer() {
   );
 
   const companyName =
-    settings.companyName?.trim() || "Rennovex Technology";
+    settings.companyName?.trim() 
+      || "Rennovex Technology";
   const contactEmail =
     settings.contactEmail?.trim() ||
     "rennovextechnology@gmail.com";
-  const phone = settings.phone?.trim() || "+233 55 425 0225";
-  const address = settings.address?.trim() || "Accra, Ghana";
+  const phone = settings.phone?.trim() 
+    || "+233 55 425 0225";
+  const address = settings.address?.trim() 
+    || "Accra, Ghana";
 
   return (
     <footer className="border-t border-slate-200 bg-white text-slate-700">
@@ -156,7 +168,7 @@ export function Footer() {
           <div>
             <Link
               href="/"
-              className="inline-flex"
+              className="inline-flex origin-left transition-transform duration-300 hover:scale-[1.03]"
               aria-label={`${companyName} home`}
             >
               <SiteLogo />
@@ -176,7 +188,13 @@ export function Footer() {
                     rel="noopener noreferrer"
                     aria-label={`Visit ${companyName} on ${label}`}
                     title={label}
-                    className="grid h-10 w-10 place-items-center rounded-full border border-blue-100 bg-blue-50 text-[#071d49] transition duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-600 hover:text-white"
+                    className={`
+  grid h-10 w-10 place-items-center rounded-full border border-blue-100
+  bg-blue-50 text-[#071d49] shadow-sm transition-all duration-300 ease-out
+  hover:-translate-y-1 hover:scale-105 hover:border-blue-600
+  hover:bg-blue-600 hover:text-white hover:shadow-lg
+  hover:shadow-blue-600/20 active:translate-y-0 active:scale-100
+`}
                   >
                     <Icon size={17} />
                   </a>
@@ -191,12 +209,29 @@ export function Footer() {
             </h3>
 
             <div className="mt-4 grid gap-2 text-sm text-slate-500">
-              <Link href="/">Home</Link>
-              <Link href="/about">About</Link>
-              <Link href="/services">Services</Link>
-              <Link href="/projects">Projects</Link>
-              <Link href="/blog">Insights</Link>
-              <Link href="/contact">Contact</Link>
+              {[
+                ["Home", 
+                  "/"],
+                ["About", 
+                  "/about"],
+                ["Services", 
+                  "/services"],
+                ["Projects", 
+                  "/projects"],
+                ["Insights", 
+                  "/blog"],
+                ["Contact", 
+                  "/contact"],
+              ].map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={footerLinkClass}
+                >
+                  {label}
+                  <span className={footerUnderlineClass} />
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -206,9 +241,20 @@ export function Footer() {
             </h3>
 
             <div className="mt-4 grid gap-2 text-sm text-slate-500">
-              <Link href="/services">Software Development</Link>
-              <Link href="/services">Graphic Design</Link>
-              <Link href="/services">IT Consulting</Link>
+              {[
+                "Software Development",
+                "Graphic Design",
+                "IT Consulting",
+              ].map((label) => (
+                <Link
+                  key={label}
+                  href="/services"
+                  className={footerLinkClass}
+                >
+                  {label}
+                  <span className={footerUnderlineClass} />
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -225,8 +271,9 @@ export function Footer() {
               </span>
 
               <a
-                href={`tel:${phone.replace(/\s+/g, "")}`}
-                className="flex items-center gap-2 transition hover:text-blue-700"
+                href={`tel:${phone.replace(/\s+/g, 
+                  "")}`}
+                className="group flex items-center gap-2 transition-all duration-300 hover:translate-x-1 hover:text-blue-700"
               >
                 <Phone size={15} />
                 {phone}
@@ -234,28 +281,48 @@ export function Footer() {
 
               <a
                 href={`mailto:${contactEmail}`}
-                className="flex items-center gap-2 break-all transition hover:text-blue-700"
+                className="group flex items-center gap-2 break-all transition-all duration-300 hover:translate-x-1 hover:text-blue-700"
               >
-                <Mail className="shrink-0" size={15} />
+                <Mail 
+                  className="shrink-0" 
+                  size={15} />
                 {contactEmail}
               </a>
             </div>
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 text-xs text-slate-400 sm:mt-10 sm:flex-row sm:items-center sm:justify-between">
+        <div className={`
+  mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 text-xs
+  text-slate-400 sm:mt-10 sm:flex-row sm:items-center sm:justify-between
+`}>
           <p>
             {settings.copyrightText?.trim() ||
               `© ${new Date().getFullYear()} ${companyName}. All rights reserved.`}
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/terms">Terms of Service</Link>
+            <Link
+              href="/privacy"
+              className="transition-all duration-300 hover:-translate-y-0.5 hover:text-blue-700"
+            >
+              Privacy Policy
+            </Link>
+
+            <Link
+              href="/terms"
+              className="transition-all duration-300 hover:-translate-y-0.5 hover:text-blue-700"
+            >
+              Terms of Service
+            </Link>
 
             <Link
               href="/admin/login"
-              className="inline-flex items-center gap-1.5 font-semibold text-slate-500 transition hover:text-blue-700"
+              className={`
+  inline-flex items-center gap-1.5 rounded-lg px-2 py-1 font-semibold
+  text-slate-500 transition-all duration-300 hover:-translate-y-0.5
+  hover:bg-blue-50 hover:text-blue-700
+`}
             >
               <LockKeyhole size={13} />
               Admin Portal

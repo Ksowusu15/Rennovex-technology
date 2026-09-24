@@ -1,1 +1,13 @@
-export function FormActions({editing=false}:{editing?:boolean}){return <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-5 sm:flex-row sm:justify-end"><a href="?" className="btn-secondary">Cancel</a><button className="btn-primary" type="submit">{editing?"Save Changes":"Create Item"}</button></div>}
+export function FormActions({editing=false}:{editing?:boolean}){return <div className="flex flex-col-reverse gap-3
+  border-t border-slate-200 pt-5 sm:flex-row sm:justify-end">
+  <a 
+  href="?" 
+  className="btn-secondary">Cancel</a>
+  <button 
+  className="btn-primary" 
+  type="submit">
+    {editing
+    ?"Save Changes"
+    :"Create Item"}
+  </button>
+</div>}

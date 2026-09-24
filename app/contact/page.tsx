@@ -1,4 +1,7 @@
-import { Clock3, Mail, MapPin, Phone } from "lucide-react";
+import { Clock3, 
+  Mail, 
+  MapPin, 
+  Phone } from "lucide-react";
 import { ContactForm } from "@/components/contact-form";
 import { getSiteSettings } from "@/lib/site-settings";
 
@@ -14,12 +17,46 @@ export default async function ContactPage() {
           <div>
             <p className="eyebrow">Contact</p>
             <h1 className="display-title mt-5">Let’s build something valuable together.</h1>
-            <p className="mt-6 text-lg leading-8 text-slate-600">Share your goals, challenge, or early-stage idea. We will review it and respond with the most useful next step.</p>
+            <p className="mt-6 text-lg leading-8 text-slate-600">Share your goals, challenge, or early-stage idea. We will review it
+              and respond with the most useful next step.</p>
             <div className="mt-9 grid gap-4 text-sm text-slate-700">
-              {settings.contactEmail && <a className="flex items-start gap-3 transition hover:text-blue-700" href={`mailto:${settings.contactEmail}`}><Mail className="mt-0.5 shrink-0 text-sky-700" size={19}/><span className="break-all">{settings.contactEmail}</span></a>}
-              {settings.phone && <a className="flex items-start gap-3 transition hover:text-blue-700" href={`tel:${settings.phone.replace(/\s/g, "")}`}><Phone className="mt-0.5 shrink-0 text-sky-700" size={19}/><span>{settings.phone}</span></a>}
-              {settings.address && <span className="flex items-start gap-3"><MapPin className="mt-0.5 shrink-0 text-sky-700" size={19}/><span>{settings.address}</span></span>}
-              {settings.businessHours && <span className="flex items-start gap-3"><Clock3 className="mt-0.5 shrink-0 text-sky-700" size={19}/><span>{settings.businessHours}</span></span>}
+              {settings.contactEmail && <a 
+                className="flex items-start gap-3 transition hover:text-blue-700" 
+                href={`mailto:${settings.contactEmail}`}>
+                <Mail 
+                className="mt-0.5 shrink-0 text-sky-700" 
+                size={19}/>
+                <span className="break-all">
+                  {settings.contactEmail}
+                </span>
+              </a>}
+              {settings.phone && <a 
+                className="flex items-start gap-3 transition hover:text-blue-700" 
+                href={`tel:${settings.phone.replace(/\s/g, 
+                "")}`}>
+                <Phone 
+                className="mt-0.5 shrink-0 text-sky-700" 
+                size={19}/>
+                <span>
+                  {settings.phone}
+                </span>
+              </a>}
+              {settings.address && <span className="flex items-start gap-3">
+                <MapPin 
+                className="mt-0.5 shrink-0 text-sky-700" 
+                size={19}/>
+                <span>
+                  {settings.address}
+                </span>
+              </span>}
+              {settings.businessHours && <span className="flex items-start gap-3">
+                <Clock3 
+                className="mt-0.5 shrink-0 text-sky-700" 
+                size={19}/>
+                <span>
+                  {settings.businessHours}
+                </span>
+              </span>}
             </div>
           </div>
           <ContactForm/>

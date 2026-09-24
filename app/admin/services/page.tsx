@@ -1,12 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, 
+  Plus, 
+  Trash2 } from "lucide-react";
 
 import { FormActions } from "@/components/admin-form";
 import { ServiceImageField } from "@/components/service-image-field";
 import { prisma } from "@/lib/prisma";
 
-import { deleteService, saveService } from "./actions";
+import { deleteService, 
+  saveService } from "./actions";
 
 export default async function Page({
   searchParams,
@@ -29,7 +32,8 @@ export default async function Page({
       })
     : null;
 
-  const show = Boolean(q.new) || Boolean(edit);
+  const show = Boolean(q.new) 
+    || Boolean(edit);
 
   return (
     <>
@@ -41,7 +45,9 @@ export default async function Page({
           </h1>
         </div>
 
-        <Link href="?new=1" className="btn-primary">
+        <Link 
+          href="?new=1" 
+          className="btn-primary">
           <Plus size={16} />
           Add Service
         </Link>
@@ -58,11 +64,16 @@ export default async function Page({
           action={saveService}
           className="admin-card mt-7 grid gap-5"
         >
-          <input type="hidden" name="id" value={edit?.id || ""} />
+          <input 
+            type="hidden" 
+            name="id" 
+            value={edit?.id 
+              || ""} />
 
           <div className="grid gap-5 md:grid-cols-2">
             <label className="label">
               Title
+              
               <input
                 className="field"
                 name="title"
@@ -73,6 +84,7 @@ export default async function Page({
 
             <label className="label">
               Slug
+              
               <input
                 className="field"
                 name="slug"
@@ -85,6 +97,7 @@ export default async function Page({
 
           <label className="label">
             Summary
+            
             <input
               className="field"
               name="summary"
@@ -95,6 +108,7 @@ export default async function Page({
 
           <label className="label">
             Description
+            
             <textarea
               className="field min-h-28"
               name="description"
@@ -106,6 +120,7 @@ export default async function Page({
           <div className="grid gap-5 md:grid-cols-2">
             <label className="label">
               Benefits (comma separated)
+              
               <input
                 className="field"
                 name="benefits"
@@ -115,6 +130,7 @@ export default async function Page({
 
             <label className="label">
               Technologies
+              
               <input
                 className="field"
                 name="technologies"
@@ -124,10 +140,12 @@ export default async function Page({
 
             <label className="label">
               Icon
+              
               <select
                 className="field"
                 name="icon"
-                defaultValue={edit?.icon || "Code2"}
+                defaultValue={edit?.icon 
+                  || "Code2"}
               >
                 <option>Globe</option>
                 <option>Code2</option>
@@ -139,20 +157,24 @@ export default async function Page({
 
             <label className="label">
               Display order
+              
               <input
                 className="field"
                 name="order"
                 type="number"
-                defaultValue={edit?.order || 0}
+                defaultValue={edit?.order 
+                  || 0}
               />
             </label>
 
             <label className="label">
               Status
+              
               <select
                 className="field"
                 name="status"
-                defaultValue={edit?.status || "PUBLISHED"}
+                defaultValue={edit?.status 
+                  || "PUBLISHED"}
               >
                 <option>DRAFT</option>
                 <option>PUBLISHED</option>
@@ -197,7 +219,9 @@ export default async function Page({
                     </div>
 
                     <div>
-                      <b className="text-slate-950">{item.title}</b>
+                      <b className="text-slate-950">
+                        {item.title}
+                      </b>
                       <p className="mt-1 max-w-xl text-xs text-slate-500">
                         {item.summary}
                       </p>
@@ -205,8 +229,12 @@ export default async function Page({
                   </div>
                 </td>
 
-                <td>{item.status}</td>
-                <td>{item.order}</td>
+                <td>
+                  {item.status}
+                </td>
+                <td>
+                  {item.order}
+                </td>
 
                 <td>
                   <div className="flex gap-2">
