@@ -56,7 +56,7 @@ export function LogoutButton({ compact = false, onBeforeLogout }: LogoutButtonPr
         }
       >
         {loading ? <Loader2 
-          className="animate-spin" 
+          className="whitespace-nowrap animate-spin" 
           size={compact 
             ? 17 
             : 18} /> : <LogOut size={compact 
@@ -64,7 +64,7 @@ export function LogoutButton({ compact = false, onBeforeLogout }: LogoutButtonPr
             : 18} />}
         {loading 
           ? "Signing out..." 
-          : "Sign out"}
+          : "Sign out"}
       </button>
       {error 
         && <p className="mt-2 px-3 text-xs font-medium text-red-700">

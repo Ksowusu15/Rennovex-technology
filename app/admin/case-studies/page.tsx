@@ -17,6 +17,7 @@ export default async function Page({searchParams}:{searchParams:Promise<{edit?:s
     <div>
     <p className="eyebrow">Manage</p>
   <h1 className="mt-3 text-3xl font-bold text-slate-950">Case Studies</h1>
+  <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Turn selected Rennovex projects into credibility stories covering the challenge, solution, process and outcome.</p>
   </div>
   <Link 
   href="?new=1" 
@@ -90,12 +91,17 @@ export default async function Page({searchParams}:{searchParams:Promise<{edit?:s
   name="technologies" 
   defaultValue={edit?.technologies.join(", ")}/>
   </label>
-  <label className="label">Image
-  <input 
-  className="field" 
-  name="image" 
-  type="file" 
-  accept="image/*"/>
+  <label className="label">Project screenshots
+  <input
+    className="field"
+    name="images"
+    type="file"
+    accept="image/*"
+    multiple
+  />
+  <span className="mt-1 block text-xs font-normal leading-5 text-slate-500">
+    Upload multiple screenshots. The first image becomes the case study cover.
+  </span>
   </label>
   <label className="label">Project URL
   <input 

@@ -1,4 +1,4 @@
-import { SiteLogo } from "@/components/site-logo";
+import { LoadingLogo } from "@/components/loading-logo";
 
 export default function AdminLoading() {
   return (
@@ -22,9 +22,7 @@ export default function AdminLoading() {
   relative grid h-[88px] w-[88px] place-items-center overflow-hidden
   rounded-full bg-white shadow-inner sm:h-[102px] sm:w-[102px]
 `}>
-            <div className="scale-[1.65]">
-              <SiteLogo compact />
-            </div>
+            <LoadingLogo />
           </div>
         </div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { WhatsAppLink } from "@/components/whatsapp-link";
 import Link from "next/link";
 import {
   Facebook,
@@ -288,6 +289,7 @@ export function Footer() {
                   size={15} />
                 {contactEmail}
               </a>
+              <WhatsAppLink compact />
             </div>
           </div>
         </div>

@@ -1,16 +1,11 @@
 "use client";
 
-import {
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-} from "motion/react";
+import { formRequest } from "@/lib/form-request";
+
+import Image from "next/image";
+
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Bot,
   CalendarDays,
@@ -22,8 +17,6 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-
-import { SiteLogo } from "@/components/site-logo";
 
 type ChatItem = {
   sender: "ASSISTANT" | "VISITOR";
@@ -42,38 +35,26 @@ export function RennovexAssistant() {
   const reduceMotion = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>("chat");
-  const [messages, setMessages] =
-    useState<ChatItem[]>([starter]);
-  const [sessionId, setSessionId] =
-    useState<string>();
+  const [messages, setMessages] = useState<ChatItem[]>([starter]);
+  const [sessionId, setSessionId] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
-      behavior: reduceMotion 
-        ? "auto" 
-        : "smooth",
+      behavior: reduceMotion ? "auto" : "smooth",
     });
-  }, [messages, 
-    mode, 
-    reduceMotion]);
+  }, [messages, mode, reduceMotion]);
 
-  async function send(
-    event: FormEvent<HTMLFormElement>,
-  ) {
+  async function send(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const form = event.currentTarget;
     const data = new FormData(form);
-    const message = String(
-      data.get("message") 
-        || "",
-    ).trim();
+    const message = String(data.get("message") || "").trim();
 
-    if (!message 
-      || loading) {
+    if (!message || loading) {
       return;
     }
 
@@ -89,19 +70,16 @@ export function RennovexAssistant() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        "/api/assistant",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            sessionId,
-            message,
-          }),
+      const response = await formRequest("/api/assistant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          sessionId,
+          message,
+        }),
+      });
 
       const result = await response.json();
 
@@ -127,10 +105,7 @@ export function RennovexAssistant() {
         ...current,
         {
           sender: "ASSISTANT",
-          content:
-            error instanceof Error
-              ? error.message
-              : "Please try again.",
+          content: error instanceof Error ? error.message : "Please try again.",
         },
       ]);
     } finally {
@@ -147,15 +122,11 @@ export function RennovexAssistant() {
     setStatus("");
 
     const form = event.currentTarget;
-    const payload = Object.fromEntries(
-      new FormData(form),
-    );
+    const payload = Object.fromEntries(new FormData(form));
 
     try {
-      const response = await fetch(
-        kind === "quote"
-          ? "/api/quotes"
-          : "/api/bookings",
+      const response = await formRequest(
+        kind === "quote" ? "/api/quotes" : "/api/bookings",
         {
           method: "POST",
           headers: {
@@ -171,9 +142,7 @@ export function RennovexAssistant() {
         throw new Error(result.error);
       }
 
-      setStatus(
-        `Submitted successfully. Reference: ${result.reference}`,
-      );
+      setStatus(`Submitted successfully. Reference: ${result.reference}`);
 
       form.reset();
 
@@ -181,14 +150,11 @@ export function RennovexAssistant() {
         ...current,
         {
           sender: "ASSISTANT",
-          content:
-            `Your ${
-              kind === "quote"
-                ? "quote request"
-                : "consultation request"
-            } has been received. Reference: ${
-              result.reference
-            }. Our team will follow up.`,
+          content: `Your ${
+            kind === "quote" ? "quote request" : "consultation request"
+          } has been received. Reference: ${
+            result.reference
+          }. Our team will follow up.`,
         },
       ]);
 
@@ -196,11 +162,7 @@ export function RennovexAssistant() {
         setMode("chat");
       }, 1800);
     } catch (error) {
-      setStatus(
-        error instanceof Error
-          ? error.message
-          : "Please try again.",
-      );
+      setStatus(error instanceof Error ? error.message : "Please try again.");
     } finally {
       setLoading(false);
     }
@@ -302,12 +264,19 @@ export function RennovexAssistant() {
                 />
 
                 <span
-                  className={`
-  relative z-10 grid h-11 w-11 place-items-center rounded-xl bg-white
-  sm:h-12 sm:w-12
-`}
+                  className={[
+                    "relative z-10 h-11 w-11 overflow-hidden rounded-full bg-white ring-2",
+                    "ring-white/90 sm:h-12 sm:w-12",
+                  ].join(" ")}
                 >
-                  <SiteLogo compact />
+                  <Image
+                    src="/rennovex-logo.png"
+                    alt="Rennovex Technology"
+                    fill
+                    sizes="48px"
+                    className="rounded-full object-contain p-1"
+                    priority
+                  />
                 </span>
 
                 <span
@@ -424,19 +393,23 @@ export function RennovexAssistant() {
                 >
                   <div className="flex min-w-0 items-center gap-3">
                     <div
-                      className={`
-  grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white
-  shadow-lg ring-1 ring-white/20
-`}
+                      className={[
+                        "relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white",
+                        "shadow-lg ring-2 ring-white/30",
+                      ].join(" ")}
                     >
-                      <SiteLogo compact />
+                      <Image
+                        src="/rennovex-logo.png"
+                        alt="Rennovex Technology"
+                        fill
+                        sizes="48px"
+                        className="rounded-full object-contain p-1"
+                      />
                     </div>
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="truncate font-bold">
-                          Rennovex Assistant
-                        </p>
+                        <p className="truncate font-bold">Rennovex Assistant</p>
 
                         <span
                           className={`
@@ -488,12 +461,9 @@ export function RennovexAssistant() {
 `}
               >
                 {[
-                  ["chat", 
-                    "Chat"],
-                  ["quote", 
-                    "Request a quote"],
-                  ["booking", 
-                    "Book consultation"],
+                  ["chat", "Chat"],
+                  ["quote", "Request a quote"],
+                  ["booking", "Book consultation"],
                 ].map(([value, label]) => {
                   const active = mode === value;
 
@@ -501,9 +471,7 @@ export function RennovexAssistant() {
                     <button
                       key={value}
                       type="button"
-                      onClick={() =>
-                        setMode(value as Mode)
-                      }
+                      onClick={() => setMode(value as Mode)}
                       className={`
                         shrink-0 rounded-full
                         px-3.5 py-2
@@ -529,29 +497,27 @@ export function RennovexAssistant() {
   sm:min-h-[320px]
 `}
                   >
-                    {messages.map(
-                      (item, 
-                        index) => (
-                        <motion.div
-                          key={`${item.sender}-${index}`}
-                          initial={
-                            reduceMotion
-                              ? false
-                              : {
-                                  opacity: 0,
-                                  y: 10,
-                                  scale: 0.985,
-                                }
-                          }
-                          animate={{
-                            opacity: 1,
-                            y: 0,
-                            scale: 1,
-                          }}
-                          transition={{
-                            duration: 0.28,
-                          }}
-                          className={`
+                    {messages.map((item, index) => (
+                      <motion.div
+                        key={`${item.sender}-${index}`}
+                        initial={
+                          reduceMotion
+                            ? false
+                            : {
+                                opacity: 0,
+                                y: 10,
+                                scale: 0.985,
+                              }
+                        }
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                        }}
+                        transition={{
+                          duration: 0.28,
+                        }}
+                        className={`
                             flex gap-2
                             ${
                               item.sender === "VISITOR"
@@ -559,37 +525,40 @@ export function RennovexAssistant() {
                                 : "justify-start"
                             }
                           `}
-                        >
-                          {item.sender ===
-                            "ASSISTANT" && (
-                            <div
-                              className={`
-  grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-blue-100
-  text-blue-700
-`}
-                            >
-                              <Sparkles size={15} />
-                            </div>
-                          )}
-
+                      >
+                        {item.sender === "ASSISTANT" && (
                           <div
-                            className={`
+                            className={[
+                              "relative h-8 w-8 shrink-0 overflow-hidden rounded-full border",
+                              "border-blue-100 bg-white shadow-sm",
+                            ].join(" ")}
+                          >
+                            <Image
+                              src="/rennovex-logo.png"
+                              alt="Rennovex"
+                              fill
+                              sizes="32px"
+                              className="rounded-full object-contain p-0.5"
+                            />
+                          </div>
+                        )}
+
+                        <div
+                          className={`
                               max-w-[82%]
                               rounded-2xl px-3.5 py-3
                               text-sm leading-6
                               ${
-                                item.sender ===
-                                "VISITOR"
+                                item.sender === "VISITOR"
                                   ? "rounded-br-md bg-blue-700 text-white shadow-sm"
                                   : "rounded-bl-md border border-slate-200 bg-white text-slate-700 shadow-sm"
                               }
                             `}
-                          >
-                            {item.content}
-                          </div>
-                        </motion.div>
-                      ),
-                    )}
+                        >
+                          {item.content}
+                        </div>
+                      </motion.div>
+                    ))}
 
                     <AnimatePresence>
                       {loading && (
@@ -609,14 +578,43 @@ export function RennovexAssistant() {
   flex items-center gap-2 text-sm text-slate-500
 `}
                         >
-                          <Loader2
-                            className="animate-spin"
-                            size={16}
-                          />
+                          <Loader2 className="animate-spin" size={16} />
                           Rennovex Assistant is typing…
                         </motion.div>
                       )}
                     </AnimatePresence>
+
+                    {messages.length <= 2 && !loading && (
+                      <motion.div
+                        initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex flex-wrap gap-2 pt-1"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setMode("quote")}
+                          className={[
+                            "rounded-full border border-blue-200 bg-blue-50 px-3 py-2 text-xs",
+                            "font-semibold text-blue-700 transition hover:-translate-y-0.5",
+                            "hover:border-blue-300 hover:bg-blue-100",
+                          ].join(" ")}
+                        >
+                          Request a quote
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setMode("booking")}
+                          className={[
+                            "rounded-full border border-slate-200 bg-white px-3 py-2 text-xs",
+                            "font-semibold text-slate-700 transition hover:-translate-y-0.5",
+                            "hover:border-blue-200 hover:text-blue-700",
+                          ].join(" ")}
+                        >
+                          Book consultation
+                        </button>
+                      </motion.div>
+                    )}
 
                     <div ref={bottomRef} />
                   </div>
@@ -664,20 +662,14 @@ export function RennovexAssistant() {
                   kind="quote"
                   loading={loading}
                   status={status}
-                  onSubmit={(event) =>
-                    submitLead(event, 
-                      "quote")
-                  }
+                  onSubmit={(event) => submitLead(event, "quote")}
                 />
               ) : (
                 <LeadForm
                   kind="booking"
                   loading={loading}
                   status={status}
-                  onSubmit={(event) =>
-                    submitLead(event, 
-                      "booking")
-                  }
+                  onSubmit={(event) => submitLead(event, "booking")}
                 />
               )}
             </motion.section>
@@ -697,9 +689,7 @@ function LeadForm({
   kind: "quote" | "booking";
   loading: boolean;
   status: string;
-  onSubmit: (
-    event: FormEvent<HTMLFormElement>,
-  ) => void;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
     <form
@@ -717,15 +707,9 @@ function LeadForm({
             font-bold text-blue-900
           "
         >
-          {kind === "quote" ? (
-            <Sparkles size={18} />
-          ) : (
-            <CalendarDays size={18} />
-          )}
+          {kind === "quote" ? <Sparkles size={18} /> : <CalendarDays size={18} />}
 
-          {kind === "quote"
-            ? "Project quote request"
-            : "Consultation booking"}
+          {kind === "quote" ? "Project quote request" : "Consultation booking"}
         </div>
 
         <p
@@ -734,8 +718,7 @@ function LeadForm({
             text-blue-700
           "
         >
-          Complete the details below and the
-          Rennovex team will follow up.
+          Complete the details below and the Rennovex team will follow up.
         </p>
       </div>
 
@@ -774,30 +757,20 @@ function LeadForm({
         />
       </div>
 
-      <select
-        className="field"
-        name="service"
-        required
-      >
-        <option value="">
-          Select a service
-        </option>
-        <option>Business Website</option>
-        <option>E-commerce Website</option>
-        <option>Custom Software</option>
-        <option>UI/UX & Branding</option>
-        <option>IT Consulting</option>
+      <select className="field" name="service" required>
+        <option value="">Select a service</option>
+        <option>Website Development</option>
+        <option>E-commerce Development</option>
+        <option>Custom Software Development</option>
+        <option>UI/UX Design</option>
+        <option>Graphic Design & Branding</option>
+        <option>IT Solutions & Consulting</option>
       </select>
 
       {kind === "quote" ? (
         <>
-          <select
-            className="field"
-            name="budget"
-          >
-            <option value="">
-              Estimated budget
-            </option>
+          <select className="field" name="budget">
+            <option value="">Estimated budget</option>
             <option>Below GHS 5,000</option>
             <option>GHS 5,000 – 15,000</option>
             <option>GHS 15,000 – 40,000</option>
@@ -822,8 +795,6 @@ function LeadForm({
         <>
           <label className="label">
             Preferred date and time
-
-            
             <input
               className="field"
               name="preferredDate"
@@ -855,15 +826,9 @@ function LeadForm({
         </div>
       )}
 
-      <button
-        disabled={loading}
-        className="btn-primary w-full"
-      >
+      <button disabled={loading} className="btn-primary w-full">
         {loading ? (
-          <Loader2
-            className="animate-spin"
-            size={17}
-          />
+          <Loader2 className="animate-spin" size={17} />
         ) : kind === "quote" ? (
           <CheckCircle2 size={17} />
         ) : (

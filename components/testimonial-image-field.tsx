@@ -31,9 +31,11 @@ export function TestimonialImageField({ currentImage }: { currentImage?: string 
             <Image 
               src={preview} 
               alt="Client preview" 
-              fill 
+              fill
+              sizes="96px"
               className="object-cover" 
-              unoptimized={preview.startsWith("blob:")} />
+              unoptimized={preview.startsWith("blob:")}
+            />
           ) : (
             <div className="grid h-full place-items-center text-xs font-semibold text-slate-400">No photo</div>
           )}

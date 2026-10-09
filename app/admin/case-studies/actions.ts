@@ -17,12 +17,23 @@ export async function saveStudy(fd:FormData){await requireRole(["SUPER_ADMIN",
   const old=id
     ?await prisma.caseStudy.findUnique({where:{id}})
     :null;
-  const uploaded=await saveUpload(fd.get("image") as File, 
-  "case-studies");
-  const images=uploaded?[uploaded,
-  ...(old?.images
-    ||[]).filter(x=>x!==uploaded)]:(old?.images
-    ||[]);
+  const imageFiles = fd
+    .getAll("images")
+    .filter((item): item is File => item instanceof File && item.size > 0);
+
+  const uploadedImages: string[] = [];
+
+  for (const file of imageFiles) {
+    const uploaded = await saveUpload(file, "case-studies");
+
+    if (uploaded) {
+      uploadedImages.push(uploaded);
+    }
+  }
+
+  const images = uploadedImages.length > 0
+    ? [...uploadedImages, ...(old?.images || [])]
+    : old?.images || [];
   const data={title:String(fd.get("title")),
   slug:slugify(String(fd.get("slug")
     ||fd.get("title"))),

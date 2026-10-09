@@ -339,3 +339,132 @@ model Testimonial {
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 }
+
+enum ClientProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  REVIEW
+  COMPLETED
+  ON_HOLD
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum SupportStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+model Client {
+  id                 String          @id @default(cuid())
+  name               String
+  company            String?
+  email              String          @unique
+  phone              String?
+  password           String?
+  isActive           Boolean         @default(true)
+  inviteTokenHash    String?
+  inviteTokenExpires DateTime?
+  resetTokenHash     String?
+  resetTokenExpires  DateTime?
+  lastLoginAt        DateTime?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  projects           ClientProject[]
+  invoices           ClientInvoice[]
+  supportRequests    SupportRequest[]
+  updates            ClientUpdate[]
+}
+
+model ClientProject {
+  id          String              @id @default(cuid())
+  clientId    String
+  client      Client              @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  status      ClientProjectStatus @default(PLANNING)
+  progress    Int                 @default(0)
+  startDate   DateTime?
+  dueDate     DateTime?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  milestones  ClientMilestone[]
+  files       ClientFile[]
+  updates     ClientUpdate[]
+
+  @@index([clientId, status])
+}
+
+model ClientMilestone {
+  id        String        @id @default(cuid())
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title     String
+  completed Boolean       @default(false)
+  dueDate   DateTime?
+  order     Int           @default(0)
+  createdAt DateTime      @default(now())
+}
+
+model ClientFile {
+  id        String        @id @default(cuid())
+  projectId String
+  project   ClientProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  url       String
+  fileType  String?
+  createdAt DateTime      @default(now())
+}
+
+model ClientInvoice {
+  id        String        @id @default(cuid())
+  clientId  String
+  client    Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  number    String        @unique
+  title     String
+  amount    Decimal       @db.Decimal(12, 2)
+  paid      Decimal       @default(0) @db.Decimal(12, 2)
+  currency  String        @default("GHS")
+  status    InvoiceStatus @default(DRAFT)
+  dueDate   DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([clientId, status])
+}
+
+model SupportRequest {
+  id        String        @id @default(cuid())
+  clientId  String
+  client    Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  subject   String
+  message   String
+  priority  String        @default("Normal")
+  status    SupportStatus @default(OPEN)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([clientId, status])
+}
+
+model ClientUpdate {
+  id        String         @id @default(cuid())
+  clientId  String
+  client    Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  projectId String?
+  project   ClientProject? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  createdAt DateTime       @default(now())
+
+  @@index([clientId, createdAt])
+}
