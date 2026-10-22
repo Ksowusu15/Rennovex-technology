@@ -5,6 +5,7 @@ import { getClientSession, createClientSession } from "@/lib/client-auth";
 import { prisma } from "@/lib/prisma";
 import { rejectCrossOrigin } from "@/lib/request-origin";
 import { newPasswordSchema } from "@/lib/password-policy";
+import { authThrottle } from "@/lib/auth-throttle";
 
 const schema = z.object({
   phone: z.string().trim().max(30),
@@ -20,12 +21,28 @@ export async function PATCH(request: Request) {
   try {
     const session = await getClientSession();
     if (!session) {
-      return NextResponse.json({ error: "Please sign in again." }, { status: 401 });
+      return NextResponse.json(
+        { error: "Please sign in again." },
+        { status: 401 },
+      );
     }
     const input = schema.parse(await request.json());
-    const client = await prisma.client.findUnique({ where: { id: session.id } });
+    if (input.newPassword) {
+      const blockedPassword = await authThrottle(
+        request,
+        session.id,
+        "client-password",
+      );
+      if (blockedPassword) return blockedPassword;
+    }
+    const client = await prisma.client.findUnique({
+      where: { id: session.id },
+    });
     if (!client?.isActive || !client.password) {
-      return NextResponse.json({ error: "Please sign in again." }, { status: 401 });
+      return NextResponse.json(
+        { error: "Please sign in again." },
+        { status: 401 },
+      );
     }
     if (
       input.newPassword &&

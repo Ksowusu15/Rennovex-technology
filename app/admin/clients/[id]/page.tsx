@@ -17,11 +17,21 @@ import {
 
 export default async function ClientManagementPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ notice?: string; error?: string }>;
 }) {
   await requireRole(["SUPER_ADMIN", "ADMIN"]);
   const { id } = await params;
+  const feedback = await searchParams;
+  const notices: Record<string, string> = {
+    invited: "Invitation sent. The client can now create their password.",
+    "invite-failed":
+      "Account saved, but the invitation could not be sent. Use Resend invitation to retry.",
+    exists:
+      "This email already has a client account. Manage it here or resend its invitation.",
+  };
 
   const client = await prisma.client.findUnique({
     where: {
@@ -70,6 +80,14 @@ export default async function ClientManagementPage({
 
   return (
     <div className="space-y-6">
+      {(feedback.error || (feedback.notice && notices[feedback.notice])) && (
+        <p
+          role="status"
+          className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950"
+        >
+          {feedback.error || notices[feedback.notice!]}
+        </p>
+      )}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <Link
@@ -78,7 +96,9 @@ export default async function ClientManagementPage({
           >
             ← Back to clients
           </Link>
-          <h1 className="mt-2 text-2xl font-bold text-slate-950">{client.name}</h1>
+          <h1 className="mt-2 text-2xl font-bold text-slate-950">
+            {client.name}
+          </h1>
           <p className="mt-1 text-sm text-slate-500">
             {client.company ?? "Rennovex client"} · {client.email}
           </p>
@@ -92,9 +112,19 @@ export default async function ClientManagementPage({
             </form>
           )}
 
+          {!client.password && client.inviteDeliveryStatus === "FAILED" && (
+            <p className="text-sm font-semibold text-red-700">
+              Invitation delivery failed. Retry sending.
+            </p>
+          )}
+
           <form action={toggleClientStatus}>
             <input name="clientId" type="hidden" value={client.id} />
-            <input name="active" type="hidden" value={String(!client.isActive)} />
+            <input
+              name="active"
+              type="hidden"
+              value={String(!client.isActive)}
+            />
             <button className="btn-secondary">
               {client.isActive ? "Deactivate access" : "Reactivate access"}
             </button>
@@ -131,13 +161,17 @@ export default async function ClientManagementPage({
                   name="status"
                   defaultValue={project.status}
                 >
-                  {["PLANNING", "IN_PROGRESS", "REVIEW", "COMPLETED", "ON_HOLD"].map(
-                    (status) => (
-                      <option key={status} value={status}>
-                        {status.replaceAll("_", " ")}
-                      </option>
-                    ),
-                  )}
+                  {[
+                    "PLANNING",
+                    "IN_PROGRESS",
+                    "REVIEW",
+                    "COMPLETED",
+                    "ON_HOLD",
+                  ].map((status) => (
+                    <option key={status} value={status}>
+                      {status.replaceAll("_", " ")}
+                    </option>
+                  ))}
                 </select>
                 <input
                   className="field"
@@ -160,7 +194,11 @@ export default async function ClientManagementPage({
                         action={toggleClientMilestone}
                         className="flex items-center justify-between rounded-xl bg-slate-50 px-3 py-2"
                       >
-                        <input name="clientId" type="hidden" value={client.id} />
+                        <input
+                          name="clientId"
+                          type="hidden"
+                          value={client.id}
+                        />
                         <input
                           name="milestoneId"
                           type="hidden"
@@ -248,9 +286,12 @@ export default async function ClientManagementPage({
                   <input name="clientId" type="hidden" value={client.id} />
                   <input name="invoiceId" type="hidden" value={invoice.id} />
                   <div>
-                    <p className="font-semibold text-slate-900">{invoice.title}</p>
+                    <p className="font-semibold text-slate-900">
+                      {invoice.title}
+                    </p>
                     <p className="text-xs text-slate-500">
-                      {invoice.number} · GH₵{Number(invoice.amount).toLocaleString()}
+                      {invoice.number} · GH₵
+                      {Number(invoice.amount).toLocaleString()}
                     </p>
                   </div>
                   <select
@@ -351,7 +392,9 @@ export default async function ClientManagementPage({
             <h2 className="font-bold text-slate-950">Support requests</h2>
             <div className="mt-4 space-y-3">
               {client.supportRequests.length === 0 && (
-                <p className="text-sm text-slate-500">No support requests yet.</p>
+                <p className="text-sm text-slate-500">
+                  No support requests yet.
+                </p>
               )}
               {client.supportRequests.map((request) => (
                 <form
@@ -361,8 +404,12 @@ export default async function ClientManagementPage({
                 >
                   <input name="clientId" type="hidden" value={client.id} />
                   <input name="supportId" type="hidden" value={request.id} />
-                  <p className="font-semibold text-slate-900">{request.subject}</p>
-                  <p className="mt-1 text-sm text-slate-500">{request.message}</p>
+                  <p className="font-semibold text-slate-900">
+                    {request.subject}
+                  </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {request.message}
+                  </p>
                   <div className="mt-3 flex gap-2">
                     <select
                       className="field"

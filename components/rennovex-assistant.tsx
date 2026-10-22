@@ -1,6 +1,7 @@
 "use client";
 
 import { formRequest } from "@/lib/form-request";
+import { bookingDateToISO } from "@/lib/booking-date";
 
 import Image from "next/image";
 
@@ -125,6 +126,16 @@ export function RennovexAssistant() {
     const payload = Object.fromEntries(new FormData(form));
 
     try {
+      if (kind === "booking") {
+        const [date, time] = String(payload.preferredDate || "").split("T");
+        const timestamp = bookingDateToISO(date || "", time || "");
+        if (!timestamp || new Date(timestamp).getTime() <= Date.now()) {
+          throw new Error(
+            "Choose a date and time in the future (your local time).",
+          );
+        }
+        payload.preferredDate = timestamp;
+      }
       const response = await formRequest(
         kind === "quote" ? "/api/quotes" : "/api/bookings",
         {
@@ -707,7 +718,11 @@ function LeadForm({
             font-bold text-blue-900
           "
         >
-          {kind === "quote" ? <Sparkles size={18} /> : <CalendarDays size={18} />}
+          {kind === "quote" ? (
+            <Sparkles size={18} />
+          ) : (
+            <CalendarDays size={18} />
+          )}
 
           {kind === "quote" ? "Project quote request" : "Consultation booking"}
         </div>
@@ -799,6 +814,7 @@ function LeadForm({
               className="field"
               name="preferredDate"
               type="datetime-local"
+              aria-label="Preferred consultation date and time, in your local timezone"
               required
             />
           </label>

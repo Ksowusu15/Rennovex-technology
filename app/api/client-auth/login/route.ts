@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createClientSession } from "@/lib/client-auth";
+import { authThrottle } from "@/lib/auth-throttle";
 
 const schema = z.object({
   email: z.string().email(),
@@ -20,6 +21,8 @@ export async function POST(request: Request) {
   try {
     const input = schema.parse(await request.json());
     const email = input.email.toLowerCase().trim();
+    const blockedLogin = await authThrottle(request, email, "client-login");
+    if (blockedLogin) return blockedLogin;
     const client = await prisma.client.findUnique({
       where: { email },
     });

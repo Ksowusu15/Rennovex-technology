@@ -1,4 +1,7 @@
-import { notifyTeam } from "@/lib/team-notifications";
+import {
+  queueTeamNotification,
+  deliverNotification,
+} from "@/lib/team-notifications";
 import { rejectCrossOrigin } from "@/lib/request-origin";
 import { after, NextResponse } from "next/server";
 import { z } from "zod";
@@ -21,26 +24,34 @@ export async function POST(request: Request) {
   if (!throttle.allowed) return tooManyRequests(throttle.retryAfter);
   try {
     const data = schema.parse(await request.json());
-    const message = await prisma.message.create({ data });
-    after(() => notifyTeam({
-      subject: `New Rennovex enquiry from ${data.name}`,
-      replyTo: data.email,
-      dashboardPath: "/admin/messages",
-      fields: [
-        ["Name", data.name],
-        ["Email", data.email],
-        ["Phone", data.phone],
-        ["Project type", data.projectType],
-        ["Message", data.message],
-      ],
-    }));
+    const { message, jobId } = await prisma.$transaction(async (tx) => {
+      const message = await tx.message.create({ data });
+      const jobId = await queueTeamNotification(
+        {
+          subject: `New Rennovex enquiry from ${data.name}`,
+          replyTo: data.email,
+          dashboardPath: "/admin/messages",
+          fields: [
+            ["Name", data.name],
+            ["Email", data.email],
+            ["Phone", data.phone],
+            ["Project type", data.projectType],
+            ["Message", data.message],
+          ],
+        },
+        tx,
+      );
+      return { message, jobId };
+    });
+    after(() => deliverNotification(jobId));
     return NextResponse.json({ id: message.id }, { status: 201 });
   } catch (error) {
     if (!(error instanceof z.ZodError) && !(error instanceof SyntaxError)) {
       console.error("Form service unavailable:", error);
       return NextResponse.json(
         {
-          error: "This service is temporarily unavailable. Please try again later.",
+          error:
+            "This service is temporarily unavailable. Please try again later.",
         },
         { status: 503 },
       );

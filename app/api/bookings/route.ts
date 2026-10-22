@@ -1,4 +1,7 @@
-import { notifyTeam } from "@/lib/team-notifications";
+import {
+  queueTeamNotification,
+  deliverNotification,
+} from "@/lib/team-notifications";
 import { rejectCrossOrigin } from "@/lib/request-origin";
 import { after, NextResponse } from "next/server";
 import { z } from "zod";
@@ -12,7 +15,7 @@ const schema = z.object({
   phone: z.string().max(30).optional(),
   company: z.string().max(150).optional(),
   service: z.string().max(100).optional(),
-  preferredDate: z.string().min(1),
+  preferredDate: z.iso.datetime({ offset: true }),
   notes: z.string().max(2000).optional(),
 });
 
@@ -32,28 +35,35 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
-    const item = await prisma.consultationBooking.create({
-      data: {
-        ...data,
-        preferredDate: date,
-        reference: makeReference("RNX-B"),
-      },
+    const { item, jobId } = await prisma.$transaction(async (tx) => {
+      const item = await tx.consultationBooking.create({
+        data: {
+          ...data,
+          preferredDate: date,
+          reference: makeReference("RNX-B"),
+        },
+      });
+      const jobId = await queueTeamNotification(
+        {
+          subject: `New consultation booking - ${item.reference}`,
+          replyTo: data.email,
+          dashboardPath: "/admin/bookings",
+          fields: [
+            ["Reference", item.reference],
+            ["Name", data.name],
+            ["Email", data.email],
+            ["Phone", data.phone],
+            ["Company", data.company],
+            ["Service", data.service],
+            ["Preferred date (UTC)", date.toISOString()],
+            ["Notes", data.notes],
+          ],
+        },
+        tx,
+      );
+      return { item, jobId };
     });
-    after(() => notifyTeam({
-      subject: `New consultation booking - ${item.reference}`,
-      replyTo: data.email,
-      dashboardPath: "/admin/bookings",
-      fields: [
-        ["Reference", item.reference],
-        ["Name", data.name],
-        ["Email", data.email],
-        ["Phone", data.phone],
-        ["Company", data.company],
-        ["Service", data.service],
-        ["Preferred date (UTC)", date.toISOString()],
-        ["Notes", data.notes],
-      ],
-    }));
+    after(() => deliverNotification(jobId));
 
     return NextResponse.json(
       { ok: true, reference: item.reference },

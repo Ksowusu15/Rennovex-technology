@@ -63,6 +63,7 @@ check(
 );
 for (const name of [
   "RESEND_API_KEY",
+  "CRON_SECRET",
   "CLOUDINARY_CLOUD_NAME",
   "CLOUDINARY_API_KEY",
   "CLOUDINARY_API_SECRET",

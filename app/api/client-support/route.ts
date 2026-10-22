@@ -1,4 +1,7 @@
-import { notifyTeam } from "@/lib/team-notifications";
+import {
+  queueTeamNotification,
+  deliverNotification,
+} from "@/lib/team-notifications";
 import { rejectCrossOrigin } from "@/lib/request-origin";
 import { after, NextResponse } from "next/server";
 import { z } from "zod";
@@ -22,26 +25,33 @@ export async function POST(request: Request) {
 
   try {
     const input = schema.parse(await request.json());
-    const item = await prisma.supportRequest.create({
-      data: {
-        clientId: session.id,
-        ...input,
-      },
-    });
+    const { item, jobId } = await prisma.$transaction(async (tx) => {
+      const item = await tx.supportRequest.create({
+        data: {
+          clientId: session.id,
+          ...input,
+        },
+      });
 
-    after(() => notifyTeam({
-      subject: `New client support request — ${input.subject}`,
-      replyTo: session.email,
-      dashboardPath: `/admin/clients/${encodeURIComponent(session.id)}`,
-      fields: [
-        ["Request ID", item.id],
-        ["Client", session.name],
-        ["Email", session.email],
-        ["Subject", input.subject],
-        ["Priority", input.priority],
-        ["Message", input.message],
-      ],
-    }));
+      const jobId = await queueTeamNotification(
+        {
+          subject: `New client support request — ${input.subject}`,
+          replyTo: session.email,
+          dashboardPath: `/admin/clients/${encodeURIComponent(session.id)}`,
+          fields: [
+            ["Request ID", item.id],
+            ["Client", session.name],
+            ["Email", session.email],
+            ["Subject", input.subject],
+            ["Priority", input.priority],
+            ["Message", input.message],
+          ],
+        },
+        tx,
+      );
+      return { item, jobId };
+    });
+    after(() => deliverNotification(jobId));
 
     return NextResponse.json({ ok: true, id: item.id });
   } catch (error) {
@@ -49,7 +59,8 @@ export async function POST(request: Request) {
       console.error("Form service unavailable:", error);
       return NextResponse.json(
         {
-          error: "This service is temporarily unavailable. Please try again later.",
+          error:
+            "This service is temporarily unavailable. Please try again later.",
         },
         { status: 503 },
       );

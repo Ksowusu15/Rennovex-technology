@@ -1,4 +1,7 @@
-import { notifyTeam } from "@/lib/team-notifications";
+import {
+  queueTeamNotification,
+  deliverNotification,
+} from "@/lib/team-notifications";
 import { rejectCrossOrigin } from "@/lib/request-origin";
 import { after, NextResponse } from "next/server";
 import { z } from "zod";
@@ -24,25 +27,32 @@ export async function POST(request: Request) {
   if (!throttle.allowed) return tooManyRequests(throttle.retryAfter);
   try {
     const data = schema.parse(await request.json());
-    const item = await prisma.quoteRequest.create({
-      data: { ...data, reference: makeReference("RNX-Q") },
+    const { item, jobId } = await prisma.$transaction(async (tx) => {
+      const item = await tx.quoteRequest.create({
+        data: { ...data, reference: makeReference("RNX-Q") },
+      });
+      const jobId = await queueTeamNotification(
+        {
+          subject: `New quote request — ${item.reference}`,
+          replyTo: data.email,
+          dashboardPath: "/admin/quotes",
+          fields: [
+            ["Reference", item.reference],
+            ["Name", data.name],
+            ["Email", data.email],
+            ["Phone", data.phone],
+            ["Company", data.company],
+            ["Service", data.service],
+            ["Budget", data.budget],
+            ["Timeline", data.timeline],
+            ["Requirements", data.requirements],
+          ],
+        },
+        tx,
+      );
+      return { item, jobId };
     });
-    after(() => notifyTeam({
-      subject: `New quote request — ${item.reference}`,
-      replyTo: data.email,
-      dashboardPath: "/admin/quotes",
-      fields: [
-        ["Reference", item.reference],
-        ["Name", data.name],
-        ["Email", data.email],
-        ["Phone", data.phone],
-        ["Company", data.company],
-        ["Service", data.service],
-        ["Budget", data.budget],
-        ["Timeline", data.timeline],
-        ["Requirements", data.requirements],
-      ],
-    }));
+    after(() => deliverNotification(jobId));
 
     return NextResponse.json(
       { ok: true, reference: item.reference },

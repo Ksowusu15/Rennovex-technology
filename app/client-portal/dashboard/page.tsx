@@ -29,7 +29,10 @@ export default async function ClientDashboardPage() {
           files: { orderBy: { createdAt: "desc" } },
         },
       },
-      invoices: { orderBy: { createdAt: "desc" } },
+      invoices: {
+        where: { status: { not: "DRAFT" } },
+        orderBy: { createdAt: "desc" },
+      },
       _count: {
         select: {
           supportRequests: {
@@ -52,7 +55,10 @@ export default async function ClientDashboardPage() {
     }
 
     const balance = Math.max(0, Number(invoice.amount) - Number(invoice.paid));
-    balances.set(invoice.currency, (balances.get(invoice.currency) ?? 0) + balance);
+    balances.set(
+      invoice.currency,
+      (balances.get(invoice.currency) ?? 0) + balance,
+    );
   }
 
   const outstanding =
@@ -65,13 +71,15 @@ export default async function ClientDashboardPage() {
     <main className="portal-shell portal-main">
       <div className="portal-intro">
         <div>
-          <p className="text-sm font-semibold text-blue-600">Client workspace</p>
+          <p className="text-sm font-semibold text-blue-600">
+            Client workspace
+          </p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
             Welcome, {client.name}
           </h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
-            Review your projects, deliverables, payments and the latest updates from
-            Rennovex.
+            Review your projects, deliverables, payments and the latest updates
+            from Rennovex.
           </p>
         </div>
         <Link className="btn-primary shrink-0" href="/client-portal/support">
@@ -95,7 +103,11 @@ export default async function ClientDashboardPage() {
               0,
             )}
           />
-          <Metric icon={CircleDollarSign} label="Outstanding" value={outstanding} />
+          <Metric
+            icon={CircleDollarSign}
+            label="Outstanding"
+            value={outstanding}
+          />
           <Metric
             icon={LifeBuoy}
             label="Open support"
@@ -115,12 +127,17 @@ export default async function ClientDashboardPage() {
                   <article key={project.id} className="portal-project">
                     <div className="portal-project-heading">
                       <div>
-                        <h3 className="font-bold text-slate-950">{project.name}</h3>
+                        <h3 className="font-bold text-slate-950">
+                          {project.name}
+                        </h3>
                         <p className="portal-metric-label">
                           {project.description ?? "Rennovex client project"}
                         </p>
                       </div>
-                      <span className="portal-status" data-status={project.status}>
+                      <span
+                        className="portal-status"
+                        data-status={project.status}
+                      >
                         {project.status.replaceAll("_", " ")}
                       </span>
                     </div>
@@ -140,7 +157,10 @@ export default async function ClientDashboardPage() {
                         aria-label={`${project.name} progress`}
                         aria-valuemin={0}
                         aria-valuemax={100}
-                        aria-valuenow={Math.max(0, Math.min(100, project.progress))}
+                        aria-valuenow={Math.max(
+                          0,
+                          Math.min(100, project.progress),
+                        )}
                       >
                         <div
                           className="h-full rounded-full bg-blue-600"
@@ -186,7 +206,9 @@ export default async function ClientDashboardPage() {
                               aria-label={`${file.name} (opens in a new tab)`}
                             >
                               <FileText size={16} aria-hidden="true" />
-                              <span className="min-w-0 flex-1">{file.name}</span>
+                              <span className="min-w-0 flex-1">
+                                {file.name}
+                              </span>
                               <ArrowUpRight size={16} aria-hidden="true" />
                             </Link>
                           );
@@ -203,12 +225,18 @@ export default async function ClientDashboardPage() {
                 Invoices & payments
               </h2>
               <div className="mt-5 space-y-3">
-                {client.invoices.length === 0 && <Empty text="No invoices yet." />}
+                {client.invoices.length === 0 && (
+                  <Empty text="No invoices yet." />
+                )}
                 {client.invoices.map((invoice) => (
                   <div key={invoice.id} className="portal-invoice">
                     <div>
-                      <p className="font-semibold text-slate-900">{invoice.title}</p>
-                      <p className="mt-1 text-xs text-slate-500">{invoice.number}</p>
+                      <p className="font-semibold text-slate-900">
+                        {invoice.title}
+                      </p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {invoice.number}
+                      </p>
                       {invoice.dueDate && (
                         <p className="mt-1 text-xs text-slate-500">
                           Due {date(invoice.dueDate)}
@@ -219,7 +247,21 @@ export default async function ClientDashboardPage() {
                       <p className="font-bold text-slate-950">
                         {money(Number(invoice.amount), invoice.currency)}
                       </p>
-                      <p className="portal-status mt-1" data-status={invoice.status}>
+                      <p className="mt-1 text-xs text-slate-600">
+                        Paid {money(Number(invoice.paid), invoice.currency)}
+                        {" · Remaining "}
+                        {money(
+                          Math.max(
+                            0,
+                            Number(invoice.amount) - Number(invoice.paid),
+                          ),
+                          invoice.currency,
+                        )}
+                      </p>
+                      <p
+                        className="portal-status mt-1"
+                        data-status={invoice.status}
+                      >
                         {invoice.status.replaceAll("_", " ")}
                       </p>
                     </div>
@@ -258,9 +300,14 @@ export default async function ClientDashboardPage() {
             <div className="portal-panel">
               <h2 className="font-bold text-slate-950">Latest updates</h2>
               <div className="mt-4 space-y-4">
-                {client.updates.length === 0 && <Empty text="No updates yet." />}
+                {client.updates.length === 0 && (
+                  <Empty text="No updates yet." />
+                )}
                 {client.updates.map((update) => (
-                  <div key={update.id} className="border-l-2 border-blue-200 pl-4">
+                  <div
+                    key={update.id}
+                    className="border-l-2 border-blue-200 pl-4"
+                  >
                     <p className="text-sm font-semibold text-slate-900">
                       {update.title}
                     </p>
