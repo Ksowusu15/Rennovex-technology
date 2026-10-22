@@ -66,17 +66,20 @@ export function ClientLoginForm() {
             tracking-[0.18em] text-blue-600
           `}
         >
-          Secure client access
+          Welcome to your workspace
         </p>
         <h2
           className={`
             mt-2 text-2xl font-bold text-slate-950
           `}
         >
-          Sign in to your workspace
+          Sign in to continue
         </h2>
       </div>
 
+      <p className="mb-7 text-sm leading-6 text-slate-500">
+        Use the email address associated with your Rennovex client account.
+      </p>
       <div className="space-y-4">
         <label className="block">
           <span
@@ -112,6 +115,7 @@ export function ClientLoginForm() {
             <input
               className="field pr-12"
               name="password"
+              disabled={loading}
               type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               placeholder="Enter your password"
@@ -170,7 +174,7 @@ export function ClientLoginForm() {
         ) : (
           <ArrowRight size={18} />
         )}
-        {loading ? "Signing in…" : "Open client portal"}
+        {loading ? "Signing in…" : "Sign in"}
       </button>
 
       <p
@@ -179,7 +183,8 @@ export function ClientLoginForm() {
           text-slate-500
         `}
       >
-        Client accounts are invitation-only. Contact Rennovex if you need access.
+        Client accounts are invitation-only. Contact Rennovex if you need
+        access.
       </p>
     </form>
   );

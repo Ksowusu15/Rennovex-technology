@@ -155,6 +155,8 @@ export async function updateClientProject(formData: FormData) {
 
   revalidatePath(`/admin/clients/${clientId}`);
   revalidatePath("/client-portal/dashboard");
+  revalidatePath("/client-portal/projects");
+  revalidatePath("/client-portal/invoices");
 }
 
 export async function addClientMilestone(formData: FormData) {
@@ -203,6 +205,8 @@ export async function toggleClientMilestone(formData: FormData) {
 
   revalidatePath(`/admin/clients/${clientId}`);
   revalidatePath("/client-portal/dashboard");
+  revalidatePath("/client-portal/projects");
+  revalidatePath("/client-portal/invoices");
 }
 
 export async function addClientFile(formData: FormData) {
@@ -238,6 +242,8 @@ export async function addClientFile(formData: FormData) {
 
   revalidatePath(`/admin/clients/${clientId}`);
   revalidatePath("/client-portal/dashboard");
+  revalidatePath("/client-portal/projects");
+  revalidatePath("/client-portal/invoices");
 }
 
 export async function addClientInvoice(formData: FormData) {
@@ -267,6 +273,8 @@ export async function addClientInvoice(formData: FormData) {
 
   revalidatePath(`/admin/clients/${clientId}`);
   revalidatePath("/client-portal/dashboard");
+  revalidatePath("/client-portal/projects");
+  revalidatePath("/client-portal/invoices");
 }
 
 export async function updateClientInvoice(formData: FormData) {
@@ -284,7 +292,7 @@ export async function updateClientInvoice(formData: FormData) {
     const message =
       error instanceof Error ? error.message : "Invalid invoice payment.";
     redirect(
-      `/admin/clients/${encodeURIComponent(clientId)}?error=${encodeURIComponent(message)}`,
+      `/admin/clients/${encodeURIComponent(clientId)}?view=invoices&error=${encodeURIComponent(message)}`,
     );
   }
 
@@ -301,6 +309,8 @@ export async function updateClientInvoice(formData: FormData) {
 
   revalidatePath(`/admin/clients/${clientId}`);
   revalidatePath("/client-portal/dashboard");
+  revalidatePath("/client-portal/projects");
+  revalidatePath("/client-portal/invoices");
 }
 
 export async function addClientUpdate(formData: FormData) {
@@ -333,6 +343,8 @@ export async function addClientUpdate(formData: FormData) {
 
   revalidatePath(`/admin/clients/${clientId}`);
   revalidatePath("/client-portal/dashboard");
+  revalidatePath("/client-portal/projects");
+  revalidatePath("/client-portal/invoices");
 }
 
 export async function updateSupportStatus(formData: FormData) {

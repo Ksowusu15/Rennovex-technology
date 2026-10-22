@@ -2,7 +2,7 @@ name: Release checks
 
 on:
   push:
-    branches: [release/readiness-fixes]
+    branches: [release/readiness-fixes, release/portal-polish]
   pull_request:
     branches: [main]
 
@@ -48,6 +48,7 @@ jobs:
       - run: npm run test:security
       - run: npm run test:notifications
       - run: npm run test:readiness
+      - run: npm run test:portal
       - run: npm run test:database
       - run: npm run migrations:preflight
       - run: npm run db:verify
