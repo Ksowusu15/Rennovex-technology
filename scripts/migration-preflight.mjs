@@ -1,3 +1,6 @@
+import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import { migrationHistoryBlockers } from './migration-history.mjs';
 import nextEnv from '@next/env';
 import { PrismaClient } from '@prisma/client';
 nextEnv.loadEnvConfig(process.cwd(), false, { info() {}, error() {} });
@@ -8,17 +11,13 @@ try {
            to_regclass('public."User"')::text AS users
   `;
   const history = objects.history ? await prisma.$queryRaw`
-    SELECT migration_name, finished_at, rolled_back_at FROM "_prisma_migrations"
+    SELECT migration_name, checksum, finished_at, rolled_back_at FROM "_prisma_migrations"
   ` : [];
-  const active = history.filter(row => !row.rolled_back_at);
-  const blockers = [];
-  if (objects.users && !active.some(row => row.migration_name === '20260724000000_initial_schema' && row.finished_at)) {
-    blockers.push('Existing core schema needs baseline verification/adoption; see RELEASE-READINESS.md.');
-  }
-  if (history.some(row => row.migration_name === '20261008230000_add_client_password_reset')) {
-    blockers.push('Legacy password-reset migration name needs reviewed history reconciliation; see RELEASE-READINESS.md.');
-  }
-  if (active.some(row => !row.finished_at)) blockers.push('Unresolved failed migration records must be investigated.');
+  const resetSql = await readFile(new URL('../prisma/migrations/20261008230100_add_client_password_reset/migration.sql', import.meta.url));
+  const normalized = resetSql.toString('utf8').replace(/\r\n/g, '\n');
+  const resetChecksums = [resetSql, normalized, normalized.replace(/\n/g, '\r\n')]
+    .map(content => createHash('sha256').update(content).digest('hex'));
+  const blockers = migrationHistoryBlockers({ hasUsers: Boolean(objects.users), history, resetChecksums });
   for (const blocker of blockers) console.error('BLOCKED: ' + blocker);
   if (!blockers.length) console.log('PASS: no known migration-history adoption blockers. Verify the schema and pending migration status separately.');
   console.log('Read-only preflight. No schema, data or migration records were changed.');
