@@ -310,6 +310,7 @@
   margin-top: 15px;
 }
 .workspace-table-wrap {
+  position: relative;
   overflow-x: auto;
 }
 .workspace-table {

@@ -593,3 +593,6 @@
     color: #617087;
   }
 }
+
+.portal-metric-money { font-size: 22px; }
+@media (max-width: 400px) { .portal-metric-money { font-size: 18px; } }

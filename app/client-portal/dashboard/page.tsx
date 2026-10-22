@@ -102,7 +102,7 @@ export default async function ClientDashboardPage() {
         <WorkspaceMetric
           icon={CircleDollarSign}
           label="Outstanding balance"
-          value={<span className="text-[22px]">{outstanding}</span>}
+          value={<span className="portal-metric-money">{outstanding}</span>}
           detail="Across your issued invoices"
           href="/client-portal/invoices"
           tone="amber"
