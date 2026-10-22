@@ -8,23 +8,66 @@ export function hashClientToken(token: string) {
 }
 
 export async function createClientInvite(clientId: string) {
+  const previous = await prisma.client.findUniqueOrThrow({
+    where: { id: clientId },
+  });
+  if (!previous.isActive || previous.password) {
+    throw new Error("Only active clients awaiting activation can be invited.");
+  }
   const token = crypto.randomBytes(32).toString("hex");
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-  await prisma.client.update({
+  const changed = await prisma.client.updateMany({
     where: {
       id: clientId,
+      password: null,
+      isActive: true,
+      inviteTokenHash: previous.inviteTokenHash,
     },
     data: {
       inviteTokenHash: hashClientToken(token),
       inviteTokenExpires: expires,
+      inviteDeliveryStatus: "PENDING",
     },
   });
+  if (changed.count !== 1)
+    throw new Error("Client account changed. Refresh before resending.");
 
   return {
     token,
     expires,
+    previous,
   };
+}
+
+/** Restore a still-valid earlier link if the provider rejects the new invite. */
+export async function deliverClientInvite(client: {
+  id: string;
+  email: string;
+  name: string;
+}) {
+  const invite = await createClientInvite(client.id);
+  try {
+    await sendClientInviteEmail({ ...client, token: invite.token });
+    await prisma.client.updateMany({
+      where: { id: client.id, inviteTokenHash: hashClientToken(invite.token) },
+      data: { inviteDeliveryStatus: "SENT" },
+    });
+    return true;
+  } catch {
+    await prisma.client.updateMany({
+      where: { id: client.id, inviteTokenHash: hashClientToken(invite.token) },
+      data: {
+        inviteTokenHash: invite.previous.inviteTokenHash,
+        inviteTokenExpires: invite.previous.inviteTokenExpires,
+        inviteDeliveryStatus: "FAILED",
+      },
+    });
+    console.error(
+      "Client invitation delivery failed; account retained for retry.",
+    );
+    return false;
+  }
 }
 
 export async function sendClientInviteEmail(input: {

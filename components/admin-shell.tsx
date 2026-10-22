@@ -118,7 +118,7 @@ const links = [
 ] as const;
 
 type Session={name:string;email:string;role:"SUPER_ADMIN"|"ADMIN"|"EDITOR"};
-type Summary={unreadMessages:number;newQuotes:number;pendingBookings:number;assistantReplies:number};
+type Summary={unreadMessages:number;newQuotes:number;pendingBookings:number;assistantReplies:number;clientSupport:number;failedEmails:number;unavailable?:boolean};
 const roleLabel={SUPER_ADMIN:"Super Administrator",
   ADMIN:"Administrator",
   EDITOR:"Editor"} as const;

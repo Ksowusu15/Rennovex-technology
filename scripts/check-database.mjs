@@ -17,6 +17,8 @@ try {
     "SupportRequest",
     "CaseStudy",
     "SiteSetting",
+    "NotificationJob",
+    "AuthRateLimit",
   ];
   const found = await prisma.$queryRaw`
     SELECT table_name FROM information_schema.tables
@@ -33,11 +35,35 @@ try {
       isActive: true,
       resetTokenHash: true,
       resetTokenExpires: true,
+      inviteDeliveryStatus: true,
     },
   });
   await prisma.authSession.findFirst({
     select: { id: true, revokedAt: true, expiresAt: true },
   });
+  await prisma.notificationJob.findFirst({
+    select: { id: true, status: true, nextAttemptAt: true, lockedUntil: true },
+  });
+  const invoices = await prisma.clientInvoice.findMany({
+    select: { id: true, amount: true, paid: true, status: true },
+  });
+  const inconsistent = invoices.filter(
+    (invoice) =>
+      invoice.paid.greaterThan(invoice.amount) ||
+      (invoice.status === "PAID" && !invoice.paid.equals(invoice.amount)) ||
+      (invoice.status === "PARTIALLY_PAID" &&
+        (invoice.paid.lessThanOrEqualTo(0) ||
+          invoice.paid.equals(invoice.amount))) ||
+      (["DRAFT", "SENT", "CANCELLED"].includes(invoice.status) &&
+        invoice.paid.greaterThan(0)) ||
+      (invoice.status === "OVERDUE" && invoice.paid.equals(invoice.amount)),
+  );
+  if (inconsistent.length) {
+    console.error(
+      `FAIL: ${inconsistent.length} invoices need payment/status reconciliation. Review in admin; no data was changed.`,
+    );
+    process.exitCode = 1;
+  }
   console.log(
     "PASS: database connection, required tables and authentication columns.",
   );

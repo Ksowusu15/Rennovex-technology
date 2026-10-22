@@ -376,6 +376,7 @@ model Client {
   inviteTokenExpires DateTime?
   resetTokenHash     String?
   resetTokenExpires  DateTime?
+  inviteDeliveryStatus String       @default("PENDING")
   lastLoginAt        DateTime?
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
@@ -383,6 +384,28 @@ model Client {
   invoices           ClientInvoice[]
   supportRequests    SupportRequest[]
   updates            ClientUpdate[]
+}
+
+model AuthRateLimit {
+  key       String   @id
+  count     Int
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+model NotificationJob {
+  id            String   @id @default(cuid())
+  payload       Json
+  status        String   @default("PENDING")
+  attempts      Int      @default(0)
+  nextAttemptAt DateTime @default(now())
+  lockedUntil   DateTime?
+  deliveredAt   DateTime?
+  lastError     String?
+  createdAt     DateTime @default(now())
+
+  @@index([status, nextAttemptAt])
 }
 
 model ClientProject {

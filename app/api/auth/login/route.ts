@@ -1,5 +1,6 @@
 import { emailSender, sendTransactionalEmail } from "@/lib/email";
 import { rejectCrossOrigin } from "@/lib/request-origin";
+import { authThrottle } from "@/lib/auth-throttle";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
@@ -70,7 +71,15 @@ export async function POST(request: Request) {
   try {
     const { email, password, rememberMe } = schema.parse(await request.json());
     const normalizedEmail = email.toLowerCase().trim();
-    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
+    const blockedLogin = await authThrottle(
+      request,
+      normalizedEmail,
+      "admin-login",
+    );
+    if (blockedLogin) return blockedLogin;
+    const user = await prisma.user.findUnique({
+      where: { email: normalizedEmail },
+    });
     const now = new Date();
     if (user?.lockedUntil && user.lockedUntil > now) {
       await recordLogin({
@@ -194,7 +203,11 @@ export async function POST(request: Request) {
     if (!knownDevice && user.emailNewDeviceAlerts) {
       await sendNewDeviceAlert(user.email, user.name, device, ip);
     }
-    return NextResponse.json({ ok: true, role: user.role, redirectTo: "/admin" });
+    return NextResponse.json({
+      ok: true,
+      role: user.role,
+      redirectTo: "/admin",
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });

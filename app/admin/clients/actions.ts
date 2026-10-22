@@ -3,10 +3,17 @@
 import { safeFileUrl } from "@/lib/safe-url";
 import { requireRole } from "@/lib/auth";
 import { z } from "zod";
-import { ClientProjectStatus, InvoiceStatus, SupportStatus } from "@prisma/client";
+import {
+  ClientProjectStatus,
+  InvoiceStatus,
+  SupportStatus,
+  Prisma,
+} from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { createClientInvite, sendClientInviteEmail } from "@/lib/client-invitations";
+import { deliverClientInvite } from "@/lib/client-invitations";
+import { validateInvoicePayment, currencyCents } from "@/lib/invoice-payment";
+import { redirect } from "next/navigation";
 
 function text(formData: FormData, key: string) {
   return String(formData.get(key) ?? "").trim();
@@ -27,25 +34,35 @@ export async function createClient(formData: FormData) {
     throw new Error("Client name and email are required.");
   }
 
-  const client = await prisma.client.create({
-    data: {
-      name,
-      company: company || null,
-      email,
-      phone: phone || null,
-      password: null,
-    },
-  });
+  const client = await prisma.client
+    .create({
+      data: {
+        name,
+        company: company || null,
+        email,
+        phone: phone || null,
+        password: null,
+      },
+    })
+    .catch(async (error) => {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        const existing = await prisma.client.findUnique({
+          where: { email },
+          select: { id: true },
+        });
+        if (existing) redirect(`/admin/clients/${existing.id}?notice=exists`);
+      }
+      throw error;
+    });
 
-  const invite = await createClientInvite(client.id);
-
-  await sendClientInviteEmail({
-    email: client.email,
-    name: client.name,
-    token: invite.token,
-  });
-
+  const delivered = await deliverClientInvite(client);
   revalidatePath("/admin/clients");
+  redirect(
+    `/admin/clients/${client.id}?notice=${delivered ? "invited" : "invite-failed"}`,
+  );
 }
 
 export async function resendClientInvite(formData: FormData) {
@@ -62,15 +79,11 @@ export async function resendClientInvite(formData: FormData) {
     throw new Error("Client not found.");
   }
 
-  const invite = await createClientInvite(client.id);
-
-  await sendClientInviteEmail({
-    email: client.email,
-    name: client.name,
-    token: invite.token,
-  });
-
+  const delivered = await deliverClientInvite(client);
   revalidatePath(`/admin/clients/${client.id}`);
+  redirect(
+    `/admin/clients/${client.id}?notice=${delivered ? "invited" : "invite-failed"}`,
+  );
 }
 
 export async function toggleClientStatus(formData: FormData) {
@@ -119,7 +132,9 @@ export async function updateClientProject(formData: FormData) {
   await requireRole(["SUPER_ADMIN", "ADMIN"]);
   const projectId = text(formData, "projectId");
   const clientId = text(formData, "clientId");
-  const status = z.nativeEnum(ClientProjectStatus).parse(text(formData, "status"));
+  const status = z
+    .nativeEnum(ClientProjectStatus)
+    .parse(text(formData, "status"));
   const progress = z.coerce
     .number()
     .int()
@@ -230,14 +245,12 @@ export async function addClientInvoice(formData: FormData) {
   const clientId = text(formData, "clientId");
   const number = text(formData, "number");
   const title = text(formData, "title");
-  const amount = z.coerce
-    .number()
-    .min(0)
-    .max(9999999999.99)
-    .parse(text(formData, "amount"));
+  const amount = text(formData, "amount");
+  if (currencyCents(amount) <= BigInt(0))
+    throw new Error("Invoice amount must be above zero.");
   const dueDate = text(formData, "dueDate");
 
-  if (!number || !title || !Number.isFinite(amount)) {
+  if (!number || !title) {
     throw new Error("Invoice number, title and amount are required.");
   }
 
@@ -261,11 +274,19 @@ export async function updateClientInvoice(formData: FormData) {
   const clientId = text(formData, "clientId");
   const invoiceId = text(formData, "invoiceId");
   const status = z.nativeEnum(InvoiceStatus).parse(text(formData, "status"));
-  const paid = z.coerce
-    .number()
-    .min(0)
-    .max(9999999999.99)
-    .parse(text(formData, "paid") || 0);
+  const paid = text(formData, "paid") || "0";
+  const invoice = await prisma.clientInvoice.findUniqueOrThrow({
+    where: { id: invoiceId, clientId },
+  });
+  try {
+    validateInvoicePayment(invoice.amount.toString(), paid, status);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Invalid invoice payment.";
+    redirect(
+      `/admin/clients/${encodeURIComponent(clientId)}?error=${encodeURIComponent(message)}`,
+    );
+  }
 
   await prisma.clientInvoice.update({
     where: {
