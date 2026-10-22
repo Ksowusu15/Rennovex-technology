@@ -1,3 +1,5 @@
+import "../workspace.css";
+import "./admin.css";
 import { AdminShell } from "@/components/admin-shell";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";

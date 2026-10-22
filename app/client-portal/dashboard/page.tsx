@@ -1,381 +1,307 @@
-import { safeFileUrl } from "@/lib/safe-url";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import {
-  ArrowUpRight,
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
   CircleDollarSign,
   FileText,
   FolderKanban,
   LifeBuoy,
+  MessageSquare,
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import { getClientSession } from "@/lib/client-auth";
+import { requirePortalClient, invoiceTotals } from "@/lib/client-workspace";
+import { workspaceDate, workspaceMoney } from "@/lib/workspace";
+import {
+  StatusBadge,
+  WorkspaceEmpty,
+  WorkspaceHeading,
+  WorkspaceMetric,
+  WorkspacePanel,
+} from "@/components/workspace/ui";
 
-export const metadata = {
-  title: "Client Dashboard | Rennovex Technology",
-};
+export const metadata = { title: "Overview | Rennovex Client Portal" };
 
 export default async function ClientDashboardPage() {
-  const session = await getClientSession();
-  if (!session) redirect("/client-portal");
-
-  const client = await prisma.client.findUnique({
-    where: { id: session.id },
-    include: {
-      projects: {
+  const client = await requirePortalClient();
+  const [projects, projectCount, deliverables, support, invoices, updates] =
+    await Promise.all([
+      prisma.clientProject.findMany({
+        where: { clientId: client.id },
         orderBy: { updatedAt: "desc" },
-        include: {
-          milestones: { orderBy: { order: "asc" } },
-          files: { orderBy: { createdAt: "desc" } },
-        },
-      },
-      invoices: {
-        where: { status: { not: "DRAFT" } },
+        take: 3,
+        include: { milestones: true },
+      }),
+      prisma.clientProject.count({
+        where: { clientId: client.id, status: { not: "COMPLETED" } },
+      }),
+      prisma.clientFile.count({ where: { project: { clientId: client.id } } }),
+      prisma.supportRequest.findMany({
+        where: { clientId: client.id, status: { in: ["OPEN", "IN_PROGRESS"] } },
         orderBy: { createdAt: "desc" },
-      },
-      _count: {
-        select: {
-          supportRequests: {
-            where: { status: { in: ["OPEN", "IN_PROGRESS"] } },
-          },
+      }),
+      prisma.clientInvoice.findMany({
+        where: {
+          clientId: client.id,
+          status: { notIn: ["DRAFT", "CANCELLED"] },
         },
-      },
-      supportRequests: { orderBy: { createdAt: "desc" }, take: 5 },
-      updates: { orderBy: { createdAt: "desc" }, take: 6 },
-    },
-  });
-
-  if (!client || !client.isActive) redirect("/client-portal");
-
-  const balances = new Map<string, number>();
-
-  for (const invoice of client.invoices) {
-    if (invoice.status === "DRAFT" || invoice.status === "CANCELLED") {
-      continue;
-    }
-
-    const balance = Math.max(0, Number(invoice.amount) - Number(invoice.paid));
-    balances.set(
-      invoice.currency,
-      (balances.get(invoice.currency) ?? 0) + balance,
-    );
-  }
-
+        select: {
+          amount: true,
+          paid: true,
+          status: true,
+          currency: true,
+          title: true,
+          dueDate: true,
+        },
+      }),
+      prisma.clientUpdate.findMany({
+        where: { clientId: client.id },
+        orderBy: { createdAt: "desc" },
+        take: 4,
+        include: { project: { select: { name: true } } },
+      }),
+    ]);
+  const totals = invoiceTotals(invoices);
   const outstanding =
-    Array.from(balances)
-      .filter(([, amount]) => amount > 0)
-      .map(([currency, amount]) => money(amount, currency))
-      .join(" · ") || money(0, "GHS");
-
+    totals
+      .filter((item) => item.outstanding > 0)
+      .map((item) => workspaceMoney(item.outstanding, item.currency))
+      .join(" · ") || workspaceMoney(0);
+  const nextInvoice = invoices
+    .filter((item) => item.dueDate && Number(item.amount) > Number(item.paid))
+    .sort((a, b) => a.dueDate!.getTime() - b.dueDate!.getTime())[0];
   return (
-    <main className="portal-shell portal-main">
-      <div className="portal-intro">
-        <div>
-          <p className="text-sm font-semibold text-blue-600">
-            Client workspace
-          </p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
-            Welcome, {client.name}
-          </h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
-            Review your projects, deliverables, payments and the latest updates
-            from Rennovex.
-          </p>
-        </div>
-        <Link className="btn-primary shrink-0" href="/client-portal/support">
-          <LifeBuoy size={18} aria-hidden="true" />
-          Request support
-        </Link>
+    <main className="portal-shell">
+      <WorkspaceHeading
+        eyebrow="Your client workspace"
+        title={`Welcome back, ${client.name.split(" ")[0]}.`}
+        description="Your projects, shared files and conversations, together in one place."
+        actions={
+          <Link href="/client-portal/support" className="btn-primary">
+            <LifeBuoy size={17} />
+            Get in touch
+          </Link>
+        }
+      />
+      <div className="workspace-metrics">
+        <WorkspaceMetric
+          icon={FolderKanban}
+          label="Ongoing projects"
+          value={projectCount}
+          detail="Work we’re delivering together"
+          href="/client-portal/projects"
+        />
+        <WorkspaceMetric
+          icon={FileText}
+          label="Shared deliverables"
+          value={deliverables}
+          detail="Files ready for you to access"
+          href="/client-portal/projects"
+          tone="violet"
+        />
+        <WorkspaceMetric
+          icon={CircleDollarSign}
+          label="Outstanding balance"
+          value={<span className="text-[22px]">{outstanding}</span>}
+          detail="Across your issued invoices"
+          href="/client-portal/invoices"
+          tone="amber"
+        />
+        <WorkspaceMetric
+          icon={MessageSquare}
+          label="Open support"
+          value={support.length}
+          detail="Requests we’re working on"
+          href="/client-portal/support"
+          tone="green"
+        />
       </div>
-
-      <div>
-        <div className="portal-metrics">
-          <Metric
-            icon={FolderKanban}
-            label="Projects"
-            value={client.projects.length}
-          />
-          <Metric
-            icon={FileText}
-            label="Deliverables"
-            value={client.projects.reduce(
-              (total, project) => total + project.files.length,
-              0,
-            )}
-          />
-          <Metric
-            icon={CircleDollarSign}
-            label="Outstanding"
-            value={outstanding}
-          />
-          <Metric
-            icon={LifeBuoy}
-            label="Open support"
-            value={client._count.supportRequests}
-          />
-        </div>
-
-        <section className="portal-columns">
-          <div className="portal-stack">
-            <div className="portal-panel">
-              <h2 className="text-xl font-bold text-slate-950">My projects</h2>
-              <div className="mt-5 space-y-4">
-                {client.projects.length === 0 && (
-                  <Empty text="No client projects have been assigned yet." />
-                )}
-                {client.projects.map((project) => (
-                  <article key={project.id} className="portal-project">
-                    <div className="portal-project-heading">
-                      <div>
-                        <h3 className="font-bold text-slate-950">
-                          {project.name}
-                        </h3>
-                        <p className="portal-metric-label">
-                          {project.description ?? "Rennovex client project"}
-                        </p>
-                      </div>
-                      <span
-                        className="portal-status"
-                        data-status={project.status}
+      <div className="portal-columns">
+        <div className="portal-stack">
+          <WorkspacePanel
+            title="Your projects"
+            description="The latest progress on your work"
+            action={
+              <Link
+                href="/client-portal/projects"
+                className="workspace-text-link"
+              >
+                All projects
+                <ArrowRight size={15} />
+              </Link>
+            }
+          >
+            {projects.length ? (
+              projects.map((project) => (
+                <article className="portal-project-card" key={project.id}>
+                  <div className="portal-project-card-heading">
+                    <div>
+                      <Link
+                        href="/client-portal/projects"
+                        className="hover:text-blue-700"
                       >
-                        {project.status.replaceAll("_", " ")}
-                      </span>
-                    </div>
-                    {project.dueDate && (
-                      <p className="mt-3 text-xs font-semibold text-slate-500">
-                        Target completion: {date(project.dueDate)}
+                        <h3>{project.name}</h3>
+                      </Link>
+                      <p className="mt-2 line-clamp-2">
+                        {project.description ||
+                          "Your project progress and milestones are tracked here."}
                       </p>
-                    )}
-                    <div className="mt-5">
-                      <div className="mb-2 flex justify-between text-xs font-semibold text-slate-600">
-                        <span>Project progress</span>
-                        <span>{project.progress}%</span>
-                      </div>
-                      <div
-                        className="h-2 overflow-hidden rounded-full bg-slate-100"
-                        role="progressbar"
-                        aria-label={`${project.name} progress`}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-valuenow={Math.max(
-                          0,
-                          Math.min(100, project.progress),
-                        )}
-                      >
-                        <div
-                          className="h-full rounded-full bg-blue-600"
-                          style={{
-                            width: `${Math.max(0, Math.min(100, project.progress))}%`,
-                          }}
-                        />
-                      </div>
                     </div>
-                    {project.milestones.length > 0 && (
-                      <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                        {project.milestones.map((milestone) => (
-                          <div
-                            key={milestone.id}
-                            className="rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-700"
-                          >
-                            {milestone.completed ? "✓" : "○"} {milestone.title}
-                          </div>
-                        ))}
-                      </div>
+                    <StatusBadge status={project.status} />
+                  </div>
+                  <div className="mt-5">
+                    <div className="portal-project-progress-label">
+                      <span>Overall progress</span>
+                      <strong>{project.progress}%</strong>
+                    </div>
+                    <div
+                      className="workspace-progress"
+                      role="progressbar"
+                      aria-label={`${project.name} progress`}
+                      aria-valuenow={project.progress}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                    >
+                      <span style={{ width: `${project.progress}%` }} />
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-wrap justify-between gap-3 text-xs text-slate-500">
+                    <span className="inline-flex items-center gap-1.5">
+                      <CheckCircle2 size={14} />
+                      {
+                        project.milestones.filter((item) => item.completed)
+                          .length
+                      }{" "}
+                      of {project.milestones.length} milestones complete
+                    </span>
+                    {project.dueDate && (
+                      <span className="inline-flex items-center gap-1.5">
+                        <CalendarDays size={14} />
+                        Target {workspaceDate(project.dueDate)}
+                      </span>
                     )}
-                    {project.files.length > 0 && (
-                      <div className="portal-files">
-                        {project.files.map((file) => {
-                          const href = safeFileUrl(file.url);
-                          if (!href)
-                            return (
-                              <p
-                                key={file.id}
-                                className="portal-file text-slate-500"
-                              >
-                                {file.name} · Link unavailable. Please contact
-                                support.
-                              </p>
-                            );
-                          return (
-                            <Link
-                              key={file.id}
-                              href={href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="portal-file"
-                              aria-label={`${file.name} (opens in a new tab)`}
-                            >
-                              <FileText size={16} aria-hidden="true" />
-                              <span className="min-w-0 flex-1">
-                                {file.name}
-                              </span>
-                              <ArrowUpRight size={16} aria-hidden="true" />
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    )}
+                  </div>
+                </article>
+              ))
+            ) : (
+              <WorkspaceEmpty
+                icon={FolderKanban}
+                title="Your next project starts here"
+                description="Once Rennovex assigns your project, you’ll see its progress, milestones and files here."
+                action={
+                  <Link href="/client-portal/support" className="btn-secondary">
+                    Discuss a project
+                    <ArrowRight size={15} />
+                  </Link>
+                }
+              />
+            )}
+          </WorkspacePanel>
+          <WorkspacePanel
+            title="Latest updates"
+            description="A direct line to what’s happening with your work"
+          >
+            {updates.length ? (
+              <div className="workspace-timeline">
+                {updates.map((update) => (
+                  <article className="workspace-timeline-item" key={update.id}>
+                    <h3>{update.title}</h3>
+                    <time dateTime={update.createdAt.toISOString()}>
+                      {workspaceDate(update.createdAt)}
+                      {update.project
+                        ? ` · ${update.project.name}`
+                        : " · Rennovex team"}
+                    </time>
+                    <p>{update.message}</p>
                   </article>
                 ))}
               </div>
-            </div>
-
-            <div className="portal-panel">
-              <h2 className="text-xl font-bold text-slate-950">
-                Invoices & payments
-              </h2>
-              <div className="mt-5 space-y-3">
-                {client.invoices.length === 0 && (
-                  <Empty text="No invoices yet." />
-                )}
-                {client.invoices.map((invoice) => (
-                  <div key={invoice.id} className="portal-invoice">
-                    <div>
-                      <p className="font-semibold text-slate-900">
-                        {invoice.title}
-                      </p>
-                      <p className="mt-1 text-xs text-slate-500">
-                        {invoice.number}
-                      </p>
-                      {invoice.dueDate && (
-                        <p className="mt-1 text-xs text-slate-500">
-                          Due {date(invoice.dueDate)}
-                        </p>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-slate-950">
-                        {money(Number(invoice.amount), invoice.currency)}
-                      </p>
-                      <p className="mt-1 text-xs text-slate-600">
-                        Paid {money(Number(invoice.paid), invoice.currency)}
-                        {" · Remaining "}
-                        {money(
-                          Math.max(
-                            0,
-                            Number(invoice.amount) - Number(invoice.paid),
-                          ),
-                          invoice.currency,
-                        )}
-                      </p>
-                      <p
-                        className="portal-status mt-1"
-                        data-status={invoice.status}
-                      >
-                        {invoice.status.replaceAll("_", " ")}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <aside className="portal-stack">
-            <div className="portal-panel">
-              <h2>Recent support requests</h2>
-              <div className="mt-4 space-y-4">
-                {client.supportRequests.length === 0 && (
-                  <Empty text="No support requests yet. Contact us whenever you need help." />
-                )}
-                {client.supportRequests.map((request) => (
-                  <div
-                    key={request.id}
-                    className="rounded-xl border border-slate-200 p-4"
-                  >
-                    <p className="text-sm font-semibold">{request.subject}</p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      {date(request.createdAt)}
-                    </p>
-                    <span
-                      className="portal-status mt-2"
-                      data-status={request.status}
-                    >
-                      {request.status.replaceAll("_", " ")}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="portal-panel">
-              <h2 className="font-bold text-slate-950">Latest updates</h2>
-              <div className="mt-4 space-y-4">
-                {client.updates.length === 0 && (
-                  <Empty text="No updates yet." />
-                )}
-                {client.updates.map((update) => (
-                  <div
-                    key={update.id}
-                    className="border-l-2 border-blue-200 pl-4"
-                  >
-                    <p className="text-sm font-semibold text-slate-900">
-                      {update.title}
-                    </p>
-                    <p className="mt-1 text-xs text-slate-500">
-                      {date(update.createdAt)}
-                    </p>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">
-                      {update.message}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="portal-panel">
-              <h2 className="font-bold text-slate-950">Need help?</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                Send a support request and the Rennovex team will follow up.
+            ) : (
+              <WorkspaceEmpty
+                icon={MessageSquare}
+                title="You’re up to date"
+                description="Progress notes and messages from the team will appear here."
+              />
+            )}
+          </WorkspacePanel>
+        </div>
+        <div className="portal-stack">
+          <WorkspacePanel
+            title="Billing snapshot"
+            description="A clear view of your next payment"
+          >
+            <div className="p-6">
+              <p className="text-xs text-slate-500">Outstanding balance</p>
+              <p className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">
+                {outstanding}
               </p>
+              {nextInvoice ? (
+                <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-xs font-semibold">{nextInvoice.title}</p>
+                  <p className="mt-2 text-xs text-slate-500">
+                    Due {workspaceDate(nextInvoice.dueDate)}
+                  </p>
+                </div>
+              ) : (
+                <p className="mt-4 text-xs leading-6 text-slate-500">
+                  {invoices.length
+                    ? "No upcoming unpaid invoice with a due date."
+                    : "Your invoices will appear once they are issued."}
+                </p>
+              )}
               <Link
-                className="btn-primary mt-5 w-full"
-                href="/client-portal/support"
+                href="/client-portal/invoices"
+                className="btn-secondary mt-5 w-full"
               >
-                <LifeBuoy size={17} />
-                Contact support
+                View invoices
+                <ArrowRight size={15} />
               </Link>
             </div>
-          </aside>
-        </section>
+          </WorkspacePanel>
+          <WorkspacePanel
+            title="Support requests"
+            action={
+              <Link
+                href="/client-portal/support"
+                className="workspace-text-link"
+              >
+                View all
+              </Link>
+            }
+          >
+            {support.length ? (
+              support.slice(0, 3).map((request) => (
+                <div className="workspace-list-row" key={request.id}>
+                  <div>
+                    <p className="text-xs font-semibold">{request.subject}</p>
+                    <p className="mt-2 text-xs text-slate-500">
+                      {workspaceDate(request.createdAt)}
+                    </p>
+                  </div>
+                  <StatusBadge status={request.status} />
+                </div>
+              ))
+            ) : (
+              <div className="p-6">
+                <span className="workspace-icon" data-tone="green">
+                  <CheckCircle2 size={20} />
+                </span>
+                <h3 className="mt-4 text-sm font-semibold">No open requests</h3>
+                <p className="mt-2 text-xs leading-6 text-slate-500">
+                  Everything is clear. We’re here whenever you need a hand.
+                </p>
+              </div>
+            )}
+          </WorkspacePanel>
+          <div className="workspace-callout">
+            <p className="font-semibold">Working better, together.</p>
+            <p className="mt-1 text-xs">
+              Have feedback or a question? Your support workspace is the best
+              place to reach the team.
+            </p>
+          </div>
+        </div>
       </div>
     </main>
   );
-}
-
-function Metric({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: typeof FolderKanban;
-  label: string;
-  value: string | number;
-}) {
-  return (
-    <div className="portal-metric">
-      <Icon className="text-blue-600" size={20} />
-      <p className="portal-metric-value">{value}</p>
-      <p className="portal-metric-label">{label}</p>
-    </div>
-  );
-}
-
-function Empty({ text }: { text: string }) {
-  return <p className="portal-empty">{text}</p>;
-}
-
-function money(amount: number, currency: string) {
-  return `${currency} ${amount.toLocaleString("en-GH", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
-
-function date(value: Date) {
-  return value.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  });
 }
