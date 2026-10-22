@@ -17,7 +17,20 @@ Do not run `db push`, reset a live database, or blindly deploy these migrations 
 
 1. Back up the database and inspect `_prisma_migrations` and the live schema using read-only tools. `npm run migrations:preflight` reports known adoption requirements without changing records.
 2. This repository previously lacked an initial schema migration. `20260724000000_initial_schema` now supplies the historical core schema, including the authentication tables. On a genuinely empty database, replay all migrations normally. On an existing database, verify that the baseline's objects already exist and match before recording it as applied with `prisma migrate resolve --applied 20260724000000_initial_schema`. Do not execute the baseline SQL against existing tables.
-3. The password-reset migration has moved from `20261008230000_add_client_password_reset` to `20261008230100_add_client_password_reset`. Its SQL contents/checksum are unchanged; it now sorts after client-table creation. If the old name has never been recorded, no history repair is needed. If the old name is recorded, reconcile that migration history before deployment: verify its checksum against the unchanged SQL, verify whether the two reset columns actually exist, and rename the historical record to the corrected migration name in a reviewed maintenance transaction. Do not leave duplicate old/new history entries or edit checksums. For a failed attempt, first establish what SQL actually ran; after the name reconciliation use Prisma's rolled-back/applied resolution appropriate to that verified state. A failed migration is not evidence that its SQL was rolled back completely.
+3. The password-reset migration has moved from `20261008230000_add_client_password_reset` to `20261008230100_add_client_password_reset`. Its SQL contents/checksum are unchanged; it now sorts after client-table creation. For an existing database with the old reset migration successfully applied, verify that its recorded checksum matches the replacement file and both reset columns exist with the expected types. Then record the replacement as applied using `prisma migrate resolve --applied 20261008230100_add_client_password_reset`. This records a marker without executing the reset SQL. Keep the old record unchanged: do not rename it, edit its checksum, or delete it. The read-only preflight accepts retained legacy records once both the verified baseline and matching replacement markers exist. Failed migration records still block rollout and need separate investigation.
+
+### Verified existing-schema adoption
+
+Only use this path after a read-only `prisma migrate diff` confirms that the actual schema already matches the release schema except for `Client.inviteDeliveryStatus`, `AuthRateLimit`, `NotificationJob` and their indexes, and the legacy reset checksum matches the unchanged replacement file. Keep a database backup/recovery point before maintenance.
+
+```powershell
+npx prisma migrate resolve --applied 20260724000000_initial_schema
+npx prisma migrate resolve --applied 20261008230100_add_client_password_reset
+npm run migrations:preflight
+```
+
+These resolve commands write migration metadata; they do not run the SQL inside either migration. Once preflight passes, apply the remaining release migration with `npm run db:migrate:deploy`, then run `npm run db:verify`, `npx prisma migrate status`, and the read-only schema diff again. The final schema diff should be empty. Prisma 6 may report retained database-only historical entries while local changes are still pending; their retention is deliberate. Do not fabricate the missing original initialization SQL or its checksum. For future `migrate dev`/shadow-database workflows, use a fresh development database replayed from the canonical local history; the preserved production ledger contains legacy-only records.
+
 4. Then apply pending migrations, including `20261022090000_release_readiness`, to staging first. It creates `AuthRateLimit` and `NotificationJob` and adds invitation delivery state. Authentication now depends on these tables, so migrate before switching application traffic.
 5. Run `npm run db:verify` and `npm run db:status`. The database verifier reports inconsistent legacy invoices but does not change them. Reconcile those invoices with actual payment records in admin before approval.
 

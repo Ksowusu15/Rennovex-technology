@@ -27,7 +27,7 @@
     "smoke": "node scripts/smoke-check.mjs",
     "release:check": "npm run env:check && npm run typecheck && npm run test:forms && npm run test:security && npm run test:notifications && npm run test:readiness && npm audit --omit=dev && npm run migrations:preflight && npm run db:verify && npm run db:status && npm run build",
     "test:notifications": "node tests/team-notifications-check.cjs",
-    "test:readiness": "node tests/release-readiness-check.cjs && node tests/invitation-recovery-check.cjs",
+    "test:readiness": "node tests/release-readiness-check.cjs && node tests/invitation-recovery-check.cjs && node tests/migration-history-check.mjs",
     "test:database": "node tests/database-readiness-check.cjs",
     "migrations:preflight": "node scripts/migration-preflight.mjs"
   },

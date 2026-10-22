@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import { migrationHistoryBlockers } from '../scripts/migration-history.mjs';
+const checksum = 'verified-reset-checksum';
+const entry = (name, checksumValue = checksum) => ({ migration_name: name, checksum: checksumValue, finished_at: new Date(), rolled_back_at: null });
+const baseline = entry('20260724000000_initial_schema');
+const legacy = entry('20261008230000_add_client_password_reset');
+const replacement = entry('20261008230100_add_client_password_reset');
+const check = history => migrationHistoryBlockers({ hasUsers: true, history, resetChecksums: [checksum] });
+assert.equal(check([legacy]).length, 2);
+assert.equal(check([baseline, legacy]).length, 1);
+assert.deepEqual(check([baseline, legacy, replacement]), []);
+assert.deepEqual(check([baseline, replacement]), []);
+assert.equal(check([baseline, { ...legacy, checksum: 'different' }, replacement]).length, 1);
+assert.equal(check([baseline, legacy, { ...replacement, checksum: 'different' }]).length, 1);
+assert.equal(check([baseline, { ...legacy, finished_at: null }, replacement]).length, 2);
+assert.deepEqual(migrationHistoryBlockers({ hasUsers: false, history: [], resetChecksums: [checksum] }), []);
+assert.equal(legacy.migration_name, '20261008230000_add_client_password_reset');
+console.log('PASS: legacy migration records preserved; replacement checksum, baseline and failed-migration guards.');
+
+assert.deepEqual(migrationHistoryBlockers({ hasUsers: true, history: [baseline, legacy, { ...replacement, checksum: 'crlf-variant' }], resetChecksums: [checksum, 'crlf-variant'] }), []);
