@@ -63,13 +63,19 @@ export default async function ClientProjectsPage({
         title="My projects"
         description="Follow progress, review milestones and access everything the team has shared."
         actions={
-          <Link href="/client-portal/support" className="btn-secondary">
+          <Link
+            href="/client-portal/support"
+            className="btn-secondary"
+          >
             <LifeBuoy size={16} />
             Ask about a project
           </Link>
         }
       />
-      <nav className="workspace-tabs !mt-0" aria-label="Filter projects">
+      <nav
+        className="workspace-tabs !mt-0"
+        aria-label="Filter projects"
+      >
         {["all", "ongoing", "completed"].map((status) => (
           <Link
             href={`/client-portal/projects?status=${status}`}
@@ -135,7 +141,10 @@ export default async function ClientProjectsPage({
                   {project.milestones.length ? (
                     <div className="portal-milestones">
                       {project.milestones.map((milestone) => (
-                        <div className="portal-milestone" key={milestone.id}>
+                        <div
+                          className="portal-milestone"
+                          key={milestone.id}
+                        >
                           {milestone.completed ? (
                             <CheckCircle2
                               size={17}
@@ -181,7 +190,10 @@ export default async function ClientProjectsPage({
                             <ArrowUpRight size={15} />
                           </a>
                         ) : (
-                          <p key={file.id} className="portal-file">
+                          <p
+                            key={file.id}
+                            className="portal-file"
+                          >
                             {file.name} · Contact support for an updated link.
                           </p>
                         );
@@ -207,7 +219,10 @@ export default async function ClientProjectsPage({
             }
             description="Your project workspace will appear here once the team assigns your work."
             action={
-              <Link href="/client-portal/support" className="btn-secondary">
+              <Link
+                href="/client-portal/support"
+                className="btn-secondary"
+              >
                 Contact the team
                 <ArrowRight size={15} />
               </Link>

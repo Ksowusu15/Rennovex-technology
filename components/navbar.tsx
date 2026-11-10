@@ -223,7 +223,10 @@ function ServicesMegaMenu({ pathname }: { pathname: string }) {
           sm:top-16
         `}
       >
-        <span aria-hidden="true" className="absolute inset-x-0 -top-3 h-5" />
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 -top-3 h-5"
+        />
 
         <div
           className={`
@@ -296,7 +299,10 @@ function ServicesMegaMenu({ pathname }: { pathname: string }) {
                 View all services
               </Link>
 
-              <Link href="/contact" className="enterprise-btn-primary !px-4 !py-2.5">
+              <Link
+                href="/contact"
+                className="enterprise-btn-primary !px-4 !py-2.5"
+              >
                 Discuss a project
               </Link>
             </div>
@@ -725,7 +731,11 @@ export function Navbar() {
             aria-label="Primary navigation"
             className="hidden items-center gap-1 xl:flex"
           >
-            <NavLink label="Home" href="/" pathname={pathname} />
+            <NavLink
+              label="Home"
+              href="/"
+              pathname={pathname}
+            />
 
             <ServicesMegaMenu pathname={pathname} />
 
@@ -741,9 +751,17 @@ export function Navbar() {
               pathname={pathname}
             />
 
-            <NavLink label="Projects" href="/projects" pathname={pathname} />
+            <NavLink
+              label="Projects"
+              href="/projects"
+              pathname={pathname}
+            />
 
-            <NavLink label="Insights" href="/blog" pathname={pathname} />
+            <NavLink
+              label="Insights"
+              href="/blog"
+              pathname={pathname}
+            />
 
             <SimpleDesktopDropdown
               label="Resources"
@@ -764,7 +782,10 @@ export function Navbar() {
               Client Support
             </Link>
 
-            <Link href="/contact" className="enterprise-btn-primary !px-4 !py-2.5">
+            <Link
+              href="/contact"
+              className="enterprise-btn-primary !px-4 !py-2.5"
+            >
               Become a Client
             </Link>
           </div>

@@ -22,13 +22,23 @@ export default async function ClientPortalLayout({
     <div
       className={`workspace portal-workspace ${client ? "portal-authenticated" : "portal-public"}`}
     >
-      <a className="skip-link" href="#client-main">
+      <a
+        className="skip-link"
+        href="#client-main"
+      >
         Skip to main content
       </a>
       {client && (
-        <ClientPortalNav name={client.name} company={client.company} />
+        <ClientPortalNav
+          name={client.name}
+          company={client.company}
+        />
       )}
-      <div id="client-main" tabIndex={-1} className="portal-content">
+      <div
+        id="client-main"
+        tabIndex={-1}
+        className="portal-content"
+      >
         {children}
       </div>
     </div>

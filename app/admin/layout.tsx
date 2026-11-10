@@ -66,7 +66,10 @@ export default async function AdminLayout({
           failedEmails: 0,
         };
   return (
-    <AdminShell session={liveSession} notifications={notifications}>
+    <AdminShell
+      session={liveSession}
+      notifications={notifications}
+    >
       {children}
     </AdminShell>
   );

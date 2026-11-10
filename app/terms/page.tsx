@@ -18,13 +18,13 @@ export default function TermsPage() {
         </h1>
         <div className="mt-8 space-y-6 text-base leading-8 text-slate-600">
           <p>
-            Website information is provided for general business and informational
-            purposes. A formal proposal or signed agreement governs any paid
-            engagement.
+            Website information is provided for general business and
+            informational purposes. A formal proposal or signed agreement
+            governs any paid engagement.
           </p>
           <p>
-            Project scope, pricing, timelines, ownership, support, and payment terms
-            are confirmed separately for each client engagement.
+            Project scope, pricing, timelines, ownership, support, and payment
+            terms are confirmed separately for each client engagement.
           </p>
           <p>
             You may not misuse the website, attempt unauthorised access, submit

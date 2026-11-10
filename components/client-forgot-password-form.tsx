@@ -74,8 +74,8 @@ export function ClientForgotPasswordForm() {
           mt-3 text-sm leading-6 text-slate-600
         `}
       >
-        Enter your client email address. If an active account exists, we will send a
-        secure reset link that expires in 10 minutes.
+        Enter your client email address. If an active account exists, we will
+        send a secure reset link that expires in 10 minutes.
       </p>
 
       <label className="mt-7 block">
@@ -125,9 +125,15 @@ export function ClientForgotPasswordForm() {
         </p>
       )}
 
-      <button disabled={loading} className="btn-primary mt-6 w-full">
+      <button
+        disabled={loading}
+        className="btn-primary mt-6 w-full"
+      >
         {loading ? (
-          <Loader2 className="animate-spin" size={18} />
+          <Loader2
+            className="animate-spin"
+            size={18}
+          />
         ) : (
           <Send size={18} />
         )}

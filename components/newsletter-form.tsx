@@ -40,7 +40,11 @@ export function NewsletterForm() {
   }
 
   return (
-    <form onSubmit={submit} className="mt-4" aria-busy={loading}>
+    <form
+      onSubmit={submit}
+      className="mt-4"
+      aria-busy={loading}
+    >
       <div className="flex gap-2">
         <label className="min-w-0 flex-1">
           <span className="sr-only">Email address for newsletter updates</span>
@@ -64,9 +68,16 @@ export function NewsletterForm() {
           aria-label={loading ? "Subscribing" : "Subscribe to newsletter"}
         >
           {loading ? (
-            <Loader2 className="animate-spin" size={18} aria-hidden="true" />
+            <Loader2
+              className="animate-spin"
+              size={18}
+              aria-hidden="true"
+            />
           ) : (
-            <Mail size={18} aria-hidden="true" />
+            <Mail
+              size={18}
+              aria-hidden="true"
+            />
           )}
         </button>
       </div>

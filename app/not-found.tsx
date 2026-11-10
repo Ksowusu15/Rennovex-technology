@@ -10,7 +10,10 @@ export default function NotFound() {
       <p className="mt-4 text-slate-600">
         This page may have moved or no longer exists.
       </p>
-      <Link href="/" className="btn-primary mt-7">
+      <Link
+        href="/"
+        className="btn-primary mt-7"
+      >
         Return to website
       </Link>
     </main>

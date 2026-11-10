@@ -79,7 +79,9 @@ export function ConsultationBookingForm() {
       });
       const result = await response.json();
       if (!response.ok) {
-        throw new Error(result.error || "Unable to send your request. Try again.");
+        throw new Error(
+          result.error || "Unable to send your request. Try again.",
+        );
       }
       setReference(result.reference || "");
       setState("success");
@@ -114,7 +116,10 @@ export function ConsultationBookingForm() {
             Your reference: <strong>{reference}</strong>
           </p>
         )}
-        <a href="/" className="enterprise-btn-primary mt-6 justify-center">
+        <a
+          href="/"
+          className="enterprise-btn-primary mt-6 justify-center"
+        >
           Return to website
           <ArrowRight size={17} />
         </a>
@@ -142,7 +147,10 @@ export function ConsultationBookingForm() {
         </p>
       </div>
 
-      <fieldset disabled={state === "loading"} className="min-w-0 space-y-5">
+      <fieldset
+        disabled={state === "loading"}
+        className="min-w-0 space-y-5"
+      >
         <legend className="sr-only">Consultation details</legend>
         <label className={labelClass}>
           Full name <span className="sr-only">(required)</span>
@@ -173,18 +181,33 @@ export function ConsultationBookingForm() {
         </label>
         <label className={labelClass}>
           What do you need help with?
-          <select className="field" name="service" defaultValue="">
+          <select
+            className="field"
+            name="service"
+            defaultValue=""
+          >
             <option value="">Not sure yet, let’s discuss</option>
             {services.map((service) => (
-              <option key={service} value={service}>{service}</option>
+              <option
+                key={service}
+                value={service}
+              >
+                {service}
+              </option>
             ))}
           </select>
         </label>
 
         <div className="border-t border-slate-100 pt-5">
-          <h3 className="text-sm font-bold text-slate-950">Your preferred time</h3>
-          <p id="consultation-time-help" className="mt-1 text-xs leading-5 text-slate-500">
-            Times are in {timeZone}. Choose a time and we’ll confirm availability.
+          <h3 className="text-sm font-bold text-slate-950">
+            Your preferred time
+          </h3>
+          <p
+            id="consultation-time-help"
+            className="mt-1 text-xs leading-5 text-slate-500"
+          >
+            Times are in {timeZone}. Choose a time and we’ll confirm
+            availability.
           </p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <label className={labelClass}>
@@ -213,7 +236,11 @@ export function ConsultationBookingForm() {
               />
             </label>
           </div>
-          <p id="consultation-date-error" role="alert" className="mt-2 text-sm text-red-700">
+          <p
+            id="consultation-date-error"
+            role="alert"
+            className="mt-2 text-sm text-red-700"
+          >
             {dateError}
           </p>
         </div>
@@ -272,7 +299,10 @@ export function ConsultationBookingForm() {
       >
         {state === "loading" ? (
           <>
-            <LoaderCircle size={18} className="animate-spin" />
+            <LoaderCircle
+              size={18}
+              className="animate-spin"
+            />
             Sending request…
           </>
         ) : (

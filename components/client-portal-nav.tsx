@@ -36,14 +36,20 @@ export function ClientPortalNav({
 }) {
   const pathname = usePathname();
   const navigation = (
-    <nav className="portal-navigation" aria-label="Client workspace">
+    <nav
+      className="portal-navigation"
+      aria-label="Client workspace"
+    >
       {portalLinks.map(({ href, label, icon: Icon }) => (
         <Link
           href={href}
           key={href}
           aria-current={pathname.startsWith(href) ? "page" : undefined}
         >
-          <Icon size={18} aria-hidden="true" />
+          <Icon
+            size={18}
+            aria-hidden="true"
+          />
           <span>{label}</span>
         </Link>
       ))}
@@ -81,12 +87,21 @@ export function ClientPortalNav({
           </Link>
         </div>
         <div className="portal-sidebar-bottom">
-          <Link href="/" className="portal-sidebar-website">
+          <Link
+            href="/"
+            className="portal-sidebar-website"
+          >
             Return to website
             <ArrowUpRight size={15} />
           </Link>
-          <form action="/api/client-auth/logout" method="post">
-            <button className="portal-sidebar-signout" type="submit">
+          <form
+            action="/api/client-auth/logout"
+            method="post"
+          >
+            <button
+              className="portal-sidebar-signout"
+              type="submit"
+            >
               <LogOut size={16} />
               Sign out
             </button>
@@ -115,7 +130,10 @@ export function ClientPortalNav({
             <strong>{name}</strong>
             <p>{company || "Rennovex client"}</p>
           </div>
-          <form action="/api/client-auth/logout" method="post">
+          <form
+            action="/api/client-auth/logout"
+            method="post"
+          >
             <button
               className="portal-mobile-signout"
               type="submit"

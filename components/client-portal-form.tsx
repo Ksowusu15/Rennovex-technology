@@ -40,7 +40,11 @@ export function ClientPortalForm() {
   }
   return (
     <div className="surface mx-auto w-full max-w-2xl p-4 sm:p-6 lg:p-7 xl:max-w-none">
-      <form onSubmit={submit} aria-busy={loading} className="space-y-4">
+      <form
+        onSubmit={submit}
+        aria-busy={loading}
+        className="space-y-4"
+      >
         <label className="label">
           Reference number
           <input
@@ -60,9 +64,15 @@ export function ClientPortalForm() {
             required
           />
         </label>
-        <button className="btn-primary w-full" disabled={loading}>
+        <button
+          className="btn-primary w-full"
+          disabled={loading}
+        >
           {loading ? (
-            <Loader2 className="animate-spin" size={17} />
+            <Loader2
+              className="animate-spin"
+              size={17}
+            />
           ) : (
             <Search size={17} />
           )}
@@ -87,11 +97,15 @@ export function ClientPortalForm() {
             </div>
             <div>
               <dt className="text-emerald-700">Status</dt>
-              <dd className="font-semibold text-emerald-950">{result.status}</dd>
+              <dd className="font-semibold text-emerald-950">
+                {result.status}
+              </dd>
             </div>
             <div>
               <dt className="text-emerald-700">Reference</dt>
-              <dd className="font-semibold text-emerald-950">{result.reference}</dd>
+              <dd className="font-semibold text-emerald-950">
+                {result.reference}
+              </dd>
             </div>
             <div>
               <dt className="text-emerald-700">Service</dt>

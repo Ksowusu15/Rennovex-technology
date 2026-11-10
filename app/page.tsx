@@ -15,7 +15,11 @@ import {
 } from "lucide-react";
 
 import { Hero } from "@/components/hero";
-import { MotionItem, MotionReveal, MotionStagger } from "@/components/motion-reveal";
+import {
+  MotionItem,
+  MotionReveal,
+  MotionStagger,
+} from "@/components/motion-reveal";
 import { prisma } from "@/lib/prisma";
 import { safePublicQuery } from "@/lib/db-resilience";
 
@@ -134,7 +138,10 @@ export default async function HomePage() {
                   "bg-white px-4 py-2 shadow-sm",
                 ].join(" ")}
               >
-                <Sparkles size={14} className="text-blue-600" />
+                <Sparkles
+                  size={14}
+                  className="text-blue-600"
+                />
                 <span className="text-[10px] font-extrabold uppercase tracking-[.24em] text-blue-700">
                   Organizations & Businesses We’ve Worked With
                 </span>
@@ -230,10 +237,10 @@ export default async function HomePage() {
             </h2>
 
             <p className="mt-6 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
-              We are a digital solutions company passionate about helping businesses
-              unlock their potential through technology, creativity, and strategy.
-              From startups to established enterprises, we build solutions that make
-              a real impact.
+              We are a digital solutions company passionate about helping
+              businesses unlock their potential through technology, creativity,
+              and strategy. From startups to established enterprises, we build
+              solutions that make a real impact.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2.5">
@@ -254,7 +261,10 @@ export default async function HomePage() {
               ))}
             </div>
 
-            <Link href="/about" className="brand-btn-primary mt-7">
+            <Link
+              href="/about"
+              className="brand-btn-primary mt-7"
+            >
               Learn More About Us
               <ArrowRight size={17} />
             </Link>
@@ -306,10 +316,17 @@ export default async function HomePage() {
                   "min-[480px]:border-r sm:gap-4 sm:p-5 lg:border-b-0",
                 ].join(" ")}
               >
-                <Icon className="text-blue-600" size={28} />
+                <Icon
+                  className="text-blue-600"
+                  size={28}
+                />
                 <div>
-                  <p className="text-2xl font-extrabold text-[#071d49]">{value}</p>
-                  <p className="text-xs font-semibold text-slate-500">{label}</p>
+                  <p className="text-2xl font-extrabold text-[#071d49]">
+                    {value}
+                  </p>
+                  <p className="text-xs font-semibold text-slate-500">
+                    {label}
+                  </p>
                 </div>
               </div>
             ))}
@@ -428,8 +445,8 @@ export default async function HomePage() {
             </div>
             <div className="lg:justify-self-end">
               <p className="max-w-md text-sm leading-7 text-slate-500">
-                A closer look at digital products and experiences designed to solve
-                real problems and create measurable value.
+                A closer look at digital products and experiences designed to
+                solve real problems and create measurable value.
               </p>
               <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
                 <Link
@@ -488,7 +505,10 @@ export default async function HomePage() {
             )
               .slice(0, 3)
               .map((project: any) => (
-                <MotionItem key={project.id} className="h-full">
+                <MotionItem
+                  key={project.id}
+                  className="h-full"
+                >
                   <Link
                     href={
                       caseStudySlugs.has(project.slug)
@@ -531,7 +551,10 @@ export default async function HomePage() {
 `}
                         >
                           <div className="absolute inset-0 grid place-items-center">
-                            <Code2 size={56} className="text-white/35" />
+                            <Code2
+                              size={56}
+                              className="text-white/35"
+                            />
                           </div>
                         </div>
                       )}
@@ -633,7 +656,9 @@ export default async function HomePage() {
                     <Icon size={23} />
                   </span>
                   <h3 className="mt-4 font-bold text-[#071d49]">{title}</h3>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">{text}</p>
+                  <p className="mt-2 text-xs leading-5 text-slate-500">
+                    {text}
+                  </p>
                 </div>
               </MotionItem>
             ))}
@@ -670,7 +695,9 @@ export default async function HomePage() {
                     )}
                   </div>
                   <div>
-                    <p className="font-bold text-[#071d49]">{testimonial.name}</p>
+                    <p className="font-bold text-[#071d49]">
+                      {testimonial.name}
+                    </p>
                     <p className="text-xs text-slate-500">{testimonial.role}</p>
                     <p className="mt-1 text-amber-400">
                       {"★".repeat(testimonial.rating)}
@@ -705,8 +732,8 @@ export default async function HomePage() {
               <span className="text-cyan-300">What’s Next.</span>
             </h2>
             <p className="mt-2 text-sm text-blue-100">
-              Turn your next technology or creative idea into something people can
-              experience.
+              Turn your next technology or creative idea into something people
+              can experience.
             </p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">

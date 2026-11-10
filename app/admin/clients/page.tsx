@@ -112,7 +112,10 @@ export default async function AdminClientsPage({
           title="Clients"
           description="A considered home for every client relationship, project and conversation."
           actions={
-            <Link href="#invite-client" className="btn-primary">
+            <Link
+              href="#invite-client"
+              className="btn-primary"
+            >
               <Plus size={17} />
               Invite a client
             </Link>
@@ -149,7 +152,10 @@ export default async function AdminClientsPage({
           />
         </div>
       </div>
-      <section className="workspace-panel" aria-label="Client directory">
+      <section
+        className="workspace-panel"
+        aria-label="Client directory"
+      >
         <div className="workspace-panel-heading">
           <div>
             <h2>Client directory</h2>
@@ -160,7 +166,11 @@ export default async function AdminClientsPage({
           </div>
           <span className="workspace-badge">{total} total</span>
         </div>
-        <form method="get" className="workspace-toolbar" role="search">
+        <form
+          method="get"
+          className="workspace-toolbar"
+          role="search"
+        >
           <label className="workspace-search">
             <span className="sr-only">
               Search clients by name, email or company
@@ -175,7 +185,11 @@ export default async function AdminClientsPage({
           </label>
           <label>
             <span className="sr-only">Filter clients by status</span>
-            <select name="status" className="field" defaultValue={status}>
+            <select
+              name="status"
+              className="field"
+              defaultValue={status}
+            >
               <option value="all">All clients</option>
               <option value="active">Active accounts</option>
               <option value="invited">Awaiting activation</option>
@@ -185,7 +199,10 @@ export default async function AdminClientsPage({
           </label>
           <button className="btn-secondary">Apply filters</button>
           {(query || status !== "all") && (
-            <Link href="/admin/clients" className="workspace-text-link">
+            <Link
+              href="/admin/clients"
+              className="workspace-text-link"
+            >
               Clear
             </Link>
           )}
@@ -253,7 +270,10 @@ export default async function AdminClientsPage({
                     </td>
                     <td>
                       {client._count.supportRequests ? (
-                        <span className="workspace-badge" data-tone="warning">
+                        <span
+                          className="workspace-badge"
+                          data-tone="warning"
+                        >
                           {client._count.supportRequests} open
                         </span>
                       ) : (
@@ -308,7 +328,10 @@ export default async function AdminClientsPage({
           </span>
           <nav aria-label="Client directory pages">
             {page > 1 ? (
-              <Link className="btn-secondary" href={pageHref(page - 1)}>
+              <Link
+                className="btn-secondary"
+                href={pageHref(page - 1)}
+              >
                 <ChevronLeft size={15} />
                 Previous
               </Link>
@@ -319,7 +342,10 @@ export default async function AdminClientsPage({
               Page {page} of {pageCount}
             </span>
             {page < pageCount ? (
-              <Link className="btn-secondary" href={pageHref(page + 1)}>
+              <Link
+                className="btn-secondary"
+                href={pageHref(page + 1)}
+              >
                 Next
                 <ChevronRight size={15} />
               </Link>
@@ -330,12 +356,18 @@ export default async function AdminClientsPage({
         </div>
       </section>
       <div className="admin-client-forms">
-        <WorkspaceDisclosure id="invite-client" defaultOpen={total === 0}>
+        <WorkspaceDisclosure
+          id="invite-client"
+          defaultOpen={total === 0}
+        >
           <summary>
             <UserPlus size={18} />
             Invite a client<span className="ml-auto text-blue-600">+</span>
           </summary>
-          <form action={createClient} className="workspace-form-section">
+          <form
+            action={createClient}
+            className="workspace-form-section"
+          >
             <p className="mb-5 text-sm leading-6 text-slate-500">
               Create their account and email a private invitation to choose a
               password.
@@ -395,17 +427,27 @@ export default async function AdminClientsPage({
             <FolderKanban size={18} />
             Assign a project<span className="ml-auto text-blue-600">+</span>
           </summary>
-          <form action={createClientProject} className="workspace-form-section">
+          <form
+            action={createClientProject}
+            className="workspace-form-section"
+          >
             <p className="mb-5 text-sm leading-6 text-slate-500">
               Give a client visibility into a new piece of work.
             </p>
             <div className="workspace-form-grid">
               <label className="label">
                 Client
-                <select className="field" name="clientId" required>
+                <select
+                  className="field"
+                  name="clientId"
+                  required
+                >
                   <option value="">Choose a client</option>
                   {assignable.map((client) => (
-                    <option key={client.id} value={client.id}>
+                    <option
+                      key={client.id}
+                      value={client.id}
+                    >
                       {client.name}
                       {client.company ? ` · ${client.company}` : ""}
                     </option>
@@ -431,10 +473,17 @@ export default async function AdminClientsPage({
               </label>
               <label className="label">
                 Target completion
-                <input className="field" name="dueDate" type="date" />
+                <input
+                  className="field"
+                  name="dueDate"
+                  type="date"
+                />
               </label>
             </div>
-            <button className="btn-primary mt-6" disabled={!assignable.length}>
+            <button
+              className="btn-primary mt-6"
+              disabled={!assignable.length}
+            >
               <Plus size={16} />
               Assign project
             </button>

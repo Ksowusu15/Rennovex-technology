@@ -10,14 +10,9 @@ import {
   Palette,
   ServerCog,
 } from "lucide-react";
-import {
-  motion,
-  useReducedMotion,
-} from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
-import type {
-  PricingService,
-} from "@/lib/pricing-data";
+import type { PricingService } from "@/lib/pricing-data";
 
 export const pricingCategories = [
   {
@@ -60,8 +55,7 @@ export function PricingCategory({
   currentHref,
   showExplore = true,
 }: PricingCategoryProps) {
-  const reduceMotion =
-    useReducedMotion();
+  const reduceMotion = useReducedMotion();
 
   const enter = reduceMotion
     ? {}
@@ -133,52 +127,44 @@ export function PricingCategory({
 
       <div className="container-shell py-14 sm:py-18 lg:py-20">
         <div className="space-y-20 lg:space-y-24">
-          {services.map(
-            (
-              group,
-              groupIndex,
-            ) => (
-              <motion.section
-                key={group.service}
-                id={group.slug}
-                className="scroll-mt-28"
-                {...enter}
-                transition={{
-                  duration: 0.55,
-                  delay: Math.min(
-                    groupIndex * 0.06,
-                    0.18,
-                  ),
-                }}
-              >
-                <div className="mb-8 max-w-2xl sm:mb-9">
-                  <p
-                    className={`
+          {services.map((group, groupIndex) => (
+            <motion.section
+              key={group.service}
+              id={group.slug}
+              className="scroll-mt-28"
+              {...enter}
+              transition={{
+                duration: 0.55,
+                delay: Math.min(groupIndex * 0.06, 0.18),
+              }}
+            >
+              <div className="mb-8 max-w-2xl sm:mb-9">
+                <p
+                  className={`
                       text-xs font-extrabold uppercase tracking-[.22em]
                       text-blue-600
                     `}
-                  >
-                    Rennovex package pricing
-                  </p>
+                >
+                  Rennovex package pricing
+                </p>
 
-                  <h2
-                    className={`
+                <h2
+                  className={`
                       mt-3 text-3xl font-black tracking-[-.035em]
                       text-[#071d49] sm:text-4xl
                     `}
-                  >
-                    {group.service}
-                  </h2>
+                >
+                  {group.service}
+                </h2>
 
-                  <p className="mt-3 leading-7 text-slate-600">
-                    {group.description}
-                  </p>
-                </div>
+                <p className="mt-3 leading-7 text-slate-600">
+                  {group.description}
+                </p>
+              </div>
 
-                <PricingPlanCards group={group} />
-              </motion.section>
-            ),
-          )}
+              <PricingPlanCards group={group} />
+            </motion.section>
+          ))}
         </div>
 
         {showExplore && (
@@ -211,50 +197,40 @@ export function PricingCategory({
 
             <div className="mt-8 grid gap-5 md:grid-cols-2">
               {pricingCategories
-                .filter(
-                  (item) =>
-                    item.href !==
-                    currentHref,
-                )
-                .map(
-                  (
-                    item,
-                    index,
-                  ) => {
-                    const Icon =
-                      item.icon;
+                .filter((item) => item.href !== currentHref)
+                .map((item, index) => {
+                  const Icon = item.icon;
 
-                    return (
-                      <motion.div
-                        key={item.href}
-                        initial={
-                          reduceMotion
-                            ? false
-                            : {
-                                opacity: 0,
-                                y: 18,
-                              }
-                        }
-                        whileInView={
-                          reduceMotion
-                            ? {}
-                            : {
-                                opacity: 1,
-                                y: 0,
-                              }
-                        }
-                        viewport={{
-                          once: true,
-                        }}
-                        transition={{
-                          duration: 0.4,
-                          delay:
-                            index * 0.08,
-                        }}
-                      >
-                        <Link
-                          href={item.href}
-                          className={`
+                  return (
+                    <motion.div
+                      key={item.href}
+                      initial={
+                        reduceMotion
+                          ? false
+                          : {
+                              opacity: 0,
+                              y: 18,
+                            }
+                      }
+                      whileInView={
+                        reduceMotion
+                          ? {}
+                          : {
+                              opacity: 1,
+                              y: 0,
+                            }
+                      }
+                      viewport={{
+                        once: true,
+                      }}
+                      transition={{
+                        duration: 0.4,
+                        delay: index * 0.08,
+                      }}
+                    >
+                      <Link
+                        href={item.href}
+                        className={`
                             group flex h-full flex-col rounded-[1.5rem]
                             border border-slate-200 bg-slate-50 p-6 shadow-sm
                             transition duration-300 hover:-translate-y-1
@@ -262,52 +238,51 @@ export function PricingCategory({
                             hover:shadow-[0_18px_50px_rgba(15,23,42,.10)]
                             sm:p-7
                           `}
-                        >
-                          <span
-                            className={`
+                      >
+                        <span
+                          className={`
                               grid h-12 w-12 place-items-center rounded-xl
                               bg-blue-100 text-blue-700 transition
                               group-hover:bg-blue-600 group-hover:text-white
                             `}
-                          >
-                            <Icon size={22} />
-                          </span>
+                        >
+                          <Icon size={22} />
+                        </span>
 
-                          <h3
-                            className={`
+                        <h3
+                          className={`
                               mt-5 text-xl font-black text-[#071d49]
                             `}
-                          >
-                            {item.title}
-                          </h3>
+                        >
+                          {item.title}
+                        </h3>
 
-                          <p
-                            className={`
+                        <p
+                          className={`
                               mt-2 flex-1 text-sm leading-6 text-slate-600
                             `}
-                          >
-                            {item.description}
-                          </p>
+                        >
+                          {item.description}
+                        </p>
 
-                          <span
-                            className={`
+                        <span
+                          className={`
                               mt-5 inline-flex items-center gap-2 text-sm
                               font-extrabold text-blue-700
                             `}
-                          >
-                            See Pricing
-                            <ArrowRight
-                              size={16}
-                              className={`
+                        >
+                          See Pricing
+                          <ArrowRight
+                            size={16}
+                            className={`
                                 transition-transform group-hover:translate-x-1
                               `}
-                            />
-                          </span>
-                        </Link>
-                      </motion.div>
-                    );
-                  },
-                )}
+                          />
+                        </span>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
             </div>
 
             <Link
@@ -345,8 +320,8 @@ export function PricingCategory({
               mx-auto mt-3 max-w-2xl leading-7 text-slate-600
             `}
           >
-            Every project is different. Tell us what you are building or book
-            a consultation and we will recommend the right scope.
+            Every project is different. Tell us what you are building or book a
+            consultation and we will recommend the right scope.
           </p>
 
           <div
@@ -368,9 +343,7 @@ export function PricingCategory({
             >
               Book a Consultation
             </Link>
-            <WhatsAppLink
-              message="Hello Rennovex Technology, I would like help choosing a project package."
-            />
+            <WhatsAppLink message="Hello Rennovex Technology, I would like help choosing a project package." />
           </div>
         </section>
       </div>

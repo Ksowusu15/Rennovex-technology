@@ -80,14 +80,18 @@ export function ContactForm() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error ?? "Unable to send message. Please try again.");
+        throw new Error(
+          data.error ?? "Unable to send message. Please try again.",
+        );
       }
 
       formElement.reset();
       setState("success");
     } catch (error) {
       console.error("Contact form submission failed:", error);
-      setErrorMessage(error instanceof Error ? error.message : "Please try again.");
+      setErrorMessage(
+        error instanceof Error ? error.message : "Please try again.",
+      );
       setState("error");
     }
   }
@@ -132,8 +136,8 @@ export function ContactForm() {
               leading-5 text-slate-600
             `}
           >
-            We have prepared the message below. Add your details or replace it with
-            your own message if you prefer.
+            We have prepared the message below. Add your details or replace it
+            with your own message if you prefer.
           </p>
         </div>
       )}
@@ -189,12 +193,18 @@ export function ContactForm() {
             }
             disabled={state === "loading"}
           >
-            <option value="" disabled>
+            <option
+              value=""
+              disabled
+            >
               Select a service
             </option>
 
             {services.map((service) => (
-              <option key={service} value={service}>
+              <option
+                key={service}
+                value={service}
+              >
                 {service}
               </option>
             ))}
@@ -232,23 +242,36 @@ export function ContactForm() {
       >
         {state === "loading" ? (
           <>
-            <LoaderCircle className="animate-spin" size={18} aria-hidden="true" />
+            <LoaderCircle
+              className="animate-spin"
+              size={18}
+              aria-hidden="true"
+            />
             Sending message...
           </>
         ) : state === "success" ? (
           <>
-            <CheckCircle2 size={18} aria-hidden="true" />
+            <CheckCircle2
+              size={18}
+              aria-hidden="true"
+            />
             Message sent
           </>
         ) : (
           <>
             Send Message
-            <Send size={17} aria-hidden="true" />
+            <Send
+              size={17}
+              aria-hidden="true"
+            />
           </>
         )}
       </button>
 
-      <div aria-live="polite" aria-atomic="true">
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {state === "success" && (
           <div
             className={`
@@ -259,7 +282,10 @@ export function ContactForm() {
               text-sm text-emerald-800
             `}
           >
-            <CheckCircle2 className="mt-0.5 shrink-0" size={19} />
+            <CheckCircle2
+              className="mt-0.5 shrink-0"
+              size={19}
+            />
 
             <div>
               <p className="font-semibold">Message sent successfully</p>

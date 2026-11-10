@@ -104,7 +104,10 @@ export default async function CaseStudyPage({
 
             <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-sm">
               <div className="flex items-center gap-2 text-sm font-bold text-[#071d49]">
-                <Layers3 size={17} className="text-blue-600" />
+                <Layers3
+                  size={17}
+                  className="text-blue-600"
+                />
                 Technology used
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -220,8 +223,8 @@ export default async function CaseStudyPage({
               Have a similar project in mind?
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-blue-100">
-              Tell us what you are trying to build. We will help you shape the right
-              approach, scope and next steps.
+              Tell us what you are trying to build. We will help you shape the
+              right approach, scope and next steps.
             </p>
           </div>
 

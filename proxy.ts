@@ -37,14 +37,18 @@ export default async function proxy(request: NextRequest) {
       pathname.startsWith("/admin/activity")
     ) {
       if (payload.role !== "SUPER_ADMIN")
-        return NextResponse.redirect(new URL("/admin?error=forbidden", request.url));
+        return NextResponse.redirect(
+          new URL("/admin?error=forbidden", request.url),
+        );
     }
     if (
       (pathname.startsWith("/admin/settings") ||
         pathname.startsWith("/admin/messages")) &&
       !["SUPER_ADMIN", "ADMIN"].includes(String(payload.role))
     ) {
-      return NextResponse.redirect(new URL("/admin?error=forbidden", request.url));
+      return NextResponse.redirect(
+        new URL("/admin?error=forbidden", request.url),
+      );
     }
     return NextResponse.next();
   } catch {

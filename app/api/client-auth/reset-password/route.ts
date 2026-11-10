@@ -35,7 +35,8 @@ export async function POST(request: Request) {
     if (!client) {
       return NextResponse.json(
         {
-          error: "This reset link is invalid, expired, or has already been used.",
+          error:
+            "This reset link is invalid, expired, or has already been used.",
         },
         { status: 400 },
       );
@@ -79,7 +80,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       {
-        error: "Unable to reset the password right now. Please request a new link.",
+        error:
+          "Unable to reset the password right now. Please request a new link.",
       },
       { status: 500 },
     );

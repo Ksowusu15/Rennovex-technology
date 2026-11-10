@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
+  ChartNoAxesCombined,
   ArrowUpRight,
   BookOpenText,
   BriefcaseBusiness,
@@ -56,6 +57,12 @@ const groups: { label: string; items: NavItem[] }[] = [
     label: "Workspace",
     items: [
       { label: "Overview", href: "/admin", icon: LayoutDashboard },
+      {
+        label: "Website Analytics",
+        href: "/admin/analytics",
+        icon: ChartNoAxesCombined,
+        roles: managers,
+      },
       {
         label: "Clients",
         href: "/admin/clients",
@@ -173,7 +180,10 @@ function Navigation({
     )
     .sort((a, b) => b.href.length - a.href.length)[0]?.href;
   return (
-    <nav aria-label="Admin navigation" className="admin-navigation">
+    <nav
+      aria-label="Admin navigation"
+      className="admin-navigation"
+    >
       {groups.map((group) => {
         const items = group.items.filter(
           (item) =>
@@ -181,7 +191,10 @@ function Navigation({
         );
         if (!items.length) return null;
         return (
-          <div className="admin-nav-group" key={group.label}>
+          <div
+            className="admin-nav-group"
+            key={group.label}
+          >
             <p>{group.label}</p>
             {items.map(({ icon: Icon, label, href, count }) => (
               <Link
@@ -191,7 +204,10 @@ function Navigation({
                 aria-current={activeHref === href ? "page" : undefined}
                 className="admin-nav-link"
               >
-                <Icon size={18} aria-hidden="true" />
+                <Icon
+                  size={18}
+                  aria-hidden="true"
+                />
                 <span>{label}</span>
                 {count &&
                   !notifications.unavailable &&
@@ -276,13 +292,19 @@ export function AdminShell({
         </div>
       </div>
       <div className="admin-sidebar-logout">
-        <LogoutButton compact onBeforeLogout={() => drawer.current?.close()} />
+        <LogoutButton
+          compact
+          onBeforeLogout={() => drawer.current?.close()}
+        />
       </div>
     </>
   );
   return (
     <div className="workspace admin-workspace">
-      <a className="skip-link" href="#admin-main">
+      <a
+        className="skip-link"
+        href="#admin-main"
+      >
         Skip to main content
       </a>
       <aside className="admin-sidebar">{sidebar}</aside>
@@ -299,7 +321,10 @@ export function AdminShell({
               <Menu size={20} />
             </button>
             <span className="admin-breadcrumb-root">Workspace</span>
-            <ChevronRight size={14} aria-hidden="true" />
+            <ChevronRight
+              size={14}
+              aria-hidden="true"
+            />
             <span>{current?.label || "Overview"}</span>
           </div>
           <div className="admin-topbar-actions">
@@ -312,12 +337,19 @@ export function AdminShell({
               aria-label="Return to website"
             >
               <span>View website</span>
-              <ArrowUpRight size={17} aria-hidden="true" />
+              <ArrowUpRight
+                size={17}
+                aria-hidden="true"
+              />
             </Link>
             {session && <AdminProfileMenu session={session} />}
           </div>
         </header>
-        <main id="admin-main" tabIndex={-1} className="admin-main">
+        <main
+          id="admin-main"
+          tabIndex={-1}
+          className="admin-main"
+        >
           {children}
         </main>
         <footer className="admin-canvas-footer">

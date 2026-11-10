@@ -36,8 +36,8 @@ export default function BookConsultationPage() {
               A clearer next step for your project.
             </h1>
             <p className="mt-5 max-w-lg text-base leading-7 text-slate-600">
-              Tell us what you have in mind and choose a time that works for you.
-              We’ll get in touch to confirm the consultation.
+              Tell us what you have in mind and choose a time that works for
+              you. We’ll get in touch to confirm the consultation.
             </p>
 
             <div className="mt-7 hidden lg:block">
@@ -46,7 +46,10 @@ export default function BookConsultationPage() {
               </h2>
               <ol className="mt-4 space-y-5">
                 {nextSteps.map((step, index) => (
-                  <li key={step} className="flex items-start gap-3">
+                  <li
+                    key={step}
+                    className="flex items-start gap-3"
+                  >
                     <span
                       className={`
                         grid h-7 w-7 shrink-0 place-items-center rounded-full
@@ -64,14 +67,20 @@ export default function BookConsultationPage() {
             </div>
 
             <div className="mt-8 hidden rounded-2xl border border-slate-200 bg-white p-5 lg:block">
-              <MessagesSquare size={22} className="text-green-800" />
+              <MessagesSquare
+                size={22}
+                className="text-green-800"
+              />
               <h2 className="mt-3 font-bold text-slate-950">
                 Prefer to chat first?
               </h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Ask a question or tell us about your idea on WhatsApp.
               </p>
-              <WhatsAppLink compact className="mt-4 min-h-11" />
+              <WhatsAppLink
+                compact
+                className="mt-4 min-h-11"
+              />
             </div>
           </div>
 

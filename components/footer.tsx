@@ -14,9 +14,7 @@ import {
   Twitter,
   Youtube,
 } from "lucide-react";
-import { useEffect, 
-  useMemo, 
-  useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { SiteLogo } from "@/components/site-logo";
 
@@ -33,7 +31,6 @@ type PublicSiteSettings = {
   tiktokUrl?: string | null;
   youtubeUrl?: string | null;
 };
-
 
 const footerLinkClass =
   "group relative w-fit py-1 transition-all duration-300 ease-out hover:translate-x-1 hover:text-blue-700";
@@ -88,10 +85,7 @@ export function Footer() {
           ...data,
         }));
       } catch (error) {
-        if (
-          error instanceof DOMException &&
-          error.name === "AbortError"
-        ) {
+        if (error instanceof DOMException && error.name === "AbortError") {
           return;
         }
 
@@ -151,16 +145,11 @@ export function Footer() {
     [settings],
   );
 
-  const companyName =
-    settings.companyName?.trim() 
-      || "Rennovex Technology";
+  const companyName = settings.companyName?.trim() || "Rennovex Technology";
   const contactEmail =
-    settings.contactEmail?.trim() ||
-    "rennovextechnology@gmail.com";
-  const phone = settings.phone?.trim() 
-    || "+233 55 425 0225";
-  const address = settings.address?.trim() 
-    || "Accra, Ghana";
+    settings.contactEmail?.trim() || "rennovextechnology@gmail.com";
+  const phone = settings.phone?.trim() || "+233 55 425 0225";
+  const address = settings.address?.trim() || "Accra, Ghana";
 
   return (
     <footer className="border-t border-slate-200 bg-white text-slate-700">
@@ -205,24 +194,16 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-[#071d49]">
-              Quick Links
-            </h3>
+            <h3 className="font-bold text-[#071d49]">Quick Links</h3>
 
             <div className="mt-4 grid gap-2 text-sm text-slate-500">
               {[
-                ["Home", 
-                  "/"],
-                ["About", 
-                  "/about"],
-                ["Services", 
-                  "/services"],
-                ["Projects", 
-                  "/projects"],
-                ["Insights", 
-                  "/blog"],
-                ["Contact", 
-                  "/contact"],
+                ["Home", "/"],
+                ["About", "/about"],
+                ["Services", "/services"],
+                ["Projects", "/projects"],
+                ["Insights", "/blog"],
+                ["Contact", "/contact"],
               ].map(([label, href]) => (
                 <Link
                   key={href}
@@ -237,25 +218,21 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-bold text-[#071d49]">
-              Our Services
-            </h3>
+            <h3 className="font-bold text-[#071d49]">Our Services</h3>
 
             <div className="mt-4 grid gap-2 text-sm text-slate-500">
-              {[
-                "Software Development",
-                "Graphic Design",
-                "IT Consulting",
-              ].map((label) => (
-                <Link
-                  key={label}
-                  href="/services"
-                  className={footerLinkClass}
-                >
-                  {label}
-                  <span className={footerUnderlineClass} />
-                </Link>
-              ))}
+              {["Software Development", "Graphic Design", "IT Consulting"].map(
+                (label) => (
+                  <Link
+                    key={label}
+                    href="/services"
+                    className={footerLinkClass}
+                  >
+                    {label}
+                    <span className={footerUnderlineClass} />
+                  </Link>
+                ),
+              )}
             </div>
           </div>
 
@@ -272,8 +249,7 @@ export function Footer() {
               </span>
 
               <a
-                href={`tel:${phone.replace(/\s+/g, 
-                  "")}`}
+                href={`tel:${phone.replace(/\s+/g, "")}`}
                 className="group flex items-center gap-2 transition-all duration-300 hover:translate-x-1 hover:text-blue-700"
               >
                 <Phone size={15} />
@@ -284,9 +260,10 @@ export function Footer() {
                 href={`mailto:${contactEmail}`}
                 className="group flex items-center gap-2 break-all transition-all duration-300 hover:translate-x-1 hover:text-blue-700"
               >
-                <Mail 
-                  className="shrink-0" 
-                  size={15} />
+                <Mail
+                  className="shrink-0"
+                  size={15}
+                />
                 {contactEmail}
               </a>
               <WhatsAppLink compact />
@@ -294,10 +271,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className={`
+        <div
+          className={`
   mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 text-xs
   text-slate-400 sm:mt-10 sm:flex-row sm:items-center sm:justify-between
-`}>
+`}
+        >
           <p>
             {settings.copyrightText?.trim() ||
               `© ${new Date().getFullYear()} ${companyName}. All rights reserved.`}

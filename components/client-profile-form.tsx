@@ -71,8 +71,15 @@ export function ClientProfileForm({
     }
   }
   return (
-    <form onSubmit={submit} aria-busy={loading} className="space-y-6">
-      <fieldset disabled={loading} className="min-w-0">
+    <form
+      onSubmit={submit}
+      aria-busy={loading}
+      className="space-y-6"
+    >
+      <fieldset
+        disabled={loading}
+        className="min-w-0"
+      >
         <legend className="sr-only">Contact details</legend>
         <div className="workspace-form-grid">
           <label className="label">
@@ -110,7 +117,10 @@ export function ClientProfileForm({
             Use at least 8 characters, including uppercase, lowercase and a
             number. Changing your password signs out your other sessions.
           </p>
-          <fieldset disabled={loading} className="grid min-w-0 gap-4">
+          <fieldset
+            disabled={loading}
+            className="grid min-w-0 gap-4"
+          >
             <legend className="sr-only">New password</legend>
             {[
               {
@@ -129,7 +139,10 @@ export function ClientProfileForm({
                 complete: "new-password",
               },
             ].map((input) => (
-              <label key={input.name} className="label">
+              <label
+                key={input.name}
+                className="label"
+              >
                 {input.label}
                 <input
                   className="field"
@@ -154,18 +167,32 @@ export function ClientProfileForm({
         </div>
       </details>
       {message && (
-        <p role="status" className="workspace-callout" data-tone="success">
+        <p
+          role="status"
+          className="workspace-callout"
+          data-tone="success"
+        >
           {message}
         </p>
       )}
       {error && (
-        <p role="alert" className="workspace-callout" data-tone="warning">
+        <p
+          role="alert"
+          className="workspace-callout"
+          data-tone="warning"
+        >
           {error}
         </p>
       )}
-      <button className="btn-primary" disabled={loading}>
+      <button
+        className="btn-primary"
+        disabled={loading}
+      >
         {loading ? (
-          <LoaderCircle size={16} className="animate-spin" />
+          <LoaderCircle
+            size={16}
+            className="animate-spin"
+          />
         ) : (
           <Save size={16} />
         )}

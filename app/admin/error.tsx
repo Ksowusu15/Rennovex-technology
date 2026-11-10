@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { AlertTriangle, 
-  RefreshCw } from "lucide-react";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 
 export default function AdminError({
   error,
@@ -12,8 +11,7 @@ export default function AdminError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Admin workspace error:", 
-      error);
+    console.error("Admin workspace error:", error);
   }, [error]);
 
   return (
@@ -25,7 +23,8 @@ export default function AdminError({
         The admin workspace could not finish loading
       </h1>
       <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-slate-600">
-        This is usually a temporary database or network delay. Your data has not been changed. Try loading the workspace again.
+        This is usually a temporary database or network delay. Your data has not
+        been changed. Try loading the workspace again.
       </p>
       <button
         type="button"

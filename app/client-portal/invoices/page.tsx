@@ -51,7 +51,10 @@ export default async function ClientInvoicesPage({
         title="Invoices & payments"
         description="Review what has been issued, what you have paid and what remains outstanding."
         actions={
-          <Link href="/client-portal/support" className="btn-secondary">
+          <Link
+            href="/client-portal/support"
+            className="btn-secondary"
+          >
             <LifeBuoy size={16} />
             Ask a billing question
           </Link>

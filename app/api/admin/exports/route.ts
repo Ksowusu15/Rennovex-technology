@@ -4,7 +4,8 @@ import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 export async function GET(request: Request) {
   const session = await getSession();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const user = await prisma.user.findUnique({
     where: { id: session.userId },
     select: { role: true, isActive: true },
@@ -84,7 +85,15 @@ export async function GET(request: Request) {
       include: { messages: true },
     });
     rows = [
-      ["Session", "Name", "Email", "Phone", "Status", "Conversation", "Updated"],
+      [
+        "Session",
+        "Name",
+        "Email",
+        "Phone",
+        "Status",
+        "Conversation",
+        "Updated",
+      ],
       ...items.map((i) => [
         i.id,
         i.visitorName,

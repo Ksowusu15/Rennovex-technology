@@ -65,7 +65,10 @@ export default async function ClientSupportPage({
           >
             {requests.length ? (
               requests.map((request) => (
-                <details key={request.id} className="portal-support-item">
+                <details
+                  key={request.id}
+                  className="portal-support-item"
+                >
                   <summary className="cursor-pointer list-none">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>

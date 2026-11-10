@@ -45,8 +45,14 @@ export function WorkspaceMetric({
   const content = (
     <>
       <div className="workspace-metric-top">
-        <span className="workspace-icon" data-tone={tone}>
-          <Icon size={19} aria-hidden="true" />
+        <span
+          className="workspace-icon"
+          data-tone={tone}
+        >
+          <Icon
+            size={19}
+            aria-hidden="true"
+          />
         </span>
         {href && (
           <ArrowUpRight
@@ -62,7 +68,10 @@ export function WorkspaceMetric({
     </>
   );
   return href ? (
-    <Link href={href} className="workspace-metric">
+    <Link
+      href={href}
+      className="workspace-metric"
+    >
       {content}
     </Link>
   ) : (
@@ -111,7 +120,10 @@ export function WorkspaceEmpty({
   return (
     <div className="workspace-empty">
       <span className="workspace-icon">
-        <Icon size={22} aria-hidden="true" />
+        <Icon
+          size={22}
+          aria-hidden="true"
+        />
       </span>
       <h3>{title}</h3>
       <p>{description}</p>
@@ -128,7 +140,10 @@ export function StatusBadge({
   label?: string;
 }) {
   return (
-    <span className="workspace-badge" data-tone={statusTone(status)}>
+    <span
+      className="workspace-badge"
+      data-tone={statusTone(status)}
+    >
       <span aria-hidden="true" />
       {label || statusLabel(status)}
     </span>

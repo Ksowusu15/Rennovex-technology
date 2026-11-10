@@ -46,9 +46,9 @@ export default function ServicesPage() {
           </h1>
 
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600">
-            From your public website to internal software and technology strategy,
-            Rennovex combines design and engineering to build practical solutions for
-            growing organisations.
+            From your public website to internal software and technology
+            strategy, Rennovex combines design and engineering to build
+            practical solutions for growing organisations.
           </p>
         </MotionReveal>
       </section>
@@ -60,7 +60,10 @@ export default function ServicesPage() {
               const Icon = icons[service.slug as keyof typeof icons];
 
               return (
-                <MotionItem key={service.slug} className="h-full">
+                <MotionItem
+                  key={service.slug}
+                  className="h-full"
+                >
                   <Link
                     href={`/services/${service.slug}`}
                     className={`

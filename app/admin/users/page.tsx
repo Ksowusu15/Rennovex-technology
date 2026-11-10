@@ -21,8 +21,7 @@ import {
 const roleMeta = {
   SUPER_ADMIN: {
     label: "Super Admin",
-    description:
-      "Full access, users, settings, security and audit logs",
+    description: "Full access, users, settings, security and audit logs",
     badge: "bg-violet-50 text-violet-700",
   },
   ADMIN: {
@@ -32,8 +31,7 @@ const roleMeta = {
   },
   EDITOR: {
     label: "Editor",
-    description:
-      "Create and update website content without sensitive access",
+    description: "Create and update website content without sensitive access",
     badge: "bg-emerald-50 text-emerald-700",
   },
 } as const;
@@ -45,15 +43,12 @@ type UsersPageProps = {
   }>;
 };
 
-export default async function UsersPage({
-  searchParams,
-}: UsersPageProps) {
+export default async function UsersPage({ searchParams }: UsersPageProps) {
   const actor = await requireRole(["SUPER_ADMIN"]);
   const params = await searchParams;
 
   const users = await prisma.user.findMany({
-    orderBy: [{ role: "asc" }, 
-      { createdAt: "asc" }],
+    orderBy: [{ role: "asc" }, { createdAt: "asc" }],
     include: {
       _count: {
         select: {
@@ -75,11 +70,8 @@ export default async function UsersPage({
   return (
     <div className="space-y-6">
       <AdminToast
-        message={params.success 
-          || params.error}
-        type={params.error 
-          ? "error" 
-          : "success"}
+        message={params.success || params.error}
+        type={params.error ? "error" : "success"}
       />
 
       <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
@@ -99,23 +91,21 @@ export default async function UsersPage({
               </h1>
 
               <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-500">
-                Create administrators and editors, assign permissions,
-                and immediately disable access when needed.
+                Create administrators and editors, assign permissions, and
+                immediately disable access when needed.
               </p>
             </div>
           </div>
 
           <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
-            {activeUsers} 
+            {activeUsers}
             active accounts
           </div>
         </div>
 
         <div className="mt-6 grid gap-3 md:grid-cols-3">
           {Object.entries(roleMeta).map(([role, meta]) => {
-            const roleCount = users.filter(
-              (user) => user.role === role,
-            ).length;
+            const roleCount = users.filter((user) => user.role === role).length;
 
             return (
               <div
@@ -123,9 +113,7 @@ export default async function UsersPage({
                 className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <p className="font-semibold text-slate-900">
-                    {meta.label}
-                  </p>
+                  <p className="font-semibold text-slate-900">{meta.label}</p>
 
                   <span
                     className={`rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${meta.badge}`}
@@ -149,17 +137,18 @@ export default async function UsersPage({
           className="h-fit rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"
         >
           <div className="flex items-center gap-2">
-            <UserPlus 
-              className="text-blue-700" 
-              size={19} />
+            <UserPlus
+              className="text-blue-700"
+              size={19}
+            />
             <h2 className="text-lg font-bold text-slate-950">
               Add team member
             </h2>
           </div>
 
           <p className="mt-2 text-sm leading-6 text-slate-500">
-            Create a temporary password and share it securely. The user
-            can change it from My Profile.
+            Create a temporary password and share it securely. The user can
+            change it from My Profile.
           </p>
 
           <div className="mt-5 space-y-4">
@@ -189,11 +178,10 @@ export default async function UsersPage({
 
             <label className="grid gap-2 text-sm font-semibold text-slate-800">
               Assigned role
-
-              
-              <select 
-                name="role" 
-                className="field">
+              <select
+                name="role"
+                className="field"
+              >
                 <option value="EDITOR">Editor</option>
                 <option value="ADMIN">Admin</option>
                 <option value="SUPER_ADMIN">Super Admin</option>
@@ -209,16 +197,14 @@ export default async function UsersPage({
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-bold text-slate-950">
-                Current team
-              </h2>
+              <h2 className="text-lg font-bold text-slate-950">Current team</h2>
               <p className="mt-1 text-sm text-slate-500">
                 Roles are enforced automatically after sign-in.
               </p>
             </div>
 
             <span className="shrink-0 text-sm font-semibold text-slate-500">
-              {users.length} 
+              {users.length}
               total
             </span>
           </div>
@@ -239,8 +225,7 @@ export default async function UsersPage({
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex min-w-0 items-start gap-3">
                       <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-slate-100 font-bold text-slate-700">
-                        {user.name.slice(0, 
-                          1).toUpperCase()}
+                        {user.name.slice(0, 1).toUpperCase()}
                       </div>
 
                       <div className="min-w-0">
@@ -287,24 +272,17 @@ export default async function UsersPage({
                               <CircleOff size={12} />
                             )}
 
-                            {user.isActive 
-                              ? "Active" 
-                              : "Disabled"}
+                            {user.isActive ? "Active" : "Disabled"}
                           </span>
                         </div>
 
                         <p className="mt-2 text-xs leading-5 text-slate-400">
                           {user.lastLoginAt
                             ? `Last login ${user.lastLoginAt.toLocaleString()}`
-                            : "No login yet"}
-                          {" "}
-                          · 
-                          {user._count.authSessions} 
+                            : "No login yet"}{" "}
+                          ·{user._count.authSessions}
                           active device
-                          
-                          {user._count.authSessions === 1 
-                            ? "" 
-                            : "s"}
+                          {user._count.authSessions === 1 ? "" : "s"}
                         </p>
                       </div>
                     </div>
@@ -327,15 +305,15 @@ export default async function UsersPage({
                         >
                           <option value="EDITOR">Editor</option>
                           <option value="ADMIN">Admin</option>
-                          <option value="SUPER_ADMIN">
-                            Super Admin
-                          </option>
+                          <option value="SUPER_ADMIN">Super Admin</option>
                         </select>
 
-                        <button className={`
+                        <button
+                          className={`
   rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold
   transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700
-`}>
+`}
+                        >
                           Save
                         </button>
                       </form>
@@ -355,9 +333,7 @@ export default async function UsersPage({
                               : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
                           }`}
                         >
-                          {user.isActive 
-                            ? "Disable" 
-                            : "Enable"}
+                          {user.isActive ? "Disable" : "Enable"}
                         </button>
                       </form>
 

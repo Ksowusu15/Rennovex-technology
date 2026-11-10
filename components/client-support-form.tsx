@@ -56,7 +56,10 @@ export function ClientSupportForm() {
       aria-busy={loading}
       className="workspace-form-section"
     >
-      <fieldset disabled={loading} className="grid min-w-0 gap-5">
+      <fieldset
+        disabled={loading}
+        className="grid min-w-0 gap-5"
+      >
         <legend className="sr-only">New support request</legend>
         <label className="label">
           Subject
@@ -71,7 +74,11 @@ export function ClientSupportForm() {
         </label>
         <label className="label">
           Priority
-          <select className="field" name="priority" defaultValue="Normal">
+          <select
+            className="field"
+            name="priority"
+            defaultValue="Normal"
+          >
             <option value="Low">Low · General question</option>
             <option value="Normal">Normal · Standard request</option>
             <option value="High">High · Blocking an important task</option>
@@ -97,15 +104,26 @@ export function ClientSupportForm() {
           className="workspace-callout mt-5"
           data-tone={error ? "warning" : "success"}
         >
-          {message && <CheckCircle2 size={17} className="mb-2" />}
+          {message && (
+            <CheckCircle2
+              size={17}
+              className="mb-2"
+            />
+          )}
           {error || message}
         </p>
       )}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
         <span className="text-xs text-slate-500">All fields are required.</span>
-        <button className="btn-primary" disabled={loading}>
+        <button
+          className="btn-primary"
+          disabled={loading}
+        >
           {loading ? (
-            <LoaderCircle size={16} className="animate-spin" />
+            <LoaderCircle
+              size={16}
+              className="animate-spin"
+            />
           ) : (
             <Send size={16} />
           )}

@@ -77,7 +77,10 @@ export default async function ClientDashboardPage() {
         title={`Welcome back, ${client.name.split(" ")[0]}.`}
         description="Your projects, shared files and conversations, together in one place."
         actions={
-          <Link href="/client-portal/support" className="btn-primary">
+          <Link
+            href="/client-portal/support"
+            className="btn-primary"
+          >
             <LifeBuoy size={17} />
             Get in touch
           </Link>
@@ -133,7 +136,10 @@ export default async function ClientDashboardPage() {
           >
             {projects.length ? (
               projects.map((project) => (
-                <article className="portal-project-card" key={project.id}>
+                <article
+                  className="portal-project-card"
+                  key={project.id}
+                >
                   <div className="portal-project-card-heading">
                     <div>
                       <Link
@@ -189,7 +195,10 @@ export default async function ClientDashboardPage() {
                 title="Your next project starts here"
                 description="Once Rennovex assigns your project, you’ll see its progress, milestones and files here."
                 action={
-                  <Link href="/client-portal/support" className="btn-secondary">
+                  <Link
+                    href="/client-portal/support"
+                    className="btn-secondary"
+                  >
                     Discuss a project
                     <ArrowRight size={15} />
                   </Link>
@@ -204,7 +213,10 @@ export default async function ClientDashboardPage() {
             {updates.length ? (
               <div className="workspace-timeline">
                 {updates.map((update) => (
-                  <article className="workspace-timeline-item" key={update.id}>
+                  <article
+                    className="workspace-timeline-item"
+                    key={update.id}
+                  >
                     <h3>{update.title}</h3>
                     <time dateTime={update.createdAt.toISOString()}>
                       {workspaceDate(update.createdAt)}
@@ -271,7 +283,10 @@ export default async function ClientDashboardPage() {
           >
             {support.length ? (
               support.slice(0, 3).map((request) => (
-                <div className="workspace-list-row" key={request.id}>
+                <div
+                  className="workspace-list-row"
+                  key={request.id}
+                >
                   <div>
                     <p className="text-xs font-semibold">{request.subject}</p>
                     <p className="mt-2 text-xs text-slate-500">
@@ -283,7 +298,10 @@ export default async function ClientDashboardPage() {
               ))
             ) : (
               <div className="p-6">
-                <span className="workspace-icon" data-tone="green">
+                <span
+                  className="workspace-icon"
+                  data-tone="green"
+                >
                   <CheckCircle2 size={20} />
                 </span>
                 <h3 className="mt-4 text-sm font-semibold">No open requests</h3>

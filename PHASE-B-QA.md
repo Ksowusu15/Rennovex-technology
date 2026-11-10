@@ -25,20 +25,20 @@
 
 ## Verified in this environment
 
-| Check | Result |
-| --- | --- |
-| Prisma Client generation | Passed |
-| TypeScript | Passed |
-| Production compilation | Passed |
-| Form request: successful response | Passed |
-| Form request: validation response | Passed |
-| Form request: offline failure | Passed |
-| Form request: non-JSON gateway response | Passed |
-| Form request: stalled response body | Passed; times out and clears timer |
-| Full production build | Blocked: DATABASE_URL absent during contact page generation |
-| Visual browser QA | Pending: test browser unavailable in this environment |
-| Live database, login and email delivery | Pending: environment configuration required |
-| Lighthouse/Web Vitals measurements | Pending: configured running site required |
+| Check                                   | Result                                                      |
+| --------------------------------------- | ----------------------------------------------------------- |
+| Prisma Client generation                | Passed                                                      |
+| TypeScript                              | Passed                                                      |
+| Production compilation                  | Passed                                                      |
+| Form request: successful response       | Passed                                                      |
+| Form request: validation response       | Passed                                                      |
+| Form request: offline failure           | Passed                                                      |
+| Form request: non-JSON gateway response | Passed                                                      |
+| Form request: stalled response body     | Passed; times out and clears timer                          |
+| Full production build                   | Blocked: DATABASE_URL absent during contact page generation |
+| Visual browser QA                       | Pending: test browser unavailable in this environment       |
+| Live database, login and email delivery | Pending: environment configuration required                 |
+| Lighthouse/Web Vitals measurements      | Pending: configured running site required                   |
 
 Run `node tests/form-request-check.cjs` after installing dependencies to repeat
 form transport checks. Run `npm run typecheck` and `npm run build` with your

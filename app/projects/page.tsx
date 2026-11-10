@@ -1,10 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Code2, ExternalLink, Github, Layers3 } from "lucide-react";
+import {
+  ArrowUpRight,
+  Code2,
+  ExternalLink,
+  Github,
+  Layers3,
+} from "lucide-react";
 
 import { safePublicQuery } from "@/lib/db-resilience";
 import { prisma } from "@/lib/prisma";
-import { MotionItem, MotionReveal, MotionStagger } from "@/components/motion-reveal";
+import {
+  MotionItem,
+  MotionReveal,
+  MotionStagger,
+} from "@/components/motion-reveal";
 
 export const metadata = {
   alternates: { canonical: "/projects" },
@@ -68,7 +78,10 @@ export default async function ProjectsPage() {
           {projects.length > 0 ? (
             <MotionStagger className="grid gap-6 lg:grid-cols-2 2xl:grid-cols-3">
               {projects.map((project) => (
-                <MotionItem key={project.id} className="h-full">
+                <MotionItem
+                  key={project.id}
+                  className="h-full"
+                >
                   <article
                     className={`
   group flex h-full min-w-0 flex-col overflow-hidden rounded-[1.4rem]
@@ -142,17 +155,19 @@ export default async function ProjectsPage() {
 
                       {project.technologies.length > 0 && (
                         <div className="mt-5 flex flex-wrap gap-2">
-                          {project.technologies.slice(0, 5).map((technology) => (
-                            <span
-                              key={technology}
-                              className={[
-                                "rounded-full border border-blue-100 bg-blue-50/60 px-3 py-1.5",
-                                "text-[11px] font-semibold text-blue-700",
-                              ].join(" ")}
-                            >
-                              {technology}
-                            </span>
-                          ))}
+                          {project.technologies
+                            .slice(0, 5)
+                            .map((technology) => (
+                              <span
+                                key={technology}
+                                className={[
+                                  "rounded-full border border-blue-100 bg-blue-50/60 px-3 py-1.5",
+                                  "text-[11px] font-semibold text-blue-700",
+                                ].join(" ")}
+                              >
+                                {technology}
+                              </span>
+                            ))}
 
                           {project.technologies.length > 5 && (
                             <span className="rounded-full border border-slate-200 px-3 py-1.5 text-[11px] font-semibold text-slate-500">

@@ -81,7 +81,10 @@ export function AdminNotifications({
   }, []);
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative"
+    >
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}

@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, tooManyRequests } from "@/lib/rate-limit";
-const schema = z.object({ email: z.string().email(), name: z.string().optional() });
+const schema = z.object({
+  email: z.string().email(),
+  name: z.string().optional(),
+});
 export async function POST(request: Request) {
   const blocked = rejectCrossOrigin(request);
   if (blocked) return blocked;
@@ -23,7 +26,8 @@ export async function POST(request: Request) {
       console.error("Form service unavailable:", error);
       return NextResponse.json(
         {
-          error: "This service is temporarily unavailable. Please try again later.",
+          error:
+            "This service is temporarily unavailable. Please try again later.",
         },
         { status: 503 },
       );

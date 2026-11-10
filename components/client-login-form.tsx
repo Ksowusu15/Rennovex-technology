@@ -168,9 +168,15 @@ export function ClientLoginForm() {
         </p>
       )}
 
-      <button className="btn-primary mt-6 w-full" disabled={loading}>
+      <button
+        className="btn-primary mt-6 w-full"
+        disabled={loading}
+      >
         {loading ? (
-          <Loader2 className="animate-spin" size={18} />
+          <Loader2
+            className="animate-spin"
+            size={18}
+          />
         ) : (
           <ArrowRight size={18} />
         )}

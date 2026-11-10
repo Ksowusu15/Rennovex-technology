@@ -26,7 +26,9 @@ export async function GET(request: NextRequest) {
   const lines = rows.map((raw: any) => {
     const isArchived = "originalCreatedAt" in raw;
     return [
-      isArchived ? raw.originalCreatedAt.toISOString() : raw.createdAt.toISOString(),
+      isArchived
+        ? raw.originalCreatedAt.toISOString()
+        : raw.createdAt.toISOString(),
       isArchived ? raw.originalUserEmail : raw.user?.email,
       raw.action,
       raw.entity,

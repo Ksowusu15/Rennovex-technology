@@ -72,9 +72,15 @@ export function AdminLoginForm() {
   return (
     <div className="mx-auto w-full max-w-[460px]">
       <div className="mb-6 text-center sm:mb-8">
-        <SiteLogo size="large" centered />
+        <SiteLogo
+          size="large"
+          centered
+        />
         <div className="mt-4 flex items-center justify-center gap-2 text-sm font-semibold text-slate-700">
-          <ShieldCheck className="text-blue-700" size={17} />
+          <ShieldCheck
+            className="text-blue-700"
+            size={17}
+          />
           Admin Portal
         </div>
       </div>

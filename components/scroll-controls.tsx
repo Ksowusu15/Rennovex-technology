@@ -1,11 +1,13 @@
 "use client";
 
-import { ArrowDown, 
-  ArrowUp } from "lucide-react";
-import { useEffect, 
-  useState } from "react";
+import { ArrowDown, ArrowUp } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export function ScrollControls({ alwaysVisible = false }: { alwaysVisible?: boolean }) {
+export function ScrollControls({
+  alwaysVisible = false,
+}: {
+  alwaysVisible?: boolean;
+}) {
   const [mounted, setMounted] = useState(false);
   const [canGoUp, setCanGoUp] = useState(false);
   const [canGoDown, setCanGoDown] = useState(false);
@@ -15,25 +17,21 @@ export function ScrollControls({ alwaysVisible = false }: { alwaysVisible?: bool
 
     function update() {
       const y = window.scrollY;
-      const max = Math.max(0, 
-        document.documentElement.scrollHeight - window.innerHeight);
+      const max = Math.max(
+        0,
+        document.documentElement.scrollHeight - window.innerHeight,
+      );
       setCanGoUp(y > 160);
-      setCanGoDown(max > 0 
-        && y < max - 160);
+      setCanGoDown(max > 0 && y < max - 160);
     }
 
     update();
-    window.addEventListener("scroll", 
-      update, 
-      { passive: true });
-    window.addEventListener("resize", 
-      update);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
 
     return () => {
-      window.removeEventListener("scroll", 
-        update);
-      window.removeEventListener("resize", 
-        update);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
     };
   }, []);
 
@@ -41,25 +39,23 @@ export function ScrollControls({ alwaysVisible = false }: { alwaysVisible?: bool
   // This prevents the disabled-state hydration warning on auth pages.
   if (!mounted) return null;
 
-  const visible = alwaysVisible 
-    || canGoUp 
-    || canGoDown;
+  const visible = alwaysVisible || canGoUp || canGoDown;
   if (!visible) return null;
 
   return (
-    <div className={`
+    <div
+      className={`
   fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-4 z-[60]
   flex flex-col gap-2 sm:bottom-[max(1.5rem,env(safe-area-inset-bottom))]
   sm:right-6
-`}>
-      {(alwaysVisible 
-        || canGoUp) && (
+`}
+    >
+      {(alwaysVisible || canGoUp) && (
         <button
           type="button"
           aria-label="Scroll to top"
           title="Scroll to top"
-          onClick={() => window.scrollTo({ top: 0, 
-            behavior: "smooth" })}
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           disabled={!canGoUp}
           className={`
   grid h-11 w-11 place-items-center rounded-full border border-slate-200
@@ -72,8 +68,7 @@ export function ScrollControls({ alwaysVisible = false }: { alwaysVisible?: bool
         </button>
       )}
 
-      {(alwaysVisible 
-        || canGoDown) && (
+      {(alwaysVisible || canGoDown) && (
         <button
           type="button"
           aria-label="Scroll to bottom"

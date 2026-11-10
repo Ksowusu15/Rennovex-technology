@@ -70,7 +70,10 @@ export function ClientResetPasswordForm({ token }: { token: string }) {
           shadow-slate-200/60
         `}
       >
-        <CheckCircle2 className="mx-auto text-emerald-600" size={42} />
+        <CheckCircle2
+          className="mx-auto text-emerald-600"
+          size={42}
+        />
         <h1
           className={`
             mt-4 text-2xl font-bold text-slate-950
@@ -83,10 +86,13 @@ export function ClientResetPasswordForm({ token }: { token: string }) {
             mt-3 text-sm leading-6 text-slate-600
           `}
         >
-          Your client password has been changed. You can now sign in with your new
-          password.
+          Your client password has been changed. You can now sign in with your
+          new password.
         </p>
-        <Link href="/client-portal" className="btn-primary mt-6 w-full">
+        <Link
+          href="/client-portal"
+          className="btn-primary mt-6 w-full"
+        >
           Return to client login
         </Link>
       </div>
@@ -153,8 +159,16 @@ export function ClientResetPasswordForm({ token }: { token: string }) {
         </p>
       )}
 
-      <button disabled={loading} className="btn-primary mt-6 w-full">
-        {loading && <Loader2 className="animate-spin" size={18} />}
+      <button
+        disabled={loading}
+        className="btn-primary mt-6 w-full"
+      >
+        {loading && (
+          <Loader2
+            className="animate-spin"
+            size={18}
+          />
+        )}
         {loading ? "Updating password…" : "Update password"}
       </button>
     </form>

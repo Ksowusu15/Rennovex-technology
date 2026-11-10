@@ -41,19 +41,19 @@ Use `.env.example` as a list of keys. Keep existing working secret values.
 Never replace your real environment file with the empty example. Never commit
 DATABASE_URL, DIRECT_URL, AUTH_SECRET or provider keys.
 
-| Key | Purpose |
-| --- | --- |
-| DATABASE_URL | PostgreSQL app connection; pooled Neon URL with TLS |
-| DIRECT_URL | Direct PostgreSQL URL used by this Prisma 6 migration configuration |
-| AUTH_SECRET | Unique random signing secret, at least 32 characters |
-| APP_URL | HTTPS origin for the environment being tested |
-| NEXT_PUBLIC_SITE_URL | Same HTTPS origin for canonical URLs and the sitemap |
-| RESEND_API_KEY | Email provider access |
-| ADMIN_FROM_EMAIL | Admin reset and device-notification sender |
-| RESEND_FROM_EMAIL | Client invitations/resets; falls back to ADMIN_FROM_EMAIL |
-| CONTACT_FROM_EMAIL | Contact sender; falls back to RESEND_FROM_EMAIL |
-| CONTACT_NOTIFICATION_EMAIL | Contact recipient if not set in admin Site Settings |
-| CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET | Persistent uploaded images |
+| Key                                                              | Purpose                                                             |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------- |
+| DATABASE_URL                                                     | PostgreSQL app connection; pooled Neon URL with TLS                 |
+| DIRECT_URL                                                       | Direct PostgreSQL URL used by this Prisma 6 migration configuration |
+| AUTH_SECRET                                                      | Unique random signing secret, at least 32 characters                |
+| APP_URL                                                          | HTTPS origin for the environment being tested                       |
+| NEXT_PUBLIC_SITE_URL                                             | Same HTTPS origin for canonical URLs and the sitemap                |
+| RESEND_API_KEY                                                   | Email provider access                                               |
+| ADMIN_FROM_EMAIL                                                 | Admin reset and device-notification sender                          |
+| RESEND_FROM_EMAIL                                                | Client invitations/resets; falls back to ADMIN_FROM_EMAIL           |
+| CONTACT_FROM_EMAIL                                               | Contact sender; falls back to RESEND_FROM_EMAIL                     |
+| CONTACT_NOTIFICATION_EMAIL                                       | Contact recipient if not set in admin Site Settings                 |
+| CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET | Persistent uploaded images                                          |
 
 Use your existing domain for Production. Set Preview URLs to the actual preview
 origin when you are ready to test there, so email links do not point at the

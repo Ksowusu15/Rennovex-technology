@@ -8,7 +8,9 @@ import { getAuthSecret } from "@/lib/auth-secret";
 const COOKIE_NAME = "rennovex_client_session";
 
 function sessionVersion(passwordHash: string) {
-  return createHmac("sha256", getAuthSecret()).update(passwordHash).digest("hex");
+  return createHmac("sha256", getAuthSecret())
+    .update(passwordHash)
+    .digest("hex");
 }
 
 export async function createClientSession(client: {
@@ -61,7 +63,13 @@ export const getClientSession = cache(async function getClientSession() {
   // Check live account state, including password changes on other devices.
   const client = await prisma.client.findUnique({
     where: { id: payload.clientId },
-    select: { id: true, email: true, name: true, password: true, isActive: true },
+    select: {
+      id: true,
+      email: true,
+      name: true,
+      password: true,
+      isActive: true,
+    },
   });
   if (!client?.isActive || !client.password) return null;
   const actual = Buffer.from(payload.version, "hex");

@@ -3,7 +3,11 @@ import Link from "next/link";
 import { ArrowRight, BriefcaseBusiness } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { safePublicQuery } from "@/lib/db-resilience";
-import { MotionItem, MotionReveal, MotionStagger } from "@/components/motion-reveal";
+import {
+  MotionItem,
+  MotionReveal,
+  MotionStagger,
+} from "@/components/motion-reveal";
 
 export const metadata = {
   alternates: { canonical: "/case-studies" },
@@ -36,7 +40,8 @@ export default async function CaseStudiesPage() {
                   "text-[#071d49] sm:text-5xl lg:text-6xl",
                 ].join(" ")}
               >
-                The thinking behind <span className="text-blue-600">the work.</span>
+                The thinking behind{" "}
+                <span className="text-blue-600">the work.</span>
               </h1>
             </div>
             <p className="max-w-xl text-sm leading-7 text-slate-600 sm:text-base lg:justify-self-end">
@@ -52,7 +57,10 @@ export default async function CaseStudiesPage() {
           {studies.length > 0 ? (
             <MotionStagger className="grid gap-6 lg:grid-cols-2">
               {studies.map((study) => (
-                <MotionItem key={study.id} className="h-full">
+                <MotionItem
+                  key={study.id}
+                  className="h-full"
+                >
                   <Link
                     href={`/case-studies/${study.slug}`}
                     className={[
@@ -127,10 +135,13 @@ export default async function CaseStudiesPage() {
                 Case studies are being prepared.
               </h2>
               <p className="mx-auto mt-2 max-w-xl text-sm leading-7 text-slate-600">
-                In the meantime, explore our published projects and see what Rennovex
-                has been building.
+                In the meantime, explore our published projects and see what
+                Rennovex has been building.
               </p>
-              <Link href="/projects" className="btn-primary mt-6">
+              <Link
+                href="/projects"
+                className="btn-primary mt-6"
+              >
                 Explore projects
                 <ArrowRight size={16} />
               </Link>

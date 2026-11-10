@@ -15,10 +15,16 @@ export default function ClientPortalError({ reset }: { reset: () => void }) {
           unchanged.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <button className="btn-primary" onClick={reset}>
+          <button
+            className="btn-primary"
+            onClick={reset}
+          >
             Try again
           </button>
-          <Link href="/" className="btn-secondary">
+          <Link
+            href="/"
+            className="btn-secondary"
+          >
             Return to website
           </Link>
         </div>

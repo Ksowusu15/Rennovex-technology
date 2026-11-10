@@ -33,7 +33,8 @@ async function main() {
     {
       title: "Website Development",
       slug: "website-development",
-      summary: "High-performance websites that convert visitors into customers.",
+      summary:
+        "High-performance websites that convert visitors into customers.",
       description:
         "We design and develop responsive, secure, SEO-ready websites tailored to your business goals.",
       benefits: [
@@ -66,7 +67,8 @@ async function main() {
     {
       title: "UI/UX Design",
       slug: "ui-ux-design",
-      summary: "Intuitive product experiences grounded in research and clarity.",
+      summary:
+        "Intuitive product experiences grounded in research and clarity.",
       description:
         "We transform complex ideas into usable interfaces with thoughtful journeys and consistent design systems.",
       benefits: [
@@ -75,7 +77,12 @@ async function main() {
         "Interactive prototypes",
         "Design systems",
       ],
-      technologies: ["Figma", "Prototyping", "Design Systems", "Usability Testing"],
+      technologies: [
+        "Figma",
+        "Prototyping",
+        "Design Systems",
+        "Usability Testing",
+      ],
       icon: "PanelsTopLeft",
       order: 3,
     },
@@ -108,7 +115,12 @@ async function main() {
         "Security guidance",
         "Digital roadmaps",
       ],
-      technologies: ["Cloud", "Cybersecurity", "Microsoft 365", "Infrastructure"],
+      technologies: [
+        "Cloud",
+        "Cybersecurity",
+        "Microsoft 365",
+        "Infrastructure",
+      ],
       icon: "ServerCog",
       order: 5,
     },

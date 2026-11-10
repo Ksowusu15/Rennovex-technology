@@ -21,7 +21,8 @@ export async function requestPasswordReset(
       kind === "admin"
         ? await prisma.user.findUnique({ where, select })
         : await prisma.client.findUnique({ where, select });
-    if (!account?.isActive) return NextResponse.json({ message: genericMessage });
+    if (!account?.isActive)
+      return NextResponse.json({ message: genericMessage });
 
     const token = randomBytes(32).toString("hex");
     const data = {

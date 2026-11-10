@@ -13,7 +13,8 @@ export function bookingDateToISO(date: string, time: string): string | null {
     value.getDate() !== day ||
     value.getHours() !== hour ||
     value.getMinutes() !== minute
-  ) return null;
+  )
+    return null;
   return value.toISOString();
 }
 

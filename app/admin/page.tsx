@@ -187,7 +187,9 @@ export default async function AdminDashboard() {
           ))
         )}
       </div>
-      <div className={manager ? "admin-overview-columns" : "admin-overview-stack"}>
+      <div
+        className={manager ? "admin-overview-columns" : "admin-overview-stack"}
+      >
         <div className="admin-overview-stack">
           {manager && <AdminTrendChart data={trend} />}
           {manager && (
@@ -195,7 +197,10 @@ export default async function AdminDashboard() {
               title="Latest enquiries"
               description="New conversations from your website"
               action={
-                <Link href="/admin/messages" className="workspace-text-link">
+                <Link
+                  href="/admin/messages"
+                  className="workspace-text-link"
+                >
                   View inbox <ArrowRight size={15} />
                 </Link>
               }
@@ -261,7 +266,10 @@ export default async function AdminDashboard() {
                       }}
                     />
                   </div>
-                  <ArrowRight size={16} className="text-slate-400" />
+                  <ArrowRight
+                    size={16}
+                    className="text-slate-400"
+                  />
                 </div>
               </Link>
             ))}
@@ -273,9 +281,15 @@ export default async function AdminDashboard() {
               title="Needs your attention"
               description="A useful starting point for today"
             >
-              <Link className="workspace-list-row" href="/admin/quotes">
+              <Link
+                className="workspace-list-row"
+                href="/admin/quotes"
+              >
                 <div className="workspace-person">
-                  <span className="workspace-icon" data-tone="violet">
+                  <span
+                    className="workspace-icon"
+                    data-tone="violet"
+                  >
                     <ReceiptText size={18} />
                   </span>
                   <div>
@@ -287,9 +301,15 @@ export default async function AdminDashboard() {
                   {leads?.quoteRequests || 0}
                 </strong>
               </Link>
-              <Link className="workspace-list-row" href="/admin/bookings">
+              <Link
+                className="workspace-list-row"
+                href="/admin/bookings"
+              >
                 <div className="workspace-person">
-                  <span className="workspace-icon" data-tone="amber">
+                  <span
+                    className="workspace-icon"
+                    data-tone="amber"
+                  >
                     <CalendarDays size={18} />
                   </span>
                   <div>
@@ -302,7 +322,10 @@ export default async function AdminDashboard() {
                 </strong>
               </Link>
               <div className="p-5">
-                <Link className="btn-secondary w-full" href="/admin/clients">
+                <Link
+                  className="btn-secondary w-full"
+                  href="/admin/clients"
+                >
                   Manage client work <ArrowRight size={16} />
                 </Link>
               </div>
@@ -312,7 +335,10 @@ export default async function AdminDashboard() {
               description="Updates across the admin workspace"
               action={
                 session.role === "SUPER_ADMIN" ? (
-                  <Link href="/admin/activity" className="workspace-text-link">
+                  <Link
+                    href="/admin/activity"
+                    className="workspace-text-link"
+                  >
                     View log
                   </Link>
                 ) : undefined
@@ -321,7 +347,10 @@ export default async function AdminDashboard() {
               {activity.length ? (
                 <div className="workspace-timeline">
                   {activity.slice(0, 5).map((item) => (
-                    <article className="workspace-timeline-item" key={item.id}>
+                    <article
+                      className="workspace-timeline-item"
+                      key={item.id}
+                    >
                       <h3 className="capitalize">
                         {item.action.toLowerCase().replaceAll("_", " ")}
                       </h3>

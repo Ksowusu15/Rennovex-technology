@@ -1,22 +1,15 @@
 "use server";
 import { requireRole } from "@/lib/auth";
 import { writeAudit } from "@/lib/audit";
-import {revalidatePath} from "next/cache";
-import {redirect} from "next/navigation";
-import {prisma} from "@/lib/prisma";
-import {list,
-  bool,
-  saveUpload,
-  removeUpload} from "@/lib/admin";
-import {slugify} from "@/lib/utils";
-export async function saveStudy(fd:FormData){await requireRole(["SUPER_ADMIN",
-  "ADMIN",
-  "EDITOR"]);
-  const id=String(fd.get("id")
-    ||"");
-  const old=id
-    ?await prisma.caseStudy.findUnique({where:{id}})
-    :null;
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { list, bool, saveUpload, removeUpload } from "@/lib/admin";
+import { slugify } from "@/lib/utils";
+export async function saveStudy(fd: FormData) {
+  await requireRole(["SUPER_ADMIN", "ADMIN", "EDITOR"]);
+  const id = String(fd.get("id") || "");
+  const old = id ? await prisma.caseStudy.findUnique({ where: { id } }) : null;
   const imageFiles = fd
     .getAll("images")
     .filter((item): item is File => item instanceof File && item.size > 0);
@@ -31,43 +24,43 @@ export async function saveStudy(fd:FormData){await requireRole(["SUPER_ADMIN",
     }
   }
 
-  const images = uploadedImages.length > 0
-    ? [...uploadedImages, ...(old?.images || [])]
-    : old?.images || [];
-  const data={title:String(fd.get("title")),
-  slug:slugify(String(fd.get("slug")
-    ||fd.get("title"))),
-  overview:String(fd.get("overview")),
-  challenge:String(fd.get("challenge")),
-  solution:String(fd.get("solution")),
-  process:String(fd.get("process")),
-  technologies:list(fd.get("technologies")),
-  results:String(fd.get("results")),
-  images,
-  projectUrl:String(fd.get("projectUrl")
-    ||"")
-    ||null,
-  featured:bool(fd.get("featured")),
-  status:String(fd.get("status")) as any};
-  if(id)await prisma.caseStudy.update({where:{id},
-  data});else await prisma.caseStudy.create({data});
-  await writeAudit(id
-    ?"UPDATE"
-    :"CREATE",
-  "CASE_STUDY",
-  id
-    ||undefined,
-  String(fd.get("title")));
+  const images =
+    uploadedImages.length > 0
+      ? [...uploadedImages, ...(old?.images || [])]
+      : old?.images || [];
+  const data = {
+    title: String(fd.get("title")),
+    slug: slugify(String(fd.get("slug") || fd.get("title"))),
+    overview: String(fd.get("overview")),
+    challenge: String(fd.get("challenge")),
+    solution: String(fd.get("solution")),
+    process: String(fd.get("process")),
+    technologies: list(fd.get("technologies")),
+    results: String(fd.get("results")),
+    images,
+    projectUrl: String(fd.get("projectUrl") || "") || null,
+    featured: bool(fd.get("featured")),
+    status: String(fd.get("status")) as any,
+  };
+  if (id) await prisma.caseStudy.update({ where: { id }, data });
+  else await prisma.caseStudy.create({ data });
+  await writeAudit(
+    id ? "UPDATE" : "CREATE",
+    "CASE_STUDY",
+    id || undefined,
+    String(fd.get("title")),
+  );
   revalidatePath("/case-studies");
   revalidatePath("/admin/case-studies");
-  redirect("/admin/case-studies")}
-export async function deleteStudy(fd:FormData){await requireRole(["SUPER_ADMIN",
-  "ADMIN"]);
-  const x=await prisma.caseStudy.delete({where:{id:String(fd.get("id"))}});
-  for(const u of x.images)await removeUpload(u);
-  await writeAudit("DELETE",
-  "CASE_STUDY",
-  x.id,
-  x.title);
+  redirect("/admin/case-studies");
+}
+export async function deleteStudy(fd: FormData) {
+  await requireRole(["SUPER_ADMIN", "ADMIN"]);
+  const x = await prisma.caseStudy.delete({
+    where: { id: String(fd.get("id")) },
+  });
+  for (const u of x.images) await removeUpload(u);
+  await writeAudit("DELETE", "CASE_STUDY", x.id, x.title);
   revalidatePath("/case-studies");
-  revalidatePath("/admin/case-studies")}
+  revalidatePath("/admin/case-studies");
+}

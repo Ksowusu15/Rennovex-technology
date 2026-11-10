@@ -59,7 +59,11 @@ export function ClientInviteForm({ token }: { token: string }) {
   }
 
   return (
-    <form onSubmit={submit} aria-busy={loading} className="space-y-4">
+    <form
+      onSubmit={submit}
+      aria-busy={loading}
+      className="space-y-4"
+    >
       <p className="text-sm leading-6 text-slate-600">
         Use at least 8 characters with uppercase, lowercase and a number.
       </p>
@@ -80,12 +84,18 @@ export function ClientInviteForm({ token }: { token: string }) {
       />
 
       {error && (
-        <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-700">
+        <p
+          role="alert"
+          className="rounded-xl bg-red-50 p-3 text-sm text-red-700"
+        >
           {error}
         </p>
       )}
 
-      <button className="btn-primary w-full" disabled={loading}>
+      <button
+        className="btn-primary w-full"
+        disabled={loading}
+      >
         {loading ? "Activating..." : "Activate client portal"}
       </button>
     </form>

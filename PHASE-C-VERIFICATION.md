@@ -3,28 +3,28 @@
 Prepared locally on 9 October 2026. No live Vercel deployment or production
 configuration was changed. No real email was sent. No live database was accessed.
 
-| Check | Result |
-| --- | --- |
-| TypeScript | Passed |
-| Prisma Client generation | Passed, Prisma 6.19.3 |
-| Production bundle compilation | Passed, Next.js 16.4.0 |
-| Complete production build | Blocked at contact page generation: DATABASE_URL absent |
-| Form success/validation/offline/non-JSON/timeout cases | Passed |
-| Production secret validation | Passed |
-| Configured HTTPS reset origins and cross-origin rejection | Passed |
-| Client session validity/deactivation/password revocation/signature rejection | Passed with mocked database and cookies |
-| Legacy client token rejection and expired token rejection | Passed with mocked database and cookies |
-| All 12 client-management actions reject unauthorised callers before DB access | Passed with mocked authorisation |
-| CSV formula protection and HTTPS file URL checks | Passed |
-| Password policy and single-instance throttling | Passed |
-| Email sender fallback/provider rejection/missing configuration | Passed with mocked fetch; no email sent |
-| Production dependency audit | 0 vulnerabilities reported |
-| All dependency audit including development/build tools | 7 findings: 5 high, 2 moderate; see below |
-| Environment checker | Correctly identifies missing local production configuration |
-| Live database and migration history | Not verified; credentials not supplied |
-| Domain/HTTPS/Vercel environment settings | Not verified; live URL/account not supplied |
-| Real Resend delivery | Not verified; provider credentials and recipient not supplied |
-| Visual/browser QA and performance measurements | Still pending on a configured deployment |
+| Check                                                                         | Result                                                        |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| TypeScript                                                                    | Passed                                                        |
+| Prisma Client generation                                                      | Passed, Prisma 6.19.3                                         |
+| Production bundle compilation                                                 | Passed, Next.js 16.4.0                                        |
+| Complete production build                                                     | Blocked at contact page generation: DATABASE_URL absent       |
+| Form success/validation/offline/non-JSON/timeout cases                        | Passed                                                        |
+| Production secret validation                                                  | Passed                                                        |
+| Configured HTTPS reset origins and cross-origin rejection                     | Passed                                                        |
+| Client session validity/deactivation/password revocation/signature rejection  | Passed with mocked database and cookies                       |
+| Legacy client token rejection and expired token rejection                     | Passed with mocked database and cookies                       |
+| All 12 client-management actions reject unauthorised callers before DB access | Passed with mocked authorisation                              |
+| CSV formula protection and HTTPS file URL checks                              | Passed                                                        |
+| Password policy and single-instance throttling                                | Passed                                                        |
+| Email sender fallback/provider rejection/missing configuration                | Passed with mocked fetch; no email sent                       |
+| Production dependency audit                                                   | 0 vulnerabilities reported                                    |
+| All dependency audit including development/build tools                        | 7 findings: 5 high, 2 moderate; see below                     |
+| Environment checker                                                           | Correctly identifies missing local production configuration   |
+| Live database and migration history                                           | Not verified; credentials not supplied                        |
+| Domain/HTTPS/Vercel environment settings                                      | Not verified; live URL/account not supplied                   |
+| Real Resend delivery                                                          | Not verified; provider credentials and recipient not supplied |
+| Visual/browser QA and performance measurements                                | Still pending on a configured deployment                      |
 
 ## Remaining dependency work
 

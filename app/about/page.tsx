@@ -1,6 +1,10 @@
 import { Lightbulb, BadgeCheck, Handshake, ShieldCheck } from "lucide-react";
 import { SectionHeading } from "@/components/section-heading";
-import { MotionItem, MotionReveal, MotionStagger } from "@/components/motion-reveal";
+import {
+  MotionItem,
+  MotionReveal,
+  MotionStagger,
+} from "@/components/motion-reveal";
 
 export const metadata = {
   alternates: { canonical: "/about" },
@@ -36,13 +40,13 @@ export default function AboutPage() {
         <MotionReveal className="container-shell">
           <p className="eyebrow">About Rennovex</p>
           <h1 className="display-title mt-5 max-w-4xl">
-            Technology should make your business clearer, stronger, and easier to
-            grow.
+            Technology should make your business clearer, stronger, and easier
+            to grow.
           </h1>
           <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-600">
-            Rennovex Technology is a digital solutions company helping organisations
-            build credible online experiences, automate processes, and make smarter
-            technology decisions.
+            Rennovex Technology is a digital solutions company helping
+            organisations build credible online experiences, automate processes,
+            and make smarter technology decisions.
           </p>
         </MotionReveal>
       </section>
@@ -55,14 +59,15 @@ export default function AboutPage() {
             />
             <div className="prose-copy mt-7">
               <p>
-                Many businesses know what they want to improve but struggle to find a
-                technical partner who understands both the business goal and the
-                engineering required to achieve it.
+                Many businesses know what they want to improve but struggle to
+                find a technical partner who understands both the business goal
+                and the engineering required to achieve it.
               </p>
               <p>
-                Rennovex exists to bridge that gap. We combine structured discovery,
-                modern design, and maintainable development to deliver useful digital
-                solutions, not technology for technology’s sake.
+                Rennovex exists to bridge that gap. We combine structured
+                discovery, modern design, and maintainable development to
+                deliver useful digital solutions, not technology for
+                technology’s sake.
               </p>
             </div>
           </div>
@@ -81,7 +86,8 @@ export default function AboutPage() {
                 <p className="eyebrow">Vision</p>
                 <p className="mt-4 text-xl leading-8">
                   To become a trusted African technology partner recognised for
-                  useful innovation, dependable delivery, and lasting client success.
+                  useful innovation, dependable delivery, and lasting client
+                  success.
                 </p>
               </div>
             </MotionItem>
@@ -100,7 +106,9 @@ export default function AboutPage() {
                 <div className="glass h-full rounded-2xl p-6">
                   <Icon className="text-sky-700" />
                   <h3 className="mt-7 text-lg font-bold">{title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                    {text}
+                  </p>
                 </div>
               </MotionItem>
             ))}

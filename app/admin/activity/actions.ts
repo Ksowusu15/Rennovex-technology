@@ -12,7 +12,8 @@ export async function archiveActivityLogs() {
     orderBy: { createdAt: "asc" },
   });
 
-  if (!logs.length) redirect("/admin/activity?message=No+active+logs+to+archive");
+  if (!logs.length)
+    redirect("/admin/activity?message=No+active+logs+to+archive");
 
   await prisma.$transaction(async (tx) => {
     await tx.archivedAuditLog.createMany({
@@ -24,8 +25,7 @@ export async function archiveActivityLogs() {
         details: log.details,
         ipAddress: log.ipAddress,
         originalUserId: log.userId,
-        originalUserEmail: log.user?.email 
-          ?? null,
+        originalUserEmail: log.user?.email ?? null,
         originalCreatedAt: log.createdAt,
         archivedById: user.id,
       })),
@@ -42,7 +42,9 @@ export async function archiveActivityLogs() {
     });
   });
 
-  redirect(`/admin/activity?message=${encodeURIComponent(`${logs.length} activity logs archived successfully`)}`);
+  redirect(
+    `/admin/activity?message=${encodeURIComponent(`${logs.length} activity logs archived successfully`)}`,
+  );
 }
 
 export async function clearActivityLogs() {
@@ -63,7 +65,9 @@ export async function clearActivityLogs() {
     });
   });
 
-  redirect(`/admin/activity?message=${encodeURIComponent(`${count} activity logs cleared`)}`);
+  redirect(
+    `/admin/activity?message=${encodeURIComponent(`${count} activity logs cleared`)}`,
+  );
 }
 
 export async function clearArchivedLogs() {
@@ -84,5 +88,7 @@ export async function clearArchivedLogs() {
     });
   });
 
-  redirect(`/admin/activity?view=archived&message=${encodeURIComponent(`${count} archived logs cleared`)}`);
+  redirect(
+    `/admin/activity?view=archived&message=${encodeURIComponent(`${count} archived logs cleared`)}`,
+  );
 }

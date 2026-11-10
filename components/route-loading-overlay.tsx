@@ -82,10 +82,7 @@ export function RouteLoadingOverlay() {
       hideLoaderAfterMinimumTime();
     };
 
-    safetyTimerRef.current = setTimeout(
-      finishInitialLoad,
-      SAFETY_TIMEOUT_MS,
-    );
+    safetyTimerRef.current = setTimeout(finishInitialLoad, SAFETY_TIMEOUT_MS);
 
     if (document.readyState === "complete") {
       finishInitialLoad();

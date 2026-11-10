@@ -16,7 +16,10 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <MotionConfig reducedMotion="user">
-      <a className="skip-link" href="#main-content">
+      <a
+        className="skip-link"
+        href="#main-content"
+      >
         Skip to main content
       </a>
       <Navbar />

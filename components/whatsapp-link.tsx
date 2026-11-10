@@ -15,8 +15,7 @@ export function WhatsAppLink({
   compact = false,
   className = "",
 }: WhatsAppLinkProps) {
-  const href =
-    `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
   return (
     <a
@@ -37,7 +36,10 @@ export function WhatsAppLink({
         className,
       ].join(" ")}
     >
-      <MessageCircle size={18} aria-hidden="true" />
+      <MessageCircle
+        size={18}
+        aria-hidden="true"
+      />
       {compact ? "WhatsApp: 020 729 0092" : "Chat on WhatsApp"}
     </a>
   );

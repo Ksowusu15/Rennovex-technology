@@ -589,7 +589,10 @@ export function RennovexAssistant() {
   flex items-center gap-2 text-sm text-slate-500
 `}
                         >
-                          <Loader2 className="animate-spin" size={16} />
+                          <Loader2
+                            className="animate-spin"
+                            size={16}
+                          />
                           Rennovex Assistant is typing…
                         </motion.div>
                       )}
@@ -772,7 +775,11 @@ function LeadForm({
         />
       </div>
 
-      <select className="field" name="service" required>
+      <select
+        className="field"
+        name="service"
+        required
+      >
         <option value="">Select a service</option>
         <option>Website Development</option>
         <option>E-commerce Development</option>
@@ -784,7 +791,10 @@ function LeadForm({
 
       {kind === "quote" ? (
         <>
-          <select className="field" name="budget">
+          <select
+            className="field"
+            name="budget"
+          >
             <option value="">Estimated budget</option>
             <option>Below GHS 5,000</option>
             <option>GHS 5,000 – 15,000</option>
@@ -842,9 +852,15 @@ function LeadForm({
         </div>
       )}
 
-      <button disabled={loading} className="btn-primary w-full">
+      <button
+        disabled={loading}
+        className="btn-primary w-full"
+      >
         {loading ? (
-          <Loader2 className="animate-spin" size={17} />
+          <Loader2
+            className="animate-spin"
+            size={17}
+          />
         ) : kind === "quote" ? (
           <CheckCircle2 size={17} />
         ) : (

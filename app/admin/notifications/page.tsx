@@ -38,7 +38,11 @@ export default async function NotificationDeliveryPage() {
               )}
             </div>
             <form action={retryNotification}>
-              <input name="id" type="hidden" value={job.id} />
+              <input
+                name="id"
+                type="hidden"
+                value={job.id}
+              />
               <button
                 className="btn-secondary"
                 disabled={Boolean(

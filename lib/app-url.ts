@@ -23,7 +23,9 @@ export function getPublicAppUrl(request?: Request | NextRequest) {
       url.username ||
       url.password
     ) {
-      throw new Error("APP_URL must be an HTTP or HTTPS origin without credentials.");
+      throw new Error(
+        "APP_URL must be an HTTP or HTTPS origin without credentials.",
+      );
     }
     if (
       process.env.NODE_ENV === "production" &&
@@ -35,7 +37,9 @@ export function getPublicAppUrl(request?: Request | NextRequest) {
     return cleanUrl(url.origin);
   }
   if (process.env.NODE_ENV === "production") {
-    throw new Error("APP_URL or NEXT_PUBLIC_SITE_URL is required in production.");
+    throw new Error(
+      "APP_URL or NEXT_PUBLIC_SITE_URL is required in production.",
+    );
   }
 
   if (request) {

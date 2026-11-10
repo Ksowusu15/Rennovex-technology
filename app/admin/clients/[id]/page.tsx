@@ -96,13 +96,22 @@ export default async function ClientManagementPage({
       .filter((item) => item.outstanding > 0)
       .map((item) => workspaceMoney(item.outstanding, item.currency))
       .join(" · ") || workspaceMoney(0);
-  const field = <input type="hidden" name="clientId" value={client.id} />;
+  const field = (
+    <input
+      type="hidden"
+      name="clientId"
+      value={client.id}
+    />
+  );
   const clientHref = (target: string) =>
     `/admin/clients/${client.id}?view=${target}`;
   const timeline = client.updates.length ? (
     <div className="workspace-timeline">
       {client.updates.map((update) => (
-        <article className="workspace-timeline-item" key={update.id}>
+        <article
+          className="workspace-timeline-item"
+          key={update.id}
+        >
           <h3>{update.title}</h3>
           <time>{workspaceDate(update.createdAt)}</time>
           <p>{update.message}</p>
@@ -118,7 +127,10 @@ export default async function ClientManagementPage({
   );
   return (
     <div>
-      <Link href="/admin/clients" className="workspace-text-link mb-4">
+      <Link
+        href="/admin/clients"
+        className="workspace-text-link mb-4"
+      >
         <ArrowLeft size={15} />
         Client directory
       </Link>
@@ -163,7 +175,10 @@ export default async function ClientManagementPage({
             {!client.password && client.isActive && (
               <form action={resendClientInvite}>
                 {field}
-                <WorkspaceSubmit secondary pendingLabel="Sending…">
+                <WorkspaceSubmit
+                  secondary
+                  pendingLabel="Sending…"
+                >
                   <UserPlus size={15} />
                   Resend invitation
                 </WorkspaceSubmit>
@@ -188,7 +203,10 @@ export default async function ClientManagementPage({
           </span>
         </div>
         {!client.password && client.inviteDeliveryStatus === "FAILED" && (
-          <p className="workspace-callout mt-4" data-tone="warning">
+          <p
+            className="workspace-callout mt-4"
+            data-tone="warning"
+          >
             The last invitation email failed. Check your email delivery settings
             and resend the invitation.
           </p>
@@ -218,7 +236,10 @@ export default async function ClientManagementPage({
           </div>
         </div>
       </section>
-      <nav className="workspace-tabs" aria-label="Client management sections">
+      <nav
+        className="workspace-tabs"
+        aria-label="Client management sections"
+      >
         {views.map((tab) => (
           <Link
             key={tab}
@@ -252,7 +273,10 @@ export default async function ClientManagementPage({
             >
               {client.projects.length ? (
                 client.projects.map((project) => (
-                  <div className="workspace-list-row" key={project.id}>
+                  <div
+                    className="workspace-list-row"
+                    key={project.id}
+                  >
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-3">
                         <strong className="text-sm font-semibold">
@@ -326,7 +350,10 @@ export default async function ClientManagementPage({
               </dl>
             </WorkspacePanel>
             <div className="workspace-panel admin-mini-panel">
-              <LifeBuoy size={20} className="mb-3 text-blue-600" />
+              <LifeBuoy
+                size={20}
+                className="mb-3 text-blue-600"
+              />
               <h3>Keep support moving</h3>
               <p>
                 {openSupport
@@ -375,7 +402,10 @@ export default async function ClientManagementPage({
           >
             {client.projects.length ? (
               client.projects.map((project) => (
-                <article key={project.id} className="admin-project-editor">
+                <article
+                  key={project.id}
+                  className="admin-project-editor"
+                >
                   <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h3>{project.name}</h3>
@@ -395,7 +425,11 @@ export default async function ClientManagementPage({
                     className="grid gap-4 sm:grid-cols-[1fr_140px_auto] sm:items-end"
                   >
                     {field}
-                    <input name="projectId" type="hidden" value={project.id} />
+                    <input
+                      name="projectId"
+                      type="hidden"
+                      value={project.id}
+                    />
                     <label className="label">
                       Project stage
                       <select
@@ -410,7 +444,10 @@ export default async function ClientManagementPage({
                           "COMPLETED",
                           "ON_HOLD",
                         ].map((status) => (
-                          <option key={status} value={status}>
+                          <option
+                            key={status}
+                            value={status}
+                          >
                             {statusLabel(status)}
                           </option>
                         ))}
@@ -518,16 +555,25 @@ export default async function ClientManagementPage({
                             rel="noopener noreferrer"
                             className="workspace-text-link mb-2 flex break-all"
                           >
-                            <FileText size={15} className="shrink-0" />
+                            <FileText
+                              size={15}
+                              className="shrink-0"
+                            />
                             {file.name}
                           </a>
                         ) : (
-                          <p key={file.id} className="text-xs text-slate-500">
+                          <p
+                            key={file.id}
+                            className="text-xs text-slate-500"
+                          >
                             {file.name} · Link unavailable
                           </p>
                         );
                       })}
-                      <form action={addClientFile} className="mt-4 grid gap-3">
+                      <form
+                        action={addClientFile}
+                        className="mt-4 grid gap-3"
+                      >
                         {field}
                         <input
                           type="hidden"
@@ -582,15 +628,26 @@ export default async function ClientManagementPage({
               <div className="workspace-form-grid">
                 <label className="label">
                   Project name
-                  <input name="name" className="field" required />
+                  <input
+                    name="name"
+                    className="field"
+                    required
+                  />
                 </label>
                 <label className="label">
                   Target completion
-                  <input name="dueDate" className="field" type="date" />
+                  <input
+                    name="dueDate"
+                    className="field"
+                    type="date"
+                  />
                 </label>
                 <label className="label sm:col-span-2">
                   Project summary
-                  <textarea className="field min-h-24" name="description" />
+                  <textarea
+                    className="field min-h-24"
+                    name="description"
+                  />
                 </label>
               </div>
               <div className="mt-5">
@@ -617,7 +674,11 @@ export default async function ClientManagementPage({
                   key={invoice.id}
                 >
                   {field}
-                  <input type="hidden" name="invoiceId" value={invoice.id} />
+                  <input
+                    type="hidden"
+                    name="invoiceId"
+                    value={invoice.id}
+                  />
                   <div>
                     <p className="text-xs text-slate-500">{invoice.number}</p>
                     <h3 className="mt-1 font-semibold">{invoice.title}</h3>
@@ -648,7 +709,10 @@ export default async function ClientManagementPage({
                         "OVERDUE",
                         "CANCELLED",
                       ].map((status) => (
-                        <option key={status} value={status}>
+                        <option
+                          key={status}
+                          value={status}
+                        >
                           {statusLabel(status)}
                         </option>
                       ))}
@@ -682,7 +746,10 @@ export default async function ClientManagementPage({
             title="Create an invoice"
             description="New invoices are sent to the client portal immediately"
           >
-            <form action={addClientInvoice} className="workspace-form-section">
+            <form
+              action={addClientInvoice}
+              className="workspace-form-section"
+            >
               {field}
               <div className="workspace-form-grid">
                 <label className="label">
@@ -716,7 +783,11 @@ export default async function ClientManagementPage({
                 </label>
                 <label className="label">
                   Due date
-                  <input className="field" name="dueDate" type="date" />
+                  <input
+                    className="field"
+                    name="dueDate"
+                    type="date"
+                  />
                 </label>
               </div>
               <div className="mt-5">
@@ -736,7 +807,10 @@ export default async function ClientManagementPage({
         >
           {client.supportRequests.length ? (
             client.supportRequests.map((request) => (
-              <article className="admin-project-editor" key={request.id}>
+              <article
+                className="admin-project-editor"
+                key={request.id}
+              >
                 <div className="flex flex-wrap items-start justify-between gap-4">
                   <div>
                     <div className="mb-2 flex items-center gap-2">
@@ -760,7 +834,11 @@ export default async function ClientManagementPage({
                   className="flex flex-wrap items-end gap-3"
                 >
                   {field}
-                  <input name="supportId" type="hidden" value={request.id} />
+                  <input
+                    name="supportId"
+                    type="hidden"
+                    value={request.id}
+                  />
                   <label className="label">
                     Request status
                     <select
@@ -770,7 +848,10 @@ export default async function ClientManagementPage({
                     >
                       {["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"].map(
                         (status) => (
-                          <option key={status} value={status}>
+                          <option
+                            key={status}
+                            value={status}
+                          >
                             {statusLabel(status)}
                           </option>
                         ),
@@ -816,10 +897,16 @@ export default async function ClientManagementPage({
               {field}
               <label className="label">
                 Project
-                <select className="field" name="projectId">
+                <select
+                  className="field"
+                  name="projectId"
+                >
                   <option value="">General account update</option>
                   {client.projects.map((project) => (
-                    <option value={project.id} key={project.id}>
+                    <option
+                      value={project.id}
+                      key={project.id}
+                    >
                       {project.name}
                     </option>
                   ))}

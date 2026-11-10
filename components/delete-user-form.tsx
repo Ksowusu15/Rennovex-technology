@@ -56,9 +56,8 @@ export function DeleteUserForm({
   return (
     <div className="rounded-xl border border-red-200 bg-red-50 p-3 sm:col-span-2">
       <p className="text-xs font-semibold leading-5 text-red-800">
-        Delete 
-        {userName}
-        ? This permanently removes the account and its active
+        Delete
+        {userName}? This permanently removes the account and its active
         sessions. This action cannot be undone.
       </p>
 
@@ -72,10 +71,11 @@ export function DeleteUserForm({
         </button>
 
         <form action={deleteAdminUser}>
-          <input 
-            type="hidden" 
-            name="id" 
-            value={userId} />
+          <input
+            type="hidden"
+            name="id"
+            value={userId}
+          />
           <button className="w-full rounded-lg bg-red-600 px-3 py-2 text-xs font-bold text-white transition hover:bg-red-700">
             Yes, delete
           </button>

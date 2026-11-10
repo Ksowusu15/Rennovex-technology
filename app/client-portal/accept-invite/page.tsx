@@ -22,20 +22,19 @@ export default async function AcceptInvitePage({
           Activate your account
         </h1>
         <p className="mt-2 text-sm leading-6 text-slate-500">
-          Create your private password to access project progress,
-          deliverables, invoices and support.
+          Create your private password to access project progress, deliverables,
+          invoices and support.
         </p>
 
         <div className="mt-6">
-          {token
-            ? (
-              <ClientInviteForm token={token} />
-            )
-            : (
-              <p className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
-                This invitation link is incomplete. Ask Rennovex to resend your invitation.
-              </p>
-            )}
+          {token ? (
+            <ClientInviteForm token={token} />
+          ) : (
+            <p className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">
+              This invitation link is incomplete. Ask Rennovex to resend your
+              invitation.
+            </p>
+          )}
         </div>
 
         <Link

@@ -52,11 +52,16 @@ export function AdminResetPasswordForm({ token }: { token: string }) {
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-emerald-100 text-emerald-700">
           <KeyRound size={28} />
         </div>
-        <h1 className="mt-5 text-2xl font-bold text-slate-950">Password updated</h1>
+        <h1 className="mt-5 text-2xl font-bold text-slate-950">
+          Password updated
+        </h1>
         <p className="mt-2 text-sm text-slate-600">
           You can now sign in with your new administrator password.
         </p>
-        <Link href="/admin/login" className="btn-primary mt-6 w-full">
+        <Link
+          href="/admin/login"
+          className="btn-primary mt-6 w-full"
+        >
           Return to admin login
         </Link>
       </div>
@@ -122,7 +127,10 @@ export function AdminResetPasswordForm({ token }: { token: string }) {
           {error}
         </p>
       )}
-      <button disabled={loading} className="btn-primary mt-6 min-h-12 w-full">
+      <button
+        disabled={loading}
+        className="btn-primary mt-6 min-h-12 w-full"
+      >
         {loading ? "Updating password..." : "Update admin password"}
       </button>
     </form>

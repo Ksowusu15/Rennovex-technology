@@ -113,9 +113,7 @@ export function Hero() {
     }
 
     if (active > serviceWindowStart + 3) {
-      setServiceWindowStart(
-        Math.min(active - 3, maxServiceWindowStart),
-      );
+      setServiceWindowStart(Math.min(active - 3, maxServiceWindowStart));
     }
   }, [active, serviceWindowStart, maxServiceWindowStart]);
 
@@ -277,9 +275,7 @@ export function Hero() {
           onWheel={(event) => {
             if (Math.abs(event.deltaY) < 8) return;
 
-            moveServiceWindow(
-              event.deltaY > 0 ? "down" : "up",
-            );
+            moveServiceWindow(event.deltaY > 0 ? "down" : "up");
           }}
           onTouchStart={(event) => {
             touchStartY.current = event.touches[0]?.clientY ?? null;
@@ -295,9 +291,7 @@ export function Hero() {
 
             if (Math.abs(distance) < 28) return;
 
-            moveServiceWindow(
-              distance > 0 ? "down" : "up",
-            );
+            moveServiceWindow(distance > 0 ? "down" : "up");
           }}
         >
           <div className="mb-4 flex items-center justify-between gap-4">
@@ -330,9 +324,7 @@ export function Hero() {
               <button
                 type="button"
                 onClick={() => moveServiceWindow("down")}
-                disabled={
-                  serviceWindowStart === maxServiceWindowStart
-                }
+                disabled={serviceWindowStart === maxServiceWindowStart}
                 aria-label="Show more services"
                 className={`
                   grid h-8 w-8 place-items-center rounded-full
@@ -348,20 +340,15 @@ export function Hero() {
           </div>
 
           <div className="overflow-hidden">
-            <AnimatePresence mode="popLayout" initial={false}>
+            <AnimatePresence
+              mode="popLayout"
+              initial={false}
+            >
               <motion.div
                 key={serviceWindowStart}
-                initial={
-                  reduceMotion
-                    ? false
-                    : { opacity: 0, y: 14 }
-                }
+                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={
-                  reduceMotion
-                    ? undefined
-                    : { opacity: 0, y: -10 }
-                }
+                exit={reduceMotion ? undefined : { opacity: 0, y: -10 }}
                 transition={{ duration: 0.28 }}
                 className="space-y-1"
               >

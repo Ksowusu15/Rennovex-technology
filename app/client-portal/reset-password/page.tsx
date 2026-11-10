@@ -38,8 +38,7 @@ export default async function ClientResetPasswordPage({
                 mt-3 text-sm leading-6 text-slate-600
               `}
             >
-              Request a new password reset link from
-              the client portal.
+              Request a new password reset link from the client portal.
             </p>
             <Link
               href="/client-portal/forgot-password"

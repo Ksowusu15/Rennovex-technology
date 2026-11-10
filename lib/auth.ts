@@ -65,7 +65,10 @@ export async function decodeSessionToken(): Promise<SessionPayload | null> {
     const { payload } = await jwtVerify(token, getAuthSecret(), {
       algorithms: ["HS256"],
     });
-    if (typeof payload.sessionId !== "string" || typeof payload.userId !== "string")
+    if (
+      typeof payload.sessionId !== "string" ||
+      typeof payload.userId !== "string"
+    )
       return null;
     return payload as SessionPayload;
   } catch {

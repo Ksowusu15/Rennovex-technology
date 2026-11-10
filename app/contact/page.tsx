@@ -22,8 +22,8 @@ export default async function ContactPage() {
               Let’s build something valuable together.
             </h1>
             <p className="mt-6 text-lg leading-8 text-slate-600">
-              Share your goals, challenge, or early-stage idea. We will review it and
-              respond with the most useful next step.
+              Share your goals, challenge, or early-stage idea. We will review
+              it and respond with the most useful next step.
             </p>
             <WhatsAppLink className="mt-7" />
             <div className="mt-9 grid gap-4 text-sm text-slate-700">
@@ -32,7 +32,10 @@ export default async function ContactPage() {
                   className="flex items-start gap-3 transition hover:text-blue-700"
                   href={`mailto:${settings.contactEmail}`}
                 >
-                  <Mail className="mt-0.5 shrink-0 text-sky-700" size={19} />
+                  <Mail
+                    className="mt-0.5 shrink-0 text-sky-700"
+                    size={19}
+                  />
                   <span className="break-all">{settings.contactEmail}</span>
                 </a>
               )}
@@ -41,26 +44,37 @@ export default async function ContactPage() {
                   className="flex items-start gap-3 transition hover:text-blue-700"
                   href={`tel:${settings.phone.replace(/\s/g, "")}`}
                 >
-                  <Phone className="mt-0.5 shrink-0 text-sky-700" size={19} />
+                  <Phone
+                    className="mt-0.5 shrink-0 text-sky-700"
+                    size={19}
+                  />
                   <span>{settings.phone}</span>
                 </a>
               )}
               {settings.address && (
                 <span className="flex items-start gap-3">
-                  <MapPin className="mt-0.5 shrink-0 text-sky-700" size={19} />
+                  <MapPin
+                    className="mt-0.5 shrink-0 text-sky-700"
+                    size={19}
+                  />
                   <span>{settings.address}</span>
                 </span>
               )}
               {settings.businessHours && (
                 <span className="flex items-start gap-3">
-                  <Clock3 className="mt-0.5 shrink-0 text-sky-700" size={19} />
+                  <Clock3
+                    className="mt-0.5 shrink-0 text-sky-700"
+                    size={19}
+                  />
                   <span>{settings.businessHours}</span>
                 </span>
               )}
             </div>
           </div>
           <Suspense
-            fallback={<div className="glass min-h-[520px] rounded-3xl p-6 sm:p-8" />}
+            fallback={
+              <div className="glass min-h-[520px] rounded-3xl p-6 sm:p-8" />
+            }
           >
             <ContactForm />
           </Suspense>

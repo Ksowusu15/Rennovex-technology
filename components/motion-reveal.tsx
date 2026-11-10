@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useReducedMotion,
-} from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 type MotionProps = {
   children: React.ReactNode;
@@ -45,10 +42,7 @@ export function MotionReveal({
       transition={{
         duration: 0.72,
         delay,
-        ease: [0.22, 
-          1, 
-          0.36, 
-          1],
+        ease: [0.22, 1, 0.36, 1],
       }}
     >
       {children}
@@ -56,18 +50,13 @@ export function MotionReveal({
   );
 }
 
-export function MotionStagger({
-  children,
-  className = "",
-}: MotionProps) {
+export function MotionStagger({ children, className = "" }: MotionProps) {
   const reduceMotion = useReducedMotion();
 
   return (
     <motion.div
       className={className}
-      initial={reduceMotion 
-        ? false 
-        : "hidden"}
+      initial={reduceMotion ? false : "hidden"}
       whileInView="show"
       viewport={{
         once: true,
@@ -88,10 +77,7 @@ export function MotionStagger({
   );
 }
 
-export function MotionItem({
-  children,
-  className = "",
-}: MotionProps) {
+export function MotionItem({ children, className = "" }: MotionProps) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -112,10 +98,7 @@ export function MotionItem({
                 scale: 1,
                 transition: {
                   duration: 0.62,
-                  ease: [0.22, 
-                    1, 
-                    0.36, 
-                    1],
+                  ease: [0.22, 1, 0.36, 1],
                 },
               },
             }
@@ -126,10 +109,7 @@ export function MotionItem({
   );
 }
 
-export function MotionFloat({
-  children,
-  className = "",
-}: MotionProps) {
+export function MotionFloat({ children, className = "" }: MotionProps) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -139,9 +119,7 @@ export function MotionFloat({
         reduceMotion
           ? undefined
           : {
-              y: [0, 
-                -8, 
-                0],
+              y: [0, -8, 0],
             }
       }
       transition={{

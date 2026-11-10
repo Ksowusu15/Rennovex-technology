@@ -58,8 +58,8 @@ export function AdminForgotPasswordForm() {
           Forgot your password?
         </h1>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          Enter your administrator email and we will send a secure reset link valid
-          for 10 minutes.
+          Enter your administrator email and we will send a secure reset link
+          valid for 10 minutes.
         </p>
         <label className="mt-7 grid gap-2 text-sm font-semibold text-slate-800">
           Admin email

@@ -5,12 +5,15 @@ const globalStore = globalThis as typeof globalThis & {
 };
 
 const store = globalStore.__rennovexRateLimits ?? new Map<string, Bucket>();
-if (process.env.NODE_ENV !== "production") globalStore.__rennovexRateLimits = store;
+if (process.env.NODE_ENV !== "production")
+  globalStore.__rennovexRateLimits = store;
 
 export function getClientIp(request: Request) {
   const forwarded = request.headers.get("x-forwarded-for");
   return (
-    forwarded?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown"
+    forwarded?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
   );
 }
 

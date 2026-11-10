@@ -84,8 +84,8 @@ export default function FAQPage() {
               leading-8 text-slate-600
             `}
           >
-            Helpful answers about our services, pricing, project process and client
-            support.
+            Helpful answers about our services, pricing, project process and
+            client support.
           </p>
         </div>
       </section>
@@ -115,11 +115,14 @@ export default function FAQPage() {
                 leading-7 text-slate-600
               `}
             >
-              If your question is specific to your organisation or project, contact
-              Rennovex and we will help you determine the next step.
+              If your question is specific to your organisation or project,
+              contact Rennovex and we will help you determine the next step.
             </p>
 
-            <Link href="/contact" className="enterprise-btn-primary mt-6">
+            <Link
+              href="/contact"
+              className="enterprise-btn-primary mt-6"
+            >
               Contact Rennovex
               <ArrowRight size={17} />
             </Link>

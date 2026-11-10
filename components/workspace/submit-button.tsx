@@ -19,7 +19,11 @@ export function WorkspaceSubmit({
       aria-disabled={pending}
     >
       {pending && (
-        <LoaderCircle size={16} className="animate-spin" aria-hidden="true" />
+        <LoaderCircle
+          size={16}
+          className="animate-spin"
+          aria-hidden="true"
+        />
       )}
       {pending ? pendingLabel : children}
     </button>

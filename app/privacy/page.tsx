@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
   title: "Privacy Policy | Rennovex Technology",
-  description: "How Rennovex Technology handles website and enquiry information.",
+  description:
+    "How Rennovex Technology handles website and enquiry information.",
 };
 
 export default function PrivacyPage() {
@@ -18,20 +19,22 @@ export default function PrivacyPage() {
         </h1>
         <div className="mt-8 space-y-6 text-base leading-8 text-slate-600">
           <p>
-            Rennovex Technology collects information you voluntarily provide through
-            contact, quotation, consultation, newsletter, and assistant forms.
+            Rennovex Technology collects information you voluntarily provide
+            through contact, quotation, consultation, newsletter, and assistant
+            forms.
           </p>
           <p>
             We use this information to respond to enquiries, provide requested
-            services, improve our website, and maintain appropriate business records.
+            services, improve our website, and maintain appropriate business
+            records.
           </p>
           <p>
             We do not sell personal information. Access is limited to authorised
             personnel and service providers needed to operate the website.
           </p>
           <p>
-            To request access, correction, or deletion of your information, contact
-            Rennovex Technology through the website contact page.
+            To request access, correction, or deletion of your information,
+            contact Rennovex Technology through the website contact page.
           </p>
         </div>
       </div>

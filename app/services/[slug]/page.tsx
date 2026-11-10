@@ -121,16 +121,23 @@ export default async function ServicePage({
               </h2>
             </div>
 
-            <p className="text-lg leading-8 text-slate-600">{service.description}</p>
+            <p className="text-lg leading-8 text-slate-600">
+              {service.description}
+            </p>
           </div>
 
           <div className="mt-14 grid gap-6 lg:grid-cols-2">
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-              <h3 className="text-xl font-bold text-slate-950">What we deliver</h3>
+              <h3 className="text-xl font-bold text-slate-950">
+                What we deliver
+              </h3>
 
               <div className="mt-6 grid gap-4">
                 {service.deliverables.map((item) => (
-                  <div key={item} className="flex gap-3">
+                  <div
+                    key={item}
+                    className="flex gap-3"
+                  >
                     <CheckCircle2
                       className="mt-0.5 shrink-0 text-blue-700"
                       size={19}
@@ -149,7 +156,10 @@ export default async function ServicePage({
 
               <div className="mt-6 grid gap-4">
                 {service.audience.map((item) => (
-                  <div key={item} className="flex gap-3">
+                  <div
+                    key={item}
+                    className="flex gap-3"
+                  >
                     <ChevronRight
                       className="mt-1 shrink-0 text-blue-700"
                       size={18}
@@ -182,13 +192,17 @@ export default async function ServicePage({
                   motion-reduce:transform-none motion-reduce:transition-none
                 `}
               >
-                <span className="text-sm font-bold text-blue-700">0{index + 1}</span>
+                <span className="text-sm font-bold text-blue-700">
+                  0{index + 1}
+                </span>
 
                 <h3 className="mt-5 text-lg font-bold text-slate-950">
                   {step.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-6 text-slate-600">{step.text}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  {step.text}
+                </p>
               </article>
             ))}
           </div>
@@ -207,13 +221,18 @@ export default async function ServicePage({
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {service.benefits.map((item) => (
-                  <div key={item} className="flex gap-3">
+                  <div
+                    key={item}
+                    className="flex gap-3"
+                  >
                     <CheckCircle2
                       className="mt-0.5 shrink-0 text-blue-700"
                       size={18}
                     />
 
-                    <span className="text-sm leading-6 text-slate-700">{item}</span>
+                    <span className="text-sm leading-6 text-slate-700">
+                      {item}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -229,9 +248,9 @@ export default async function ServicePage({
               </h2>
 
               <p className="mt-3 max-w-xl text-sm leading-6 text-slate-300">
-                Technology is selected around maintainability, performance and the
-                requirements of the project rather than treated as a separate
-                service.
+                Technology is selected around maintainability, performance and
+                the requirements of the project rather than treated as a
+                separate service.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
@@ -309,8 +328,8 @@ export default async function ServicePage({
                 </h2>
 
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-                  We will review the requirements, deliverables and complexity before
-                  recommending the right engagement.
+                  We will review the requirements, deliverables and complexity
+                  before recommending the right engagement.
                 </p>
               </div>
 
@@ -343,8 +362,8 @@ export default async function ServicePage({
               </h2>
 
               <p className="mt-3 leading-7 text-blue-100">
-                Tell us what you want to achieve. Rennovex will help define the right
-                scope and next step.
+                Tell us what you want to achieve. Rennovex will help define the
+                right scope and next step.
               </p>
             </div>
 

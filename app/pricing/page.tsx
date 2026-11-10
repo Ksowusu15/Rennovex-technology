@@ -4,7 +4,8 @@ import { allPricing } from "@/lib/pricing-data";
 export const metadata = {
   alternates: { canonical: "/pricing" },
   title: "Pricing | Rennovex Technology",
-  description: "Explore Rennovex Technology package categories and starting prices.",
+  description:
+    "Explore Rennovex Technology package categories and starting prices.",
 };
 
 export default function PricingPage() {

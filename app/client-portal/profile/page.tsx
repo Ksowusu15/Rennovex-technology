@@ -57,7 +57,10 @@ export default async function ClientProfilePage() {
             </dl>
           </WorkspacePanel>
           <div className="workspace-callout">
-            <UserRound size={20} className="mb-3" />
+            <UserRound
+              size={20}
+              className="mb-3"
+            />
             <strong>Need to change your name or email?</strong>
             <p className="mt-2 text-xs leading-6">
               Contact the team through Support. They’ll help you update the
